@@ -2,7 +2,7 @@
 
 ## Purpose:
 
-This repo contains various code scripts that we use for FCQs. This does not include the course audit or NLP scripts. For those, please see their dedicated repositories: oit-an-course-audit and oit-an-nlp 
+This repo contains various code scripts that we use for FCQs. This does not include the course audit or NLP scripts. For those, please see their dedicated repositories: oit-an-fcq-audit and oit-an-fcq-nlp.
 
 Current packages:
 
