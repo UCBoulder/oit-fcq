@@ -1,14 +1,8 @@
-# oit-analysis-template
-
-2023 Github Project Repo Template for OIT Analysis Team
+# oit-fcq
 
 ## Purpose:
 
-*State the purpose of this repo here.*
-
-This template contains a repo structure and common set of packages to be used with renv:: or python equivalent in order to save time installing the most commonly used packages and setting up repo structure.
-
-In recognition of how different each project is in a data science application, this template should serve as an example of possible directory structure rather than a firm, required, structure. Feel free to customize the structure to suit the needs of a specific project. For example, one could delete the prediction_pipeline directory and its files if the specific project does not have any prediction making capabilities. Likewise, it might be beneficial to add a directory such as "power analysis", "data engineering", "post-hoc analysis", etc. if those are deemed more descriptive than the existing directories. 
+This repo contains various code scripts that we use for FCQs. This does not include the course audit or NLP scripts. For those, please see their dedicated repositories: oit-an-course-audit and oit-an-nlp 
 
 Current packages:
 
