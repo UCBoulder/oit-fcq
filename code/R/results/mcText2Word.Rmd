@@ -10,7 +10,7 @@ code_folding: 'hide'
 knitr::opts_chunk$set(echo = FALSE)
 library(stringr)
 library(tidyverse)
-term <- 2244
+term <- 2251
 userid <- 'darcange'
 ```
 
