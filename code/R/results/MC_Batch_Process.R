@@ -97,9 +97,6 @@ my_comb <- left_join(x = my_files, y = mc_match, by = 'Instructor_External_ID')
 my_comb2 <- my_comb %>%
   filter(!(is.na(Instructor)))
 
-# tbd
-# bring in instrNm to rename folders
-
 # setwd() to target folder
 setwd(cfolder)
 
