@@ -1,0 +1,24 @@
+---
+title: 'AMC flagged comments'
+output: 
+  word_document:
+    number_sections: TRUE
+code_folding: 'hide'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(stringr)
+library(tidyverse)
+term <- 2244
+userid <- 'darcange'
+```
+
+```{r}
+flagged <- read.csv(paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - Documents\\FCQ\\Text_Mining\\', term, '\\mcFlagged.csv'))
+```
+
+```{r}
+comments <- flagged[c('CE_Internal_ID', 'Keywords', 'Comments')]
+comments$Comments
+```

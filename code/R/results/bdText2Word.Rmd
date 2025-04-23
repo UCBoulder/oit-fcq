@@ -1,0 +1,26 @@
+---
+title: 'bdFlaggedText'
+output: 
+  word_document:
+    number_sections: TRUE
+    df_print: paged
+code_folding: 'hide'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(stringr)
+library(tidyverse)
+library(openxlsx)
+term <- 2247
+userid <- 'darcange'
+```
+
+```{r}
+flagged <- read.xlsx(paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\Text_Mining\\', term, '\\test_data_with_predictions.xlsx'))
+```
+
+```{r}
+comments <- flagged[c('CE_Internal_ID', 'Keywords', 'Comments')]
+comments$Comments
+```
