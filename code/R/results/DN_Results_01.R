@@ -194,11 +194,11 @@ crse_vars2 <- crse_vars2 %>%
 
 crse_vars2 <- crse_vars2 %>%
   mutate(Instructor_External_ID = case_when(
-    CourseID == '2247_cuden:clas:d-math_math_2421_001' ~ 'AD667D45-7077-11e2-B656-00505691002B@cu.edu',
-    CourseID == '2247_cuden:clas:d-math_math_2421_003' ~ 'AD667D45-7077-11e2-B656-00505691002B@cu.edu',
-    CourseID == '2247_cuden:clas:d-math_math_3195_001' ~ 'AD667D45-7077-11e2-B656-00505691002B@cu.edu',
-    CourseID == '2247_cuden:crss:d-ugxp_univ_1110_018' ~ '8F94DAC1-7EBF-11e7-B994-005056945406@cu.edu',
-    CourseID == '2247_cuden:paff:d-paff_crju_3530_e01' ~ 'A5DFF6E6-7328-11e2-895A-00505691002B@cu.edu',
+    CourseID == '2247_cuden:clas:d-math_math_2421_001' ~ 'AD667D45-XXXX-11e2-B656-00505691002B@cu.edu',
+    CourseID == '2247_cuden:clas:d-math_math_2421_003' ~ 'AD667D45-XXXX-11e2-B656-00505691002B@cu.edu',
+    CourseID == '2247_cuden:clas:d-math_math_3195_001' ~ 'AD667D45-XXXX-11e2-B656-00505691002B@cu.edu',
+    CourseID == '2247_cuden:crss:d-ugxp_univ_1110_018' ~ '8F94DAC1-XXXX-11e7-B994-005056945406@cu.edu',
+    CourseID == '2247_cuden:paff:d-paff_crju_3530_e01' ~ 'A5DFF6E6-XXXX-11e2-895A-00505691002B@cu.edu',
     TRUE ~ Instructor_External_ID
   ))
 
@@ -278,9 +278,6 @@ dn_comb4_final <- rbind(dn_comb4x, dn_comb4_fixed2c)
 dn_comb5 <- dn_comb4_final %>%
   left_join(crse_vars2, by = c('CLASS_NUM', 'Instructor_External_ID', 'ACAD_GRP_CD', 'ACAD_GRP_LD', 'fcqdept', 'SBJCT_CD', 'CATALOG_NBR', 'CLASS_SECTION_CD', 'CRSE_LD', 'crseSec_comp_cd', 'instrNm', 'instrEmplid', 'totEnrl_nowd'))
 
-#colnames(dn_comb5) <- gsub('\\.x', '', colnames(dn_comb5))
-#colnames(dn_comb5) <- gsub('\\.y', '', colnames(dn_comb5))
-
 #############################################################
 # identify mismatches generated during join
 dn_comb_err <- dn_comb5 %>% filter(is.na(SBJCT_CD)) %>% distinct()
@@ -304,28 +301,6 @@ dn_comb <- dn_comb %>%
     Course_Section_External_ID == '2231_cuden:educ:d-rlst_rlst_4850_e01_lec' ~ '2231_cuden:educ:d-rlst_rlst_4850_e01',
     TRUE ~ CourseID))
 
-# crse_vars2x <- crse_vars2 %>% filter(CourseID %in% c('2227_cuden:clas:d-econ_econ_3811_b01', '2227_cuden:clas:d-econ_econ_3811_b02', '2227_cuden:clas:d-econ_econ_3811_b03', '2227_cuden:clas:d-econ_econ_3811_b04', '2227_cuden:clas:d-econ_econ_4811_b01', '2227_cuden:clas:d-econ_econ_4811_b02', '2227_cuden:clas:d-econ_econ_4811_b03'))
-# 
-# # manual add to crse_vars fix
-# crse_vars2xx <- crse_vars2x %>%
-#   mutate(instrNum = 2) %>%
-#   mutate(instrNm = 'Zhang, Tianwei') %>%
-#   mutate(instrLastNm = 'Zhang') %>%
-#   mutate(instrFirstNm = 'Tianwei') %>%
-#   mutate(instrPersonID = '100934830') %>%
-#   mutate(instrConstituentID = '8432404C-71C4-11e2-85C6-00505691002B') %>%
-#   mutate(instrEmplid = '224538') %>%
-#   mutate(instrEmailAddr = 'tianwei.zhang@ucdenver.edu') %>%
-#   mutate(Instructor_External_ID = '8432404C-71C4-11e2-85C6-00505691002B@cu.edu') %>%
-#   filter(assoc_class_secID != 'ECON-3811-B02') %>%
-#   filter(assoc_class_secID != 'ECON-3811-B04')
-# 
-# crse_vars2 <- rbind(crse_vars2, crse_vars2xx)
-
-# dn_comb2 <- dn_comb2 %>% mutate(fcqdept = case_when(
-#   deptOrgID == 'CUDEN:ARPL:D-ARPL' ~ 'AP',
-#   deptOrgID == 'CUDEN:CLAS:D-CLAS' ~ 'CLAS',
-#   TRUE ~ fcqdept))
 #############################################################
 
 dn_comb6 <- dn_comb5 %>%
@@ -419,10 +394,6 @@ dn_batch_match <- dn_comb5 %>%
 
 colnames(dn_batch_match) <- c('Instructor', 'Instructor_External_ID', 'fcqdept', 'ACAD_ORG_CD', 'SBJCT_CD')
 
-# create key for match -- confirm name format when received
-# dn_batch_match2 <- dn_batch_match %>%
-#   mutate(key = paste(Last, First, Instructor_External_ID, sep = '.'))
-
 # export instr table to csv
 write.csv(dn_batch_match, 'DN_Inst_Batch.csv', row.names = FALSE)
 
@@ -498,7 +469,6 @@ dn_xls_update <- dn_xls_update %>%
   mutate(across(Q01:Q22, ~replace(.x, is.nan(.x), ''))) %>%
   mutate(Term_cd = term)
 
-###!!!!!!!!!!!!!!!!!!!!!!!!!#########!!!!!!!!!!!!#########!!!!!!!!!!!!###
 # are there missing fcqdept from new subj?
 dn_xls_update0 <- dn_xls_update %>%
   filter(fcqdept == '----')
@@ -514,7 +484,6 @@ dn_xls_update0 <- dn_xls_update %>%
 #   mutate(fcqdept = case_when(
 #     fcqdept == 'PSYC' ~ 'PSY',
 #     TRUE ~ fcqdept))
-###!!!!!!!!!!!!!!!!!!!!!!!!!#########!!!!!!!!!!!!#########!!!!!!!!!!!!###
 
 # print summary
 write.csv(dn_xls_update, 'DN_inst_summ_update.csv', row.names = FALSE)
@@ -527,62 +496,3 @@ dn_means <- dn_comb7 %>%
   mutate(across(Q01:Q22, round, 1))
 
 write.csv(dn_means, 'DN_means_update.csv', row.names = FALSE)
-
-
-##########################################################################
-# end of functions - below is exp code
-##########################################################################
-
-# extraneous?
-
-# create instructor table to fill missing IDs at the end of process
-# dn_inst_table <- dndata_inst %>%
-#   distinct(Course_Section_Label, Instructor, Instructor_External_ID)
-# 
-# # remove Course_Section_Label from dndata_inst
-# dndata_inst <- dndata_inst %>%
-#   select(-Course_Section_Label)
-# 
-# # look for missing instr IDs (should be 0)
-# # dn_inst_table_missing <- dn_inst_table %>%
-# #   filter(is.na(instrNm))
-# #   filter(is.na(instrPersonID))
-# #   filter(is.na(assoc_class_secID))
-# #   filter(is.na(spons_id))
-# #   filter(is.na(CLASS_NUM))
-# #   filter(is.na(Course_Section_External_ID))
-# #   filter(is.na(Instructor_External_ID))
-# 
-# # initialize an empty list to store the rows with NA values
-# dn_inst_table_missing <- list()
-# 
-# # look for missing instr IDs (should be 0)
-# for (col in colnames(dn_inst_table)) {
-#   na_rows <- which(is.na(dn_inst_table[[col]]))
-#   if (length(na_rows) > 0) {
-#     dn_inst_table_missing[[col]] <- dn_inst_table[na_rows, ]
-#   }
-# }
-# 
-# print(dn_inst_table_missing)
-# 
-# # export instr table to csv
-# write.csv(dn_inst_table, 'DN_Inst_Table.csv', row.names = FALSE)
-# 
-# # if crse_vars not already loaded
-# crse_vars <- read.csv(paste0('C:\\Users\\', userid, '\\OneDrive - UCB-O365\\FCQ - AIM_ Measurement\\CourseAudit_bak\\', term, '\\c20.csv'))
-# 
-# # create Course_Section_External_ID in crse_vars for matching
-# crse_vars2 <- crse_vars %>%
-#   mutate(assoc_class_secID2 = gsub('-', '_', assoc_class_secID)) %>%
-#   mutate(Course_Section_External_ID = paste(TERM_CD, tolower(deptOrgID), tolower(assoc_class_secID2), tolower(crseSec_comp_cd), sep = '_')) %>%
-# #  mutate(Course_Section_External_ID = paste(TERM_CD, tolower(deptOrgID), tolower(SBJCT_CD), tolower(CATALOG_NBR), tolower(CLASS_SECTION_CD), tolower(crseSec_comp_cd), sep = '_')) %>%
-#   mutate(CourseID = paste(TERM_CD, tolower(deptOrgID), tolower(assoc_class_secID2), sep = '_')) %>%
-# #  mutate(CourseID = paste(TERM_CD, tolower(deptOrgID), tolower(SBJCT_CD), tolower(CATALOG_NBR), tolower(CLASS_SECTION_CD), sep = '_')) %>%
-#   mutate(Instructor_External_ID = paste0(instrConstituentID, '@cu.edu'))
-# 
-# # crse_vars3 for class_num
-# crse_vars3 <- crse_vars2 %>%
-#   select(SBJCT_CD, CATALOG_NBR, CLASS_SECTION_CD, Instructor_External_ID, CLASS_NUM) %>%
-#   mutate(CATALOG_NBR = as.character(CATALOG_NBR))
-##########################################################################
