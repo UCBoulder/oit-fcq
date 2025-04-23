@@ -69,23 +69,23 @@ crse_vars2 <- crse_vars2 %>%
       TRUE ~ instrFirstNm
     )) %>%
   mutate(instrPersonID = case_when(
-      instrPersonID == '111003531' ~ '   ',
+      instrPersonID == '999999999' ~ '   ',
       TRUE ~ instrPersonID
     )) %>%
   mutate(instrConstituentID = case_when(
-      instrConstituentID == 'E30A5E7D-3824-4C2C-AC8C-5393CF4736C6' ~ '11B22CCB-7222-11e2-9D84-00505691002B',
+      instrConstituentID == 'E30A5E7D-XXXX-4C2C-AC8C-5393CF4736C6' ~ '11B22CCB-XXXX-11e2-9D84-00505691002B',
       TRUE ~ instrConstituentID
     )) %>%
   mutate(instrEmplid = case_when(
-      instrEmplid == 399235 ~ as.integer(158776),
+      instrEmplid == 666666 ~ as.integer(666666),
       TRUE ~ instrEmplid
     )) %>%
   mutate(instrEmailAddr = case_when(
-      instrEmailAddr == 'Ana.Santos@colorado.edu' ~ 'Esther.Brown@colorado.edu',
+      instrEmailAddr == 'xxx@colorado.edu' ~ 'xxx@colorado.edu',
       TRUE ~ instrEmailAddr
     )) %>%
     mutate(Instructor_External_ID = case_when(
-      Instructor_External_ID == 'E30A5E7D-3824-4C2C-AC8C-5393CF4736C6@cu.edu' ~ '11B22CCB-7222-11e2-9D84-00505691002B@cu.edu',
+      Instructor_External_ID == 'E30A5E7D-XXXX-4C2C-AC8C-5393CF4736C6@cu.edu' ~ '11B22CCB-XXXX-11e2-9D84-00505691002B@cu.edu',
       TRUE ~ Instructor_External_ID
     ))
 
@@ -191,10 +191,6 @@ bd_filled2 <- bd_filled %>%
 bd_comb1 <- left_join(bd_comb0, bd_inst_table, by = c('Course_Section_External_ID', 'Instructor_External_ID', 'Instructor'))
 bd_comb2 <- bd_comb1 %>%
   relocate(c(Instructor, Instructor_External_ID), .before = Q01)
-
-#########################
-# believe that this is identifying classes with mismatched sect code
-# in c20: crseSec_comp_cd	and SSR_COMP_CD don't match
 
 # keep only rows with all info
 
@@ -339,35 +335,14 @@ bd_filled <- bd_filled %>%
     TRUE ~ Instructor
   )) %>%
   mutate(Instructor_External_ID = case_when(
-    Course_Section_External_ID == '2247_cubld:bld3:ecea_ecea_5707_200_lec' ~ '0AE70B5F-D55F-11e3-8F6C-005056941ADA@cu.edu',
-    Course_Section_External_ID == '2247_cubld:bldr:chem_chem_6901_902_oth' ~ '3F481EA5-D259-11e3-A954-005056941ADA@cu.edu',
-    Course_Section_External_ID == '2247_cubld:bldr:math_math_5510_001_lec' ~ '0B33A2F7-93A2-400F-B426-F96726B3DD97@cu.edu',
-    Course_Section_External_ID == '2247_cubld:bldr:milr_milr_2031_020_lec' ~ '0E67AE90-7228-11e2-861A-00505691002B@cu.edu',
+    Course_Section_External_ID == '2247_cubld:bld3:ecea_ecea_5707_200_lec' ~ '0AE70B5F-XXXX-11e3-8F6C-005056941ADA@cu.edu',
+    Course_Section_External_ID == '2247_cubld:bldr:chem_chem_6901_902_oth' ~ '3F481EA5-XXXX-11e3-A954-005056941ADA@cu.edu',
+    Course_Section_External_ID == '2247_cubld:bldr:math_math_5510_001_lec' ~ '0B33A2F7-XXXX-400F-B426-F96726B3DD97@cu.edu',
+    Course_Section_External_ID == '2247_cubld:bldr:milr_milr_2031_020_lec' ~ '0E67AE90-XXXX-11e2-861A-00505691002B@cu.edu',
     TRUE ~ Instructor_External_ID
   ))
-# %>%
-  # mutate(instrPersonID = case_when(
-  #   Course_Section_External_ID == '2237_cubld:bldr:thdn_dnce_5048_001_fld' ~ '810329280',
-  #   TRUE ~ instrPersonID
-  # )) %>%
-  # mutate(assoc_class_secID = case_when(
-  #   Course_Section_External_ID == '2237_cubld:bldr:thdn_dnce_5048_001_fld' ~ 'THTR-4029-001',
-  #   TRUE ~ assoc_class_secID
-  # )) %>%
-  # mutate(spons_id = case_when(
-  #   Course_Section_External_ID == '2237_cubld:bldr:thdn_dnce_5048_001_fld' ~ 'THTR-4029-001',
-  #   TRUE ~ spons_id
-  # )) %>%
-  # mutate(CLASS_NUM = case_when(
-  #   Course_Section_External_ID == '2237_cubld:bldr:thdn_dnce_5048_001_fld' ~ as.integer(32189),
-  #   TRUE ~ CLASS_NUM
-  # ))
 
 # then rerun bd_final
-
-##########################################################################
-# removed bd_final2 and moved to bottom if we actually need
-##########################################################################
 
 ##########################################################################
 # Step 2: 
@@ -480,18 +455,9 @@ bd_crse_inst2 <- bd_crse_inst %>%
   )) %>%
   mutate(as.character(CLASS_SECTION_CD))
   
-#######################################################################
-# still need to figure out how to get edb info without sas
-# how to get job title???
-# pull from PS_D_PERSON (this will take a few minutes)
-# jobstbl2 <- dbGetQuery(con,
-#   'SELECT *
-#   FROM PS_D_PERSON_EMAIL'
-# )
-
-
 ##################################################################
 # create summaries
+##################################################################
 
 # tableau summary
 bd_tab <- bd_crse_inst2 %>%
@@ -539,77 +505,3 @@ bd_sum <- bd_grpd2 %>%
 
 # export bd_sum to csv
 write.csv(bd_sum, 'BD_Instr_Summary_update.csv', row.names = FALSE)
-
-
-##########################################################################
-# not sure that i need any of this
-##########################################################################
-
-bd_final2 <- bd_final %>%
-  filter(CLASS_NUM %in% bd_inst_table$CLASS_NUM)
-
-bd_final3 <- anti_join(bd_final, bd_final2)
-
-# ???????????????????????????????????????
-intersect(colnames(bd_final3),colnames(crse_vars2))
-
-bd_final4 <- left_join(bd_final2, crse_vars2, by = c('Course_Section_External_ID', 'instrNm', 'Instructor_External_ID', 'instrPersonID', 'CLASS_NUM'))
-
-bd_final4 <- bd_final4 %>%
-  select(-instrConstituentID)
-
-
-# custom join
-crse_vars2x <- crse_vars2 %>%
-  select(-c(instrNm, Instructor_External_ID, instrPersonID, instrConstituentID, instrEmplid, instrEmailAddr, PERSON_SID, instrNm_src, instrFirstNm, instrLastNm, instrMiddleNm))
-
-bd_final2x <- left_join(bd_final2, crse_vars5x, by = c('Course_Section_External_ID', 'CLASS_NUM'))
-
-#####################
-#!!!!!!!!!!!!now, fill in missing vars for bd_final2x, remove instrConstituentID from bd_final4 and then rbind
-intersect(colnames(bd_final2x),colnames(bd_final4))
-setdiff(colnames(bd_final4), colnames(bd_final2x))
-
-bd_final2xx <- bd_final2x %>%
-  left_join(perstbl, by = c('instrPersonID' = 'PERSON_ID')) %>%
-  rename('instrNm_src' = 'PRF_PRI_NAME') %>%
-  rename('instrLastNm' = 'PRF_PRI_LAST_NAME') %>%
-  rename('instrFirstNm' = 'PRF_PRI_FIRST_NAME') %>%
-  rename('instrMiddleNm' = 'PRF_PRI_MIDDLE_NAME')
-
-setdiff(colnames(bd_final4), colnames(bd_final2xx))
-
-bd_final2xxx <- bd_final2xx %>%
-  left_join(em3, 'instrPersonID') %>%
-  left_join(hr, 'PERSON_SID') %>%
-  relocate(instrEmplid, .after = 'instrNum') %>%
-  relocate(instrEmailAddr, .before = 'INSTRCTR_ROLE_CD')
-
-setdiff(colnames(bd_final4), colnames(bd_final2xxx))
-
-#bd_complete <- rbind(bd_final2xxx, bd_final4)
-bd_complete <- bd_final4
-
-# instdemo <- edb %>%
-#   select(c(EID, EMPLOYEE_CONSTITUENT_ID, Name, Gender, EthnicRaw, JobTitle, Tenured, TTT, YearsInPosition, BirthDate))
-
-#########################################################################
-
-##############################################
-# one-time fix to remove swapped instr
-# bd_comb2 <- bd_comb2 %>%
-#   filter(!is.na(instrNm))
-##############################################
-
-# append bd_comb0 with bd_filled2
-# bd_final <- rbind(bd_comb2,bd_filled2)
-
-##########################################################################
-# only run if bd_final and bd_final2 have diff nrows
-# find depts that don't match
-dcnt1 <- bd_final %>% group_by(Department) %>% summarize(n())
-dcnt2 <- bd_final2 %>% group_by(Department) %>% summarize(n())
-# find crses that don't match within depts
-dcnt1a <- bd_final %>% filter(grepl('(IPHY)', Department)) %>% group_by(Course_Section_Label) %>% summarize(n())
-dcnt2a <- bd_final2 %>% filter(grepl('(IPHY)', Department)) %>% group_by(Course_Section_Label) %>% summarize(n())
-##########################################################################
