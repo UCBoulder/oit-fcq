@@ -12,7 +12,7 @@ knitr::opts_chunk$set(echo = FALSE)
 library(stringr)
 library(tidyverse)
 library(openxlsx)
-term <- 2247
+term <- 2251
 userid <- 'darcange'
 ```
 
