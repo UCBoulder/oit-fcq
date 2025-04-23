@@ -194,13 +194,3 @@ write.csv(folder_update, 'dn_folders2update.csv')
 #########################################################################
 # end of script
 #########################################################################
-
-
-#########################################################################
-# only run if needed
-# code for identifying missing files when batch is redone
-# xdn_new <- enframe(list.files('L:\\mgt\\FCQ\\CampusLabs\\Batch_Reports\\Extracts\\DN2231'), name = NULL)
-# xdn_org <- enframe(list.files('L:\\mgt\\FCQ\\CampusLabs\\Batch_Reports\\Extracts_bak\\DN2231'), name = NULL)
-# 
-# anti_join(xdn_new, xdn_org)
-#########################################################################
