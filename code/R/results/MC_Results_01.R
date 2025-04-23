@@ -45,9 +45,9 @@ con <- dbConnect(drv, username = getOption('databaseuid'),
 
 crse_vars <- read.csv(paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - Documents\\FCQ\\CourseAudit_bak\\', term, '\\c20.csv'))
 
-#########################################################################
+##########################################################################
 # prepare FCQ result data
-#########################################################################
+##########################################################################
 # import response export
 mcraw <- read.csv('MC_response_export.csv')
 write.xlsx(mcraw, 'MC_response_export_bak.xlsx', showNA = FALSE)
