@@ -82,7 +82,7 @@ mctxt3$Comments <- gsub('\n', '', mctxt3$Comments)
 # export raw file with all comments
 write.csv(mctxt3, paste0('MC_Raw_', term, '.csv'), row.names = FALSE)
 
-#########################################################################
+########################################################################
 
 # load word stems and keyword corpora
 words <- c('\\babus', 'accommodat', '\\bage', '\\bass ', 'assault', 'attack', 'belittl', '\\bberat', 'bitch', '\\bull', 'of color ', 'creed', 'dead ', '\\bdie', 'degrade', 'demean', 'disable', 'disability', 'discriminat', 'flirt', 'fuck', 'gender expression', 'gender identity', 'harass', 'homicid', 'homophob', 'hostil', 'humiliat', '\\bkill ', '\\bkilling ', 'kms', 'murder', 'national origin', 'political affiliation', 'political philosophy', 'pregnan', 'prejudic', '\\brace', 'racial', 'racist', 'religion', 'retaliat', 'revenge', 'ridicule', '\\bsex', 'sexual orientation', '\\bshit', 'suicid', 'threat', 'trans ', 'transgender', 'veteran status')
