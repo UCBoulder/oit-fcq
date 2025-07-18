@@ -1,7 +1,7 @@
 #########################################################################
 # Fix missing pref_emails for instructors when building CL import files
 # created: Vince Darcangelo 3/21/25
-# most recent update: Vince Darcangelo 3/21/25
+# most recent update: Vince Darcangelo 7/18/25
 # \AIM Measurement - FCQ\R_Code\campus_labs\emCheck1.R
 #########################################################################
 
@@ -37,13 +37,13 @@ colnames(instAcct_import) <- c('PersonIdentifier', "FirstName", "LastName", 'Ema
 # fix in instAcct_import
 instAcct_import <- instAcct_import %>%
   mutate(Email = case_when(
-    PersonIdentifier == 'C7A34D74-ECAB-11e8-851E-005056945406@cu.edu' ~ 'anthony.songer@colorado.edu',
+    PersonIdentifier == 'XXXX-11e8-851E-005056945406@cu.edu' ~ 'anthony.songer@colorado.edu',
     TRUE ~ Email
   ))
 
 # also fix in session (to pick up in instcsv)
 session <- session %>%
   mutate(instrEmailAddr = case_when(
-    instrPersonID == '100498888' ~ 'anthony.songer@colorado.edu',
+    instrPersonID == 'XXXXXXXXX' ~ 'anthony.songer@colorado.edu',
     TRUE ~ instrEmailAddr
   ))
