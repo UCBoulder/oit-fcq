@@ -1,10 +1,13 @@
 #########################################################################
-# data dictionary for CL files
-# C:\Users\darcange\OD.new\OneDrive - UCB-O365\FCQ - AIM_ Measurement\R_Code\campus_labs\CL_Data_Dictionary.R
-#   - Vince Darcangelo, 11/28/23
-########################################################################
+# Create data dictionary for CL files
+# created: Vince Darcangelo 11/28/23
+# most recent update: Vince Darcangelo 7/18/25
+# \AIM Measurement - Documents\FCQ\R_Code\campus_labs\CL_Data_Dictionary.R 
+#########################################################################
 
 userid <- 'darcange'
+folder <- paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\')
+dd_file <- paste0(folder, 'R_Code\\hr_tools\\FCQ_Data_Dictionary.xlsx', overwrite = TRUE)
 
 # clscu3 var info
 clscu3_tbl <- head(clscu3)
@@ -68,7 +71,7 @@ sectattr_key <- colnames(sess_attr)
 sectattr_dict <- as.data.frame(cbind(var = sectattr_key, format = sectattr_tbl), row.names = FALSE)
 
 #########################################################################
-#'*Part II: Combine and export to xlsx file*
+# Combine and export to xlsx file
 #########################################################################
 
 # output to xlsx file
@@ -112,4 +115,4 @@ writeDataTable(cldata_dict, 10, stuenrl_dict)
 writeDataTable(cldata_dict, 11, sectattr_dict)
 
 # save
-saveWorkbook(data_dict, file = 'C:\\Users\\', userid, '\\OneDrive - UCB-O365\\FCQ - AIM_ Measurement\\R_Code\\hr_tools\\FCQ_Data_Dictionary.xlsx', overwrite = TRUE)
+saveWorkbook(data_dict, file = dd_file)
