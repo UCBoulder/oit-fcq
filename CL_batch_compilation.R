@@ -1,3 +1,9 @@
+##########################################################################
+# Document existing files in batch folders (only run as needed)
+# created: Vince Darcangelo, 7/30/24
+# most recent update: Vince Darcangelo 7/18/25
+# \AIM Measurement - FCQ\R_Code\campus_labs\CL_batch_compilation.R
+##########################################################################
 
 library(zip)
 
