@@ -1,7 +1,7 @@
 #########################################################################
 # Fix missing pref_emails for students when building CL import files
 # created: Vince Darcangelo 3/21/25
-# most recent update: Vince Darcangelo 3/21/25
+# most recent update: Vince Darcangelo 7/18/25
 # \AIM Measurement - FCQ\R_Code\campus_labs\emCheck2.R
 #########################################################################
 
