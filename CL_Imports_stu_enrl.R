@@ -1,5 +1,13 @@
-#
+#########################################################################
+# Late student adds to class roster (e.g., after admin was set up.
+# created: Vince Darcangelo 2/19/24
+# most recent update: Vince Darcangelo 2/19/24
+# \AIM Measurement - FCQ\R_Code\campus_labs\CL_Imports_stu_enrl.R
+#########################################################################
+
 userid <- 'darcange'
+term_cd <- 2241
+batch <- '99'
 
 # pull from PS_F_CLASS_ENRLMT as enr (~2 mins)
 enrtbl <- dbGetQuery(con,
@@ -136,22 +144,20 @@ stuenrl_cmbd6 <- stuenrl_cmbd6 %>%
   filter(Status == 'Enrolled')
 
 # create file for CL import
-write.csv(stuenrl_cmbd6, paste0('C:\\Users\\', userid, '\\OneDrive - UCB-O365\\FCQ - AIM_ Measurement\\CampusLabs\\Imports\\', term_cd, '\\Enrollment\\stuEnrl', term_cd, '__', batch, '.csv'), row.names = FALSE)
+write.csv(stuenrl_cmbd6, paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\CampusLabs\\Imports\\', term_cd, '\\Enrollment\\stuEnrl', term_cd, '__', batch, '.csv'), row.names = FALSE)
 
 # create running cumulative file
 enrl_upd <- stuenrl_cmbd6 %>%
   mutate(batch = sess_num)
 
 # import existing log
-enrlLog <- read.csv(paste0('C:\\Users\\', userid, '\\OneDrive - UCB-o365\\FCQ - AIM_ Measurement\\CampusLabs\\Data_Files\\', term_cd, '\\Enrl_All.csv'))
+enrlLog <- read.csv(paste0('C:\\Users\\', userid, '\\UCB-o365\\AIM Measurement - FCQ\\CampusLabs\\Data_Files\\', term_cd, '\\Enrl_All.csv'))
 
 # add new batch data to existing log
 enrl_all <- rbind(enrlLog, enrl_upd)
 
 # update cumulative file
-write.csv(enrl_all, paste0('C:\\Users\\', userid, '\\OneDrive - UCB-o365\\FCQ - AIM_ Measurement\\CampusLabs\\Data_Files\\', term_cd, '\\Enrl_All.csv'), row.names = FALSE)
+write.csv(enrl_all, paste0('C:\\Users\\', userid, '\\UCB-o365\\AIM Measurement - FCQ\\CampusLabs\\Data_Files\\', term_cd, '\\Enrl_All.csv'), row.names = FALSE)
 
 # save batch data to CL data_files
-save(enrl_upd, file = paste0('C:\\Users\\', userid, '\\OneDrive - UCB-o365\\FCQ - AIM_ Measurement\\CampusLabs\\Data_Files\\', term_cd, '\\Enrl_',batch,'.Rdata'))
-
-#########################################################################
+save(enrl_upd, file = paste0('C:\\Users\\', userid, '\\UCB-o365\\AIM Measurement - FCQ\\CampusLabs\\Data_Files\\', term_cd, '\\Enrl_',batch,'.Rdata'))
