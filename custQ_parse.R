@@ -1,8 +1,14 @@
-#
+##########################################################################
+# compiles existing custom questions for reference (run as needed)
+# created: Vince Darcangelo, 2/19/24
+# most recent update: Vince Darcangelo 7/18/25
+# \AIM Measurement - FCQ\R_Code\campus_labs\custQ_parse.R
+##########################################################################
+
 userid <- 'darcange'
 
 # import cust q list
-custqs <- read.csv(paste0('C:\\Users\\', userid, '\\OneDrive - UCB-O365\\FCQ - AIM_ Measurement\\FCQ_CustomQs\\CustomQs.csv'))
+custqs <- read.csv(paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\FCQ_CustomQs\\CustomQs.csv'))
 
 text_a1 <- paste0('mutate(attr1 = case_when(')
 text_a2 <- paste0('mutate(attr2 = case_when(')
@@ -36,4 +42,4 @@ tdf3 <- data.frame(Text=text3, row.names=NULL)
 tdf4 <- data.frame(Text=text4, row.names=NULL)
 
 text_prse <- rbind(thd1, tdf1, tbr0, thd2, tdf2, tbr0, thd3, tdf3, tbr0, thd4, tdf4, tbr9)
-write.csv(text_prse, paste0('C:\\Users\\', userid, '\\OneDrive - UCB-O365\\FCQ - AIM_ Measurement\\FCQ_CustomQs\\CustomQs.csv'), row.names = FALSE)
+write.csv(text_prse, paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\FCQ_CustomQs\\CustomQs.csv'), row.names = FALSE)
