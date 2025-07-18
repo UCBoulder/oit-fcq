@@ -1,8 +1,8 @@
 #########################################################################
 # Search for student withdrawals/late drops, import to CL enrl to remove
 # created: Vince Darcangelo 8/8/23
-# most recent update: Vince Darcangelo 12/16/24
-# \AIM Measurement - Documents\FCQ\R_Code\campus_labs\stuenrlWithdraws.R
+# most recent update: Vince Darcangelo 7/18/25
+# \AIM Measurement - FCQ\R_Code\campus_labs\stuenrlWithdraws.R
 #########################################################################
 
 term_cd <- '2251'
@@ -93,58 +93,3 @@ colnames(finaldrp) <- c('PersonIdentifier', 'SectionIdentifier', 'Status', 'Firs
 
 # export
 write.csv(finaldrp, paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\CampusLabs\\Imports\\', term_cd, '\\Enrollment\\finaldrp', rundt2, '.csv'), row.names = FALSE)
-
-#########################################################################
-# ignore below - test code
-#########################################################################
-
-# fixing prev sems
-hx_drps <- read.csv('L:\\mgt\\FCQ\\CampusLabs\\Data_Files\\2231\\Drp_2731.csv')
-
-bd_27 <- read.csv('L:\\mgt\\FCQ\\CampusLabs\\Response_Exports\\2227\\BD_raw.csv')
-
-hx_drps2 <- hx_drps %>%
-  unique() %>%
-  mutate(Course_Section_External_ID = tolower(SectionIdentifier)) %>%
-  mutate(Student_Identifier = PersonIdentifier) %>%
-  select(Student_Identifier, Course_Section_External_ID, Status)
-
-hx_27 <- bd_27 %>%
-  select(Student_Identifier, Course_Section_External_ID, Instructor_External_ID) %>%
-  inner_join(hx_drps2, by = c('Student_Identifier', 'Course_Section_External_ID')) %>%
-  unique()
-
-hx_27 <- bd_comb3 %>%
-  inner_join(hx_drps2, by = c('Student_Identifier', 'Course_Section_External_ID')) %>%
-  unique()
-
-write.csv(hx_27, 'L:\\mgt\\FCQ\\CampusLabs\\Data_Files\\Drp_fix.csv')
-
-bx_2227 <- bd_comb0 %>%
-  inner_join(hx_drps2, by = c('Student_Identifier', 'Course_Section_External_ID')) %>%
-  unique()
-
-write.csv(bx_2227, 'L:\\mgt\\FCQ\\CampusLabs\\Data_Files\\Drp_fix_bd27.csv')
-
-dx_2227 <- dn_comb2 %>%
-  inner_join(hx_drps2, by = c('Student_Identifier', 'Course_Section_External_ID')) %>%
-  unique()
-
-write.csv(dx_2227, 'L:\\mgt\\FCQ\\CampusLabs\\Data_Files\\Drp_fix_dx27.csv')
-
-d27 <- dx_2227 %>%
-  select(Course_Section_External_ID, Instructor, Q01, Q02, Q03, Q04, Q05, Q06, Q07, Q08, Q09, Q10, Q11, Q12, Q13, Q14, Q15, Q16, Q17, Q18, Q19, Q20, Q21, Q22) %>%
-  mutate(across(Q01:Q22, ~ na_if(., 0))) %>%
-  mutate(across(Q01:Q22, ~replace(.x, is.nan(.x), ''))) %>%
-  unite('vals', Q01:Q22, sep = ',', remove = FALSE, na.rm = FALSE)
-
-#d27_mast <- read.xlsx('C:\\Users\\darcange\\OneDrive - UCB-O365\\UCB\\Desktop\\d27_ck.xlsx')
-colnames(d27_mast) <- c('Course_Section_External_ID', 'Instructor', 'Q01', 'Q02', 'Q03', 'Q04', 'Q05', 'Q06', 'Q07', 'Q08', 'Q09', 'Q10', 'Q11', 'Q12', 'Q13', 'Q14', 'Q15', 'Q16', 'Q17', 'Q18', 'Q19', 'Q20', 'Q21', 'Q22', 'vals')
-
-d27_join <- d27 %>%
-  inner_join(d27_mast, by = c('Course_Section_External_ID', 'vals')) %>%
-  unique() %>%
-  filter(!row_number() %in% c(77, 78)) %>%
-  select(Course_Section_External_ID, Instructor.y, vals)
-
-write.csv(d27_join, paste0('C:\\Users\\', userid, '\\OneDrive - UCB-O365\\FCQ - AIM_ Measurement\\CourseAudit_bak\\', term_cd, '\\d27_join.csv'))
