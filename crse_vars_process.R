@@ -2,13 +2,13 @@
 # Prepare crse_vars doc with late changes
 # created: Vince Darcangelo 5/16/24
 # most recent update: Vince Darcangelo 8/8/24
-# \AIM Measurement - Documents\FCQ\R_Code\campus_labs\crse_vars_process.R
+# \AIM Measurement - FCQ\R_Code\campus_labs\crse_vars_process.R
 #########################################################################
 
 # UPDATE THESE VARS EACH SEMESTER:
-term <- 2244
+term_cd <- 2244
 userid <- 'darcange'
-setwd(paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - Documents\\FCQ\\CampusLabs\\Response_Exports\\', term))
+setwd(paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\CampusLabs\\Response_Exports\\', term_cd))
 
 #########################################################################
 drv <- dbDriver('Oracle')
@@ -18,7 +18,7 @@ con <- dbConnect(drv, username = getOption('databaseuid'),
   password = getOption('databasepword'), dbname = connection_string)
 
 # pull data from c20 file
-crse_vars <- read.csv(paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - Documents\\FCQ\\CourseAudit_bak\\', term, '\\c20.csv'))
+crse_vars <- read.csv(paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\CourseAudit_bak\\', term_cd, '\\c20.csv'))
 
 #########################################################################
 # dept changes
@@ -138,12 +138,12 @@ crse_vars4 <- crse_vars3 %>%
 # fix name anomalies
 crse_vars5 <- crse_vars4 %>%
   mutate(instrNm = case_when(
-    instrPersonID == '110708691' ~ 'Gonzalez,Alex',
+    instrPersonID == 'XXXXXXXXX' ~ 'Gonzalez,Alex',
     TRUE ~ instrNm)) %>%
 #  mutate(instrLastNm = case_when(
 #    TRUE ~ instrLastNm)) %>%
   mutate(instrFirstNm = case_when(
-    instrPersonID == '110708691' ~ 'Alex',
+    instrPersonID == 'XXXXXXXXX' ~ 'Alex',
     TRUE ~ instrFirstNm)) %>%
   mutate(across(c(instrNm, instrLastNm, instrFirstNm, instrMiddleNm), gsub, pattern = '<e9>', replacement = 'e')) %>%
   mutate(across(c(instrNm, instrLastNm, instrFirstNm, instrMiddleNm), gsub, pattern = '<ed>', replacement = 'i'))
@@ -436,7 +436,7 @@ instSwap <- crse_vars %>%
     assoc_class_secID == 'GEOL-1150-010' & CLASS_SECTION_CD %in% c('012', '013') & instrNum == 2 ~ '110212452',
     TRUE ~ instrPersonID)) %>%
   mutate(instrConstituentID = case_when(
-    assoc_class_secID == 'GEOL-1150-010' & CLASS_SECTION_CD %in% c('012', '013') & instrNum == 2 ~ '06EF9408-3E72-11eb-B19E-005056942941',
+    assoc_class_secID == 'GEOL-1150-010' & CLASS_SECTION_CD %in% c('012', '013') & instrNum == 2 ~ 'XXXXXXX-XXXX-11eb-B19E-005056942941',
     TRUE ~ instrConstituentID)) %>%
   mutate(instrEmailAddr = case_when(
     assoc_class_secID == 'GEOL-1150-010' & CLASS_SECTION_CD %in% c('012', '013') & instrNum == 2 ~ 'lydia.pinkham@colorado.edu',
@@ -463,11 +463,11 @@ crse_vars_swap <- crse_vars_swap %>%
   mutate(instrMiddleNm = '') %>%
   mutate(instrEmplid = '') %>%
   mutate(instrPersonID = case_when(
-    iMatch == 'a' ~ '108558268',
-    iMatch == 'b' ~ '109288117')) %>%
+    iMatch == 'a' ~ 'XXXXXXXXX',
+    iMatch == 'b' ~ 'XXXXXXXXX')) %>%
   mutate(instrConstituentID = case_when(
-    iMatch == 'a' ~ 'C8D23B94-9AC3-11e6-B372-005056945406',
-    iMatch == 'b' ~ 'E6DF2249-F430-11e7-98D6-005056941015')) %>%
+    iMatch == 'a' ~ 'XXXX-11e6-B372-005056945406',
+    iMatch == 'b' ~ 'XXXX-11e7-98D6-005056941015')) %>%
   mutate(instrEmailAddr = case_when(
     iMatch == 'a' ~ 'oscar.fuentesmunoz@colorado.edu',
     iMatch == 'b' ~ 'damennick.henry@colorado.edu')) %>%
@@ -510,59 +510,3 @@ inst_keep2 <- rbind(inst_keep, inst_mast3)
 
 # add swapped to keep file
 inst_keep3 <- rbind(inst_keep2, inst_swapped)
-
-#########################################################################
-
-# ??? need check to find mismatches (see bd_comb_instrNm0 + bd_inst_table)
-
-# fix bad con ids
-# crse_vars3x <- crse_vars3x %>%
-# mutate(instrConstituentID = case_when(
-#     instrPersonID == '810205471' ~ 'BA5F4E4D-75BB-11e5-B9BE-005056941ADA',
-#     TRUE ~ instrConstituentID
-#   )) %>%
-# mutate(Instructor_External_ID = case_when(
-#     instrPersonID == '810205471' ~ 'BA5F4E4D-75BB-11e5-B9BE-005056941ADA@cu.edu',
-#     TRUE ~ Instructor_External_ID
-#   ))
-#   
-# pull from PS_D_PERSON (this will take a few minutes)
-# pers <- dbGetQuery(con,
-#   'SELECT PERSON_SID, PERSON_ID, PRF_PRI_NAME, PRF_PRI_LAST_NAME, PRF_PRI_FIRST_NAME, PRF_PRI_MIDDLE_NAME
-#   FROM PS_D_PERSON'
-# )
-# 
-# filter out placeholder value
-# pers <- pers %>%
-#   filter(PERSON_SID != '2147483646')
-
-# rename cols
-# colnames(pers) <- c('PERSON_SID', 'instrPersonID', 'instrNm_src', 'instrLastNm', 'instrFirstNm', 'instrMiddleNm')
-
-#########################################################################
-# 
-# # combine pers data with crse vars
-# crse_vars4 <- left_join(select(crse_vars2, -c('instrLastNm', 'instrFirstNm', 'instrMiddleNm')), pers, by = 'instrPersonID')
-
-
-# QC for inst table - run for each
-#bd_inst_table_missing <- bd_inst_table %>%
-#  filter(is.na(instrNm))
-#  filter(is.na(instrPersonID))
-#  filter(is.na(assoc_class_secID))
-#  filter(is.na(spons_id))
-#  filter(is.na(CLASS_NUM))
-#  filter(is.na(Course_Section_External_ID))
-#  filter(is.na(Instructor_External_ID))
-
-#dn_inst_table_missing <- dn_inst_table %>%
-#  filter(is.na(instrNm))
-#  filter(is.na(instrPersonID))
-#  filter(is.na(assoc_class_secID))
-#  filter(is.na(spons_id))
-#  filter(is.na(CLASS_NUM))
-#  filter(is.na(Course_Section_External_ID))
-#  filter(is.na(Instructor_External_ID))
-
-# name_check <- perstbl %>%
-#   filter(EMPLID %in% c('104724365', '109554004', '110708691'))
