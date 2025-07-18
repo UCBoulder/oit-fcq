@@ -1,18 +1,20 @@
-##################################################################################
-# split large stuenrll docs to fit Campus Labs import size limit
-# typically used for BD and DN final administrations only
-# L:\mgt\FCQ\R_Code\campus_labs\splitEnrlCL.R - Vince Darcangelo, 11/18/22
-##################################################################################
+##########################################################################
+# split large stuenrll docs to fit Campus Labs import size limit 
+# use for BD and DN fall/spring final admins
+# created: Vince Darcangelo, 11/18/22
+# most recent update: Vince Darcangelo 7/18/25
+# \AIM Measurement - FCQ\R_Code\campus_labs\splitEnrlCL.R
+##########################################################################
 
 # set up values
 batch <- '23dn'
-term <- '2251'
+term_cd <- '2251'
 userid <- 'darcange'
 
-folder <- paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\CampusLabs\\Imports\\', term, '\\Enrollment')
+folder <- paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\CampusLabs\\Imports\\', term_cd, '\\Enrollment')
 
-df <- read.csv(paste0(folder, '\\stuEnrl', term, '__batch', batch, '.csv'))
-filename <- paste0(folder, '\\stuEnrl', term, '__batch', batch)
+df <- read.csv(paste0(folder, '\\stuEnrl', term_cd, '__batch', batch, '.csv'))
+filename <- paste0(folder, '\\stuEnrl', term_cd, '__batch', batch)
 
 # number of items in each chunk
 elements_per_chunk <- 15000
