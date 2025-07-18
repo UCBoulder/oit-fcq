@@ -244,7 +244,7 @@ inst_correct3 <- inst_correct2 %>%
 instAcct_All2 <- rbind(instAcct_All, inst_correct3)
 
 # export updated inst_all data
-write.csv(inst_Fixed, paste0('C:\\Users\\', userid, '\\OneDrive - UCB-O365\\FCQ - AIM_ Measurement\\CampusLabs\\Data_Files\\', term_cd, '\\Inst_All.csv'), row.names = FALSE)
+write.csv(inst_Fixed, paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\CampusLabs\\Data_Files\\', term_cd, '\\Inst_All.csv'), row.names = FALSE)
 
 # export inst_rem file to import to Campus Labs
-write.csv(instAcct_All2, paste0('C:\\Users\\', userid, '\\OneDrive - UCB-O365\\FCQ - AIM_ Measurement\\CampusLabs\\Data_Files\\', term_cd, '\\instAcct_All.csv'), row.names = FALSE)
+write.csv(instAcct_All2, paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\CampusLabs\\Data_Files\\', term_cd, '\\instAcct_All.csv'), row.names = FALSE)
