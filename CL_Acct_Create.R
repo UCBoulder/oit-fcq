@@ -1,16 +1,16 @@
 #########################################################################
 # Create CL accounts for new admins/chairs not in system
 # created: Vince Darcangelo 9/7/22
-# most recent update: Vince Darcangelo 8/1/24
+# most recent update: Vince Darcangelo 7/18/25
 # \AIM Measurement - Documents\FCQ\R_Code\campus_labs\CL_Acct_Create.R 
 #########################################################################
 
 ##################################################################
-#'* run ciwpass.R to load ciw credentials *
+# run ciwpass.R to load ciw credentials
 ##################################################################
 
 ##################################################################
-#'* input needed variables *
+# input needed variables
 ##################################################################
 term_cd <- 2254
 userid <- 'darcange'
@@ -22,20 +22,19 @@ tday <- format(entrydt, format = '%m%d%y')
 
 # search by email
 # format example: '(jocelyn.gray@colorado.edu|dawn.savage@ucdenver.edu)'
-#nm_display <- '(Crystal Baker|Sarah Mcgarry)'
-email <- '(angela.stansbury@colorado.edu|amelia.tubbs@ucdenver.edu|rachel.montgomery@colorado.edu|lucinda.bliss@ucdenver.edu|heather.michener@colorado.edu|evan.shelton@ucdenver.edu)'
+email <- '(angela.stansbury@colorado.edu|amelia.tubbs@ucdenver.edu|rachel.montgomery@colorado.edu|lucinda.bliss@ucdenver.edu)'
 # if there are duplicate emails, go to CU-SIS > Course and Class > Instructor/Advisor > Add/Update a Person and enter PERSON_ID into ID field to search -- this may occur if someone went from student to staff
 
 # OR search by last name (be sure to update em2 call below)
 #lastnm <- 'Tubbs'
 #firstnm <- 'Amelia'
-#persid <- '810365613'
+#persid <- 'XXXXXXXXX'
 
 # OR search by full name
 # fullnm <- c('Tubbs, Amelia', 'Montgomery, Rachel', 'Shipman, Julia', 'Bliss, Lucinda')
 
 #################################################################
-#'* search for accounts *
+# search for accounts
 #################################################################
 # connect to Oracle database (if needed)
 drv <- dbDriver('Oracle')
@@ -66,10 +65,6 @@ acctid <- dbGetQuery(con,
 
 colnames(acctid) <- c('instrPersonID', 'LAST_NAME', 'FIRST_NAME')
 
-# a2 <- acctid %>%
-#   filter(grepl(lastnm, LAST_NAME, ignore.case = TRUE))
-#   filter(FIRST_NAME == 'Sarah')
-
 acct01 <- left_join(em2, acctid, by = 'instrPersonID')
 
 # pull from PS_D_PERSON_ATTR as cid
@@ -83,16 +78,6 @@ colnames(cid) <- c('instrPersonID', 'instrConstituentID')
 # join with acct01
 acct02 <- left_join(acct01, cid, by = 'instrPersonID')
 
-# join with acct_last
-# acct02 <- left_join(acct_last, cid, by = 'PERSON_ID')
-
-# acct03 <- cid %>%
-#   filter(PERSON_ID %in% c(109018075, 102575684))
-# acct04 <- acct03 %>%
-#   left_join(acctid, by = 'PERSON_ID')
-# acct05 <- acct04 %>%
-#   left_join(em, by = 'PERSON_ID')
-
 # format id and select/order columns
 acct03 <- acct02 %>%
   ungroup() %>%
@@ -105,44 +90,3 @@ colnames(acct03) <- c('PersonIdentifier', 'LastName', 'FirstName', 'Email')
 
 # output csv for uploading to CL
 write.csv(acct03, paste0(import_path, '\\Accounts\\Acct_Add_', tday, '.csv'), row.names = FALSE)
-
-#########################################################################
-# DO NOT RUN - HOLD FOR FUTURE EXP
-#########################################################################
-# exp: pull from PS_CU_D_NAMES_II
-exp <- dbGetQuery(con,
-  'SELECT EMPLID, LAST_NAME, FIRST_NAME, NAME_DISPLAY, LASTUPDDTTM, CURRENT_IND
-  FROM SYSADM.PS_CU_D_NAMES_II'
-)
-
-colnames(exp) <- c('instrPersonID', 'LAST_NAME', 'FIRST_NAME', 'NAME_DISPLAY', 'LASTUPDDTTM', 'CURRENT_IND')
-
-exp2 <- exp %>%
-  left_join(cid, by = 'instrPersonID') %>%
-  filter(CURRENT_IND == 'Y')
-
-exp3 <- exp2 %>%
-  left_join(em, by = 'instrPersonID') %>%
-  filter(!is.na(PREF_EMAIL))
-
-exp4 <- exp3 %>%
-  filter(grepl(email, PREF_EMAIL, ignore.case = TRUE))
-
-####################################
-
-exp3 <- exp2 %>%
-  group_by(instrPersonID) %>%
-  filter(CURRENT_IND == 'Y') %>%
-  filter(LASTUPDDTTM == max(LASTUPDDTTM))
-
-# join with em
-acct01 <- left_join(exp3, em, by = 'instrPersonID')
-
-#############################
-# search by last name
-acct_last <- acctid %>%
-#  filter(PRF_PRI_LAST_NAME %in% lastnm)
-#  filter(PERSON_ID == '103377611')
-  filter(PRF_PRI_LAST_NAME == 'McGarry')
-#############################
-
