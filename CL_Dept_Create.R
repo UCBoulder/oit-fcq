@@ -1,9 +1,8 @@
 ##########################################################################
 # creates a .csv file to import new departments to Campus Labs
 # created: Vince Darcangelo 12/19/22
-# most recent update: Vince Darcangelo 6/16/25
-# \AIM Measurement - Documents\FCQ\R_Code\campus_labs\CL_Dept_Create.R
-# output: K:\IR\FCQ\Prod\22xx\OrgUnit\CLOrgUnits_(date).csv" date format 20221219
+# most recent update: Vince Darcangelo 7/18/25
+# \AIM Measurement - FCQ\R_Code\campus_labs\CL_Dept_Create.R
 ##########################################################################
 
 # set date and term
@@ -12,6 +11,7 @@ entrydt <- format(entrydt, format = '%Y%m%d')
 
 term_cd <- 2254
 userid <- 'darcange'
+folder <- paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\')
 
 # set values of new dept (format for non-dept (e.g., division, school) below)
 df <- data.frame(
@@ -32,7 +32,7 @@ ParentIdentifier = c('CUBLD:BLDR', 'CUBLD:BLDR'),
 Type = c('Department', 'Department')
 )
 
-write.csv(df, paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\CampusLabs\\Imports\\', term_cd, '\\OrgUnit\\CLOrgUnits_', entrydt, '.csv'), row.names = FALSE)
+write.csv(df, paste0(folder, 'CampusLabs\\Imports\\', term_cd, '\\OrgUnit\\CLOrgUnits_', entrydt, '.csv'), row.names = FALSE)
 
 #########################################################################
 # hierarchy in campus labs for reference
