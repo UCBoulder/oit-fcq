@@ -168,3 +168,6 @@ target/
 
 # Mypy cache
 .mypy_cache/
+.Rproj.user
+.Rdata
+.quarto
