@@ -2,11 +2,8 @@
 
 ## Purpose:
 
-This repo contains various code scripts that we use for FCQs. This does not include the course audit or NLP scripts. For those, please see their dedicated repositories: oit-an-fcq-audit and oit-an-fcq-nlp.
+This repo contains the core code scripts that we use for FCQs. This does not include the NLP scripts, which have their own dedicated repository: oit-an-fcq-nlp.
 
-Current packages:
-
-tidyverse, tidymodels, caret, arrow, and readxl R packages. 
 
 ## Requirements
 
