@@ -324,7 +324,8 @@ clscu2 <- clscu %>%
     campus == 'DN' & SBJCT_CD == 'ELEC' & CATALOG_NBR >= '5446' & CATALOG_NBR <= '5446' ~ 'dn-a-elec-cz',
     campus == 'DN' & SBJCT_CD == 'ELEC' & CATALOG_NBR >= '2520' & CATALOG_NBR <= '2520' ~ 'dn-a-elec-da',
     campus == 'DN' & SBJCT_CD == 'ELEC' & CATALOG_NBR %in% c('4005', '5005') ~ 'dn-a-elec-dd',
-    campus == 'DN' & SBJCT_CD == 'ENGR' & CATALOG_NBR >= '3400' & CATALOG_NBR <= '3400' ~ 'dn-a-engr-a',
+    campus == 'DN' & SBJCT_CD == 'ELEC' & CATALOG_NBR == '5335' ~ 'dn-a-elec-de',
+  campus == 'DN' & SBJCT_CD == 'ENGR' & CATALOG_NBR >= '3400' & CATALOG_NBR <= '3400' ~ 'dn-a-engr-a',
     campus == 'DN' & SBJCT_CD == 'ENGL' & CATALOG_NBR >= '1020' & CATALOG_NBR <= '1020' ~ 'dn-c-engl-a',
     campus == 'DN' & SBJCT_CD == 'ENGL' & CATALOG_NBR >= '2030' & CATALOG_NBR <= '2030' ~ 'dn-c-engl-b',
     TRUE ~ '')) %>%
