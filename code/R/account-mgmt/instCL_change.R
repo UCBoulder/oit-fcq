@@ -1,46 +1,38 @@
-##########################################################################
+#############################################################################
 # Apply instructor changes, swaps, etc.
 # created: Vince Darcangelo, 8/4/22
 # most recent update: Vince Darcangelo 4/25/25
 # \AIM Measurement - FCQ\R_Code\campus_labs\instCL_change.R
-##########################################################################
+#############################################################################
 
-batchx <- 96
-term_cd <- 2251
+batchx <- 99
+term_cd <- 2254
 userid <- 'darcange'
 
 inst_All <- read.csv(paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\CampusLabs\\Data_Files\\', term_cd, '\\Inst_All.csv'))
 
 instAcct_All <- read.csv(paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\CampusLabs\\Data_Files\\', term_cd, '\\instAcct_All.csv'))
 
-##########################################################################
-
-# identify scenarios - account for changes in both results and CL docs
-# scroll down to the relevant scenario
-
-# 1. Remove an instructor (no add or swap)
-# 2. Add an instructor (no remove or swap)
-#  a. instr in c20
-#  b. instr !in c20
-# 3. Swap an instructor (both remove and replace)
-#  a. 1-for-1 swap (instr in c20)
-#  b. 1-for-1 swap (instr !in c20)
-#  c. 2-for-1 swap
-
-##########################################################################
-
-# 1. Remove an instructor (no add or swap)
+#############################################################################
+# Scenario 1.
+# Remove an instructor (no add or swap)
+#############################################################################
 
 # for instr add/rem (ex: '(jon.smith@colorado.edu|amy.gomez@colorado.edu))
-instNames <- 'rafael.ferreirademenezes@colorado.edu'
+instNames <- 'anne.dougherty@colorado.edu'
 
 # if removing from specific course(s) only, include this
 xcrse <- '(2251_CUBLD:BLDR:SLHS_SLHS_5918_001_PRA|2251_CUBLD:BLDR:SLHS_SLHS_5918_002_PRA|2251_CUBLD:BLDR:SLHS_SLHS_5918_003_PRA)'
 
 # filter for emails + crse
+if (exists('xcrse')) {
 inst_All2 <- inst_All %>%
   filter(grepl(instNames, Email, ignore.case = TRUE)) %>%
   filter(grepl(xcrse, SectionIdentifier, ignore.case = TRUE))
+} else {
+inst_All2 <- inst_All %>%
+  filter(grepl(instNames, Email, ignore.case = TRUE))
+}
 
 inst_rem <- inst_All2 %>%
   select(PersonIdentifier, SectionIdentifier)
@@ -54,38 +46,16 @@ write.csv(inst_All3, paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement 
 # export inst_rem file to import to Campus Labs
 write.csv(inst_rem, paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\CampusLabs\\Imports\\', term_cd, '\\Instructor\\RmvInst', batchx, '.csv'), row.names = FALSE)
 
-# update instAcct_All file as well
+# ONLY RUN IF INST IS REMOVED FROM ALL CLASSES
+instAcct_All2 <- instAcct_All %>%
+  filter(tolower(Email) != instNames)
 
-# instAcct_All
-# 'PersonIdentifier', 'FirstName', 'LastName', 'Email', 'batch'
+write.csv(instAcct_All2, paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\CampusLabs\\Data_Files\\', term_cd, '\\instAcct_All.csv'))
 
-# filter to swap - pull correct inst info (from other classes)
-# inst_mast4 <- inst_mast2 %>%
-#   filter(LastName == 'Barsic') %>%
-#   select(-SectionIdentifier)
-# 
-# # filter to swap - pull correct class info (removing wrong instr)
-# inst_mast5 <- inst_mast %>%
-#   select(SectionIdentifier)
-# 
-# # filter to swap - combine correct info
-# inst_swapped <- cbind(inst_mast4, inst_mast5)
-# inst_swapped <- inst_swapped %>%
-#   select(PersonIdentifier, SectionIdentifier, FirstName, LastName, Email, Role)
-# 
-# # filter for keeps
-# inst_keep <- inst_mast %>%
-#   filter(!grepl(instNames, Email, ignore.case = TRUE))
-# 
-# # restore filtered to keep file
-# inst_keep2 <- rbind(inst_keep, inst_mast3)
-# 
-# # add swapped to keep file
-# inst_keep3 <- rbind(inst_keep2, inst_swapped)
-
-#########################################################################
-
-# 2. Add an instructor (no remove or swap)
+#############################################################################
+# Scenario 2.
+# Add an instructor (no remove or swap)
+#############################################################################
 
 # for instr add (ex: '(jon.smith@colorado.edu|amy.gomez@colorado.edu))
 instNames <- 'adam.kaufman@Colorado.edu'
