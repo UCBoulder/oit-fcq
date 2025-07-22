@@ -4,6 +4,22 @@
 
 This repo contains the core code scripts that we use for FCQs. This does not include the NLP scripts, which have their own dedicated repository: oit-an-fcq-nlp.
 
+They are organized in four folders in the Home > oit-fcq > code > R directory.
+
+**account-mgmt**: Account management files
+Use these scripts when there is a change between what is in CU-SIS and the FCQ platform or when setting up a new semester.
+
+**course-audit**: Course audit files
+Use these scripts to pull CIW data, clean and evaluate for FCQ purposes, and generate course audit files for public use. Run once per week (usually on Friday) and use the output to set up the next FCQ session. Run daily during the course audit windows (March, June, October).
+
+**create-sessions**: Create session files
+Run in conjunction with the course audit files to set up weekly and final FCQ administrations. CL_Imports.R is the primary file. The others are special circumstances.
+
+**data-mgmt**: Data management files
+These are for reference and historical records purposes.
+
+**fcq-results**: Results files
+Use these files to process FCQ results at the end of each semester.
 
 ## Requirements
 
