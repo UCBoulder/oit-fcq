@@ -6,28 +6,29 @@
 ##########################################################################
 
 library(zip)
+userid <- 'darcange'
 
 # get list of folder names
-bd_folders <- list.files(paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - Documents\\FCQ\\Batch_Reports\\Boulder'), full.names = TRUE)
+bd_folders <- list.files(paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\Batch_Reports\\Boulder'), full.names = TRUE)
 
-ce_folders <- list.files(paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - Documents\\FCQ\\Batch_Reports\\CEPS'), full.names = TRUE)
+ce_folders <- list.files(paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\Batch_Reports\\CEPS'), full.names = TRUE)
 
-dn_folders <- list.files(paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - Documents\\FCQ\\Batch_Reports\\Denver'), full.names = TRUE)
+dn_folders <- list.files(paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\Batch_Reports\\Denver'), full.names = TRUE)
 
-mc_folders <- list.files(paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - Documents\\FCQ\\Batch_Reports\\MC'), full.names = TRUE)
+mc_folders <- list.files(paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\Batch_Reports\\MC'), full.names = TRUE)
 
-cs_folders <- list.files(paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - Documents\\FCQ\\Batch_Reports\\UCCS'), full.names = TRUE)
+cs_folders <- list.files(paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\Batch_Reports\\UCCS'), full.names = TRUE)
 
 # get list of dept names
-bd_dept <- list.files(paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - Documents\\FCQ\\Batch_Reports\\Boulder'))
+bd_dept <- list.files(paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\Batch_Reports\\Boulder'))
 
-ce_dept <- list.files(paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - Documents\\FCQ\\Batch_Reports\\CEPS'))
+ce_dept <- list.files(paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\Batch_Reports\\CEPS'))
 
-dn_dept <- list.files(paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - Documents\\FCQ\\Batch_Reports\\Denver'))
+dn_dept <- list.files(paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\Batch_Reports\\Denver'))
 
-mc_dept <- list.files(paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - Documents\\FCQ\\Batch_Reports\\MC'))
+mc_dept <- list.files(paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\Batch_Reports\\MC'))
 
-cs_dept <- list.files(paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - Documents\\FCQ\\Batch_Reports\\UCCS'))
+cs_dept <- list.files(paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\Batch_Reports\\UCCS'))
 
 ###########################################################################
 # build file_list function
@@ -82,4 +83,4 @@ cs_batch <- cs_files2 %>%
 
 batch_master <- rbind(bd_batch, ce_batch, dn_batch, mc_batch, cs_batch)
 
-write.xlsx(batch_master, paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - Documents\\FCQ\\Batch_Reports\\Batch_Master.xlsx'))
+write.xlsx(batch_master, paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\Batch_Reports\\Batch_Master.xlsx'))
