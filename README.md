@@ -1,5 +1,3 @@
-# oit-fcq
-
 ## Purpose:
 
 This repo contains the core code scripts that we use for FCQs. This does not include the NLP scripts, which have their own dedicated repository: oit-an-fcq-nlp.
@@ -23,33 +21,128 @@ Use these files to process FCQ results at the end of each semester.
 
 ## Requirements
 
-*State data, access, and/or software needed to run this repo, and, if applicable, how to acquire these requirements.*
+  - run Install_Packages.R
+  - run Load_Libraries.R
+  - run CIW credentials and clear console afterward
+    - options(database_userid = "CIWID")
+    - options(database_password = "CIWPASSWORD")
 
-## How To Run:
+## Files:
 
-*Describe how to:*
+**account-mgmt**
+Run when a change is made to an account (only as needed).
 
-  - *run the production pipeline to generate predictions*
-  - *view the model evaluations and predictions*
-  - *train and re-create the model and evaluations from the raw data.*
+  - CL_Acct_Create.R
+    - Use this to add someone to Campus Labs/Anthology
+    - e.g., a new hire takes over as report administrator for their dept
 
-To use this repo template:
-- Create a repo with this oda-ds-template as a template in a web browser, naming your new project in the form: "project-name-YEAR"
-- Clone that repo (locally or in Workbench). 
-- If using R, create an R Project in this new repo directory. 
-- Create and restore virtual environment
-  - If using R: Run renv::restore(lockfile = "renv.lock"), typing 'Y' to the prompts asking if you'd like to activate and install these packages.
-  - If using Python: proceed with restoring the Python virtual environment from the py.lock file. 
-- Delete the this and italicized text, and fill in this Readme with your project specific info. 
-- Make an awesome project!
+  - CL_Dept_Create.R
+    - Use this when a new department is created and needs to be setup for FCQs
+  
+  - CL_New_Sem_Setup.R
+    - Run this in advance of an upcoming semester
+    - It creates folders for Campus Labs/Anthology imports (weekly admins)
+    - It creates cumulative files to compile all semester data
+    - It creates the backup folder for all course audits
+  
+  - InstCL_batch.R
+    - Compiles a log of all classes evaluated for an instructor
+    - **very** seldom do we use this
+  
+  - InstCL_change.R
+    - This accounts for instructor changes in the permanent record
+    - This is very important for results processing and billing
+    - e.g., adding or removing an instructor or swapping instructors
+  
+  - stuenrlWithdraws.R
+    - Run at the end of each semester to pickup late drops/withdrawals
+    - Generates a file that is imported to Campus Labs/Anthology
 
-To add additional commonly used packages to this template renv.lock file:
+**course-audit**
+Run weekly throughout the semester (usually on Fridays), and run daily during the course audit period.
 
-- Clone the template repo, make it a project, run renv::restore() as above.
-- Run renv::install("package_name") to install the packages you'd like to have permanently stored in this template.
-- Run renv::snapshot(type = "all") to update the renv.lock file with the newly installed packages.
-- Add, commit, and push these changes to the DS-template-2023 repo. 
+  - FCQ_Audit01.R
+    - Pulls, cleans and preps CIW data for FCQ setup
+    - Code is static - only change when needed
+  
+  - FCQ_Audit02.R
+    - Creates columns to calculate which classes are eligible for FCQs
+    - Code is static - only change when needed
+  
+  - FCQ_Audit03.R
+    - Calculates eligibility, applies FCQ run dates and formats for audit
+    - Code is dynamic - must be updated each semester and tweaked whenever changes are requested or custom questions are updated
 
+  - FCQ_Audit04.R
+    - Generates the course audit files
+    - Code is static - only change when needed
+
+**create-sessions**
+Schedule varies, so run as indicated below.
+
+  - CL_Imports_stu_enrl.R
+    - Creates import file for late additions to class roster
+    - Only use this file if:
+      - class has already been setup in Campus Labs/Anthology
+      - student is not already in Campus Labs/Anthology system
+  
+  - CL_Imports.R
+    - Creates the import/backup files for each FCQ administration
+    - This gets run once per week during Fall/Spring outside of final administration and all of Summer
+    - Final administrations take longer to setup, so allow a few days (even a week) to set those up
+    - Adjust the "session" variable as needed
+  
+  - emCheck1.R
+    - Don't use this file directly - it is opened by CL_Imports.R when needed
+    - This alerts us when an instructor doesn't have an email/account
+      - update code anytime this file is opened by CL_Imports.R
+
+  - emCheck2.R
+    - Don't use this file directly - it is opened by CL_Imports.R when needed
+    - This alerts us when a student doesn't have an email/account
+      - update code anytime this file is opened by CL_Imports.R
+
+  - splitEnrlCL.R
+    - The Campus Labs/Anthology interface has a size restriction
+    - Only use this file twice per year - when processing final BD and final DN administrations for the Fall/Spring semesters
+    - It splits the stuEnrl file into chunks that fall under the size restriction
+      - CE and MC don't have enough students to require this
+      - weekly administrations don't have enough students to require this
+
+**data-mgmt**
+Reference files. Only run as needed.
+
+  - CL_Data_Dictionary.R
+    - Pulls all variable names from the CIW data tables we use
+    - Purpose is to make it easier to review available variables
+  
+  - crse_vars_process.R
+    - Cleans up late changes to courses/instructors each semester
+    - Keeps the historical record up to date
+    - Only run as needed
+
+  - custQ_parse.R
+    - Compiles a list of all active custom questions
+    - Don't need to run very often - only as needed
+
+**fcq-results**
+Processes FCQ results at the end of each semester.
+
+  - (BD/DN/MC)_Batch_Process.R
+    - tk
+  
+  - (BD/DN/MC)_Results_01.R
+    - tk
+
+  - (BD/DN/MC)_TextMining.R
+    - tk
+
+  - (bd/dn/mc)Text2Word.Rmd
+    - tk
+  
+  - CL_batch_compilation.R
+    - tk
+ 
 ## Output
 
 *Describe the output of this repo's final pipeline.*

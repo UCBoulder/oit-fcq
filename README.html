@@ -386,14 +386,56 @@ process FCQ results at the end of each semester.</p>
 </div>
 <div id="requirements" class="section level2">
 <h2>Requirements</h2>
-<p><em>State data, access, and/or software needed to run this repo, and,
-if applicable, how to acquire these requirements.</em></p>
-</div>
-<div id="how-to-run" class="section level2">
-<h2>How To Run:</h2>
-<p><em>Describe how to:</em></p>
 <ul>
-<li><em>run the production pipeline to generate predictions</em></li>
+<li>run Install_Packages.R</li>
+<li>run Load_Libraries.R</li>
+<li>run CIW credentials and clear console afterward
+<ul>
+<li>options(database_userid = “CIWID”)</li>
+<li>options(database_password = “CIWPASSWORD”)</li>
+</ul></li>
+</ul>
+</div>
+<div id="files" class="section level2">
+<h2>Files:</h2>
+<p><strong>account-mgmt</strong></p>
+<ul>
+<li>CL_Acct_Create.R
+<ul>
+<li>Use this to add someone to Campus Labs/Anthology</li>
+<li>e.g., a new hire takes over as report administrator for their
+dept</li>
+</ul></li>
+<li>CL_Dept_Create.R
+<ul>
+<li>Use this when a new department is created and needs to be setup for
+FCQs</li>
+</ul></li>
+<li>CL_New_Sem_Setup.R
+<ul>
+<li>Run this in advance of an upcoming semester</li>
+<li>It creates folders for Campus Labs/Anthology imports (weekly
+admins)</li>
+<li>It creates cumulative files to compile all semester data</li>
+<li>It creates the backup folder for all course audits</li>
+</ul></li>
+<li>InstCL_batch.R
+<ul>
+<li>Compiles a log of all classes evaluated for an instructor</li>
+<li><strong>very</strong> seldom do we use this</li>
+</ul></li>
+<li>InstCL_change.R
+<ul>
+<li>This accounts for instructor changes in the permanent record</li>
+<li>This is very important for results processing and billing</li>
+<li>e.g., adding or removing an instructor or swapping instructors</li>
+</ul></li>
+<li>stuenrlWithdraws.R
+<ul>
+<li>Run at the end of each semester to pickup late
+drops/withdrawals</li>
+<li>Generates a file that is imported to Campus Labs/Anthology</li>
+</ul></li>
 <li><em>view the model evaluations and predictions</em></li>
 <li><em>train and re-create the model and evaluations from the raw
 data.</em></li>

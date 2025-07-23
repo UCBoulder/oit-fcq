@@ -7,7 +7,7 @@
 
 userid <- 'darcange'
 folder <- paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\')
-dd_file <- paste0(folder, 'R_Code\\hr_tools\\FCQ_Data_Dictionary.xlsx', overwrite = TRUE)
+dd_file <- paste0(folder, 'R_Code\\FCQ_Data_Dictionary.xlsx', overwrite = TRUE)
 
 # clscu3 var info
 clscu3_tbl <- head(clscu3)

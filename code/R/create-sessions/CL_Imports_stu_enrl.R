@@ -1,5 +1,5 @@
 #########################################################################
-# Late student adds to class roster (e.g., after admin was set up.
+# Late student adds to class roster (e.g., after admin was set up.)
 # created: Vince Darcangelo 2/19/24
 # most recent update: Vince Darcangelo 2/19/24
 # \AIM Measurement - FCQ\R_Code\campus_labs\CL_Imports_stu_enrl.R
