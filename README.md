@@ -2,7 +2,7 @@
 
 ## Purpose:
 
-This repo contains the core code scripts that we use for FCQs. This does not include the NLP scripts, which have their own dedicated repository: oit-an-fcq-nlp.
+This repo contains the core code scripts that we use for FCQs. This does not include the NLP scripts, which have their own dedicated repository: oit-an-fcq-nlp. Updated
 
 They are organized in four folders in the Home > oit-fcq > code > R directory.
 
