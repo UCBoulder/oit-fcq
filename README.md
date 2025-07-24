@@ -129,19 +129,26 @@ Reference files. Only run as needed.
 Processes FCQ results at the end of each semester.
 
   - (BD/DN/MC)_Batch_Process.R
-    - tk
+    - Extracts the zip files from Campus Labs/Anthology
+    - Sorts by department and exports zips into Batch Reports folder
   
   - (BD/DN/MC)_Results_01.R
-    - tk
+    - Cleans and preps raw results file (provided by Campus Labs/Anthology)
+    - Combines with CIW information for more robust data
+    - Generates files to append to Tableau and spreadsheet summaries
 
   - (BD/DN/MC)_TextMining.R
-    - tk
+    - Isolates student comments column(s) and cleans up formatting
+    - Creates and exports raw text file to use with NLP
+    - Uses keyword search to flag comments for review (used for crisis review)
 
   - (bd/dn/mc)Text2Word.Rmd
-    - tk
+    - Converts flagged comments spreadsheet to Word document for readability
+    - Use this document to search for crisis flags
   
   - CL_batch_compilation.R
-    - tk
+    - Maps the contents of the Batch Reports folders for reference
+    - Only run as needed
  
 ## Output
 

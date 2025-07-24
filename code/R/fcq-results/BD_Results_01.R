@@ -1,7 +1,7 @@
 #########################################################################
 # Process Boulder FCQs
 # created: Vince Darcangelo 10/20/21
-# most recent update: Vince Darcangelo 8/29/24
+# most recent update: Vince Darcangelo 5/27/25
 # \AIM Measurement - Documents\FCQ\R_Code\bd_results\BD_Results_01.R
 #########################################################################
 
@@ -11,15 +11,14 @@ library('haven')
 library('stringr')
 
 # UPDATE THESE VARS EACH SEMESTER:
-semester <- 'Fall'
-Year <- 2024
-term <- 2247
+semester <- 'Spring'
+Year <- 2025
+term <- 2251
 userid <- 'darcange'
 filenm <- 'BD_response_export.csv'
-folder <- paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - Documents\\FCQ\\')
+folder <- paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\')
 edb <- read_sas('L:\\datalib\\Employees\\edb\\pers2022.sas7bdat')
 dmap <- read_sas('L:\\datalib\\MAP_SIS\\deptmap\\pbadepts.sas7bdat')
-#crse_vars dmap will change after transition to R is complete
 
 # set up directory
 folder_ex <- paste0(folder, 'CampusLabs\\Response_Exports\\', term)
@@ -31,9 +30,6 @@ if (file.exists(folder_ex)){
 		dir.create(folder_ex)
 		setwd(folder_ex)
 }
-
-# move from download to appropriate file
-file.rename(from = paste0('C:\\Users\\', userid, '\\OneDrive - UCB-O365\\UCB\\Downloads\\', filenm), to = paste0(folder_ex, '\\', filenm))
 
 #########################################################################
 
@@ -47,14 +43,17 @@ con <- dbConnect(drv, username = getOption('databaseuid'),
 # prepare crse_vars
 #########################################################################
 # import crse_vars file
-crse_vars <- read.csv(paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - Documents\\FCQ\\CourseAudit_bak\\', term, '\\c20.csv'))
+crse_vars <- read.csv(paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\CourseAudit_bak\\', term, '\\c20.csv'))
 
 # create CourseID in crsevars for matching
 crse_vars2 <- crse_vars %>%
   mutate(CourseID = paste(TERM_CD, tolower(deptOrgID), tolower(SBJCT_CD), tolower(CATALOG_NBR), tolower(CLASS_SECTION_CD), sep = '_')) %>%
+  mutate(Course_Section_External_ID = paste(TERM_CD, tolower(deptOrgID), tolower(SBJCT_CD), tolower(CATALOG_NBR), tolower(CLASS_SECTION_CD), tolower(SSR_COMP_CD), sep = '_')) %>%
   mutate(Instructor_External_ID = paste0(instrConstituentID, '@cu.edu'))
 
-# fix (when needed)
+#########################################################################
+# swap instructors after administration (if needed)
+#########################################################################
 crse_vars2 <- crse_vars2 %>%
   mutate(instrNm = case_when(
       instrNm == 'Santos, Ana' ~ 'Brown, Esther',
@@ -69,23 +68,23 @@ crse_vars2 <- crse_vars2 %>%
       TRUE ~ instrFirstNm
     )) %>%
   mutate(instrPersonID = case_when(
-      instrPersonID == '999999999' ~ '   ',
+      instrPersonID == 'XXXXXXXXX' ~ 'XX',
       TRUE ~ instrPersonID
     )) %>%
   mutate(instrConstituentID = case_when(
-      instrConstituentID == 'E30A5E7D-XXXX-4C2C-AC8C-5393CF4736C6' ~ '11B22CCB-XXXX-11e2-9D84-00505691002B',
+      instrConstituentID == 'XXXXXXXXX-3824-4C2C-AC8C-5393CF4736C6' ~ 'XXXXXXXXX-7222-11e2-9D84-00505691002B',
       TRUE ~ instrConstituentID
     )) %>%
   mutate(instrEmplid = case_when(
-      instrEmplid == 666666 ~ as.integer(666666),
+      instrEmplid == XXXXXX ~ as.integer(XXXXXX),
       TRUE ~ instrEmplid
     )) %>%
   mutate(instrEmailAddr = case_when(
-      instrEmailAddr == 'xxx@colorado.edu' ~ 'xxx@colorado.edu',
+      instrEmailAddr == 'Ana.Santos@colorado.edu' ~ 'Esther.Brown@colorado.edu',
       TRUE ~ instrEmailAddr
     )) %>%
     mutate(Instructor_External_ID = case_when(
-      Instructor_External_ID == 'E30A5E7D-XXXX-4C2C-AC8C-5393CF4736C6@cu.edu' ~ '11B22CCB-XXXX-11e2-9D84-00505691002B@cu.edu',
+      Instructor_External_ID == 'XXXXXXXXX-3824-4C2C-AC8C-5393CF4736C6@cu.edu' ~ 'XXXXXXXXX-7222-11e2-9D84-00505691002B@cu.edu',
       TRUE ~ Instructor_External_ID
     ))
 
@@ -95,12 +94,12 @@ crse_vars2 <- crse_vars2 %>%
 # import response export file
 bdraw <- read.csv('BD_response_export.csv')
 
-# filter out late drops
+# filter out late drops (e.g., Student.Identifier == 'No Identifier Found')
 bdraw2 <- bdraw %>%
   filter(Student.Identifier != 'No Identifier Found')
 
 # fix bad crse IDs (if needed)
-# bdraw <- bdraw %>%
+# bdraw2 <- bdraw2 %>%
 #    mutate(Course.Section.External.Id = case_when(
 #      Course.Section.External.Id == '2234_cubld:bldr:ev_envd_3009_841_sem' ~ '2234_cubld:bldr:ev_envd_3009_843_sem',
 #     Course.Section.External.Id == '2234_cubld:bldr:ev_envd_3009_842_sem' ~ '2234_cubld:bldr:ev_envd_3009_844_sem',
@@ -108,13 +107,13 @@ bdraw2 <- bdraw %>%
 #   ))
 
 # create xlsx back up
-write.xlsx(bdraw, 'BD_response_export_bak.xlsx', showNA = FALSE)
+write.xlsx(bdraw2, 'BD_response_export_bak.xlsx', showNA = FALSE)
 
 # create data file for Tableau/Excel reports
-bddata <- bdraw[,c(1:2, 4:7, 10:11, 13:28)]
+bddata <- bdraw2[,c(1:2, 4:7, 10:11, 13:28)]
 
 # create data file for text analysis
-bdtxt <- bdraw[,c(1:2, 4:7, 10:11, 29)]
+bdtxt <- bdraw2[,c(1:2, 4:7, 10:11, 29)]
 
 # rename columns
 colnames(bddata) <- c('CE_Internal_ID', 'Student_Identifier', 'Course_Section_External_ID', 'Course_Section_Label', 'Department', 'Administration_Name', 'Instructor', 'Instructor_External_ID', 'Q01', 'Q02', 'Q03', 'Q04', 'Q05', 'Q06', 'Q07', 'Q08', 'Q09', 'Q10', 'Q11', 'Q12', 'Q13', 'Q14', 'Q15', 'Q16')
@@ -156,6 +155,15 @@ inst_miss_b <- bddata_inst %>%
   filter(Instructor_External_ID == '')
 
 inst_miss <- rbind(inst_miss_a, inst_miss_b)
+
+while (TRUE) {
+  if (nrow(inst_miss) == 0) {
+    break
+  } else {
+    View(inst_miss)
+    stop('Review and fix missing instr IDs (inst_miss) before continuing')
+  }
+}
 #########################################################################
 
 # combine course and instructor response rows
@@ -178,101 +186,145 @@ bd_filled <- merge(bd_comb_missing, bd_inst_table, by = 'Course_Section_External
   relocate(Course_Section_External_ID, .after = Student_Identifier) %>%
   relocate(c(Instructor, Instructor_External_ID), .before = Q01)
 
-# at this point, bd_filled is ready
+#########################################################################
+# QC: look for NAs created by no students filling out inst questions
+bd_filledx <- bd_filled %>%
+  filter(is.na(Instructor)) %>%
+  select(-c(Instructor, Instructor_External_ID))
+
+bd_inst_table2 <- bd_inst_table %>%
+  select(Instructor, Instructor_External_ID)
+
+crse_vars3 <- crse_vars2 %>%
+  select(Instructor_External_ID, Course_Section_External_ID) %>%
+  left_join(bd_inst_table2) %>%
+  filter(!(is.na(Instructor))) %>%
+  distinct()
+
+bd_filledx2 <- bd_filledx %>%
+  left_join(crse_vars3, 'Course_Section_External_ID') %>%
+  relocate(c(Instructor, Instructor_External_ID), .before = Q01)
+
+bd_filled0 <- bd_filled %>%
+  filter(!(is.na(Instructor)))
+
+bd_filled <- rbind(bd_filled0, bd_filledx2)
 
 #########################################################################
 # QC: output rows should match bd_comb_missing
 bd_filled2 <- bd_filled %>%
   mutate(paired = paste0(Student_Identifier, '_', Course_Section_External_ID)) %>%
   distinct(paired)
-#########################################################################
+
+while (TRUE) {
+  if (nrow(bd_filled2) == nrow(bd_comb_missing)) {
+    print('bd_filled2 and bd_comb_missing have equal rows')
+    break
+  } else {
+    stop('bd_filled2 and bd_comb_missing have different outputs')
+  }
+}
 
 # fill bd_comb0 file
 bd_comb1 <- left_join(bd_comb0, bd_inst_table, by = c('Course_Section_External_ID', 'Instructor_External_ID', 'Instructor'))
+
 bd_comb2 <- bd_comb1 %>%
   relocate(c(Instructor, Instructor_External_ID), .before = Q01)
 
-# keep only rows with all info
+bd_comb3 <- rbind(bd_comb2, bd_filled)
 
-#########################################################################
+##########################################################################
 # fix bad crseIDs in bd_comb_instrNm1 w bd_comb0(.x) and bd_inst_table(.y)
-bd_comb0 <- bd_comb0 %>%
-  mutate(Course_Section_External_ID = case_when(
-    Course_Section_External_ID == '2237_cubld:bldr:ebio_ebio_5760_10_lec' ~ '2237_cubld:bldr:ebio_ebio_5760_010_lec',
-    Course_Section_External_ID == '2237_cubld:bldr:eb_educ_6220_001_NA' ~ '2237_cubld:bldr:eb_educ_6220_001_sem',
-    Course_Section_External_ID == '2237_cubld:bldr:geol_geol_5862_901_NA' ~ '2237_cubld:bldr:geol_geol_5862_901_ind',
-    Course_Section_External_ID == '2237_cubld:bldr:eb_educ_5844_002_NA' ~ '2237_cubld:bldr:eb_educ_5844_002_lec',
-    TRUE ~ Course_Section_External_ID
-  )) %>%
-  mutate(Course_Section_Label = case_when(
-    Course_Section_Label == 'EBIO 5760(10): Mammalogy' ~ 'EBIO 5760(010): Mammalogy',
-    TRUE ~ Course_Section_Label
-  ))
-
-bd_inst_table <- bd_inst_table %>%
-  mutate(Course_Section_External_ID = case_when(
-    CLASS_NUM == 26127 ~ '2241_cubld:bldr:cmdp_cmdp_4730_001_sem',
-    CLASS_NUM == 24649 ~ '2241_cubld:bldr:cwcv_cwcv_4000_001_sem',
-    CLASS_NUM == 22969 ~ '2241_cubld:bldr:mb_musc_3033_001_mls',
-    CLASS_NUM == 26927 ~ '2241_cubld:bldr:eb_educ_5390_001_lec',
-    CLASS_NUM == 23039 ~ '2241_cubld:bldr:mb_musc_6801_001_sem',
-    CLASS_NUM == 35802 ~ '2241_cubld:bldr:phil_phil_5020_001_sem',
-    CLASS_NUM == 23358 ~ '2241_cubld:bldr:mb_musc_5808_001_sem',
-    CLASS_NUM == 39464 ~ '2241_cubld:bldr:geog_geog_4002_002_lec',
-    CLASS_NUM == 27941 ~ '2241_cubld:bldr:iafs_iafs_4500_004_sem',
-    CLASS_NUM == 33011 ~ '2241_cubld:bldr:ling_ling_5800_001_sem',
-    CLASS_NUM == 32781 ~ '2241_cubld:bldr:info_info_4001_001_lec',
-    CLASS_NUM == 22392 ~ '2241_cubld:bldr:aaah_arth_4939_001_int',
-    CLASS_NUM == 37046 ~ '2241_cubld:bldr:csci_csci_7422_001_pra',
-    CLASS_NUM == 26952 ~ '2241_cubld:bldr:eb_educ_5050_001_lec',
-    TRUE ~ Course_Section_External_ID
-  )) %>%
-    mutate(Course_Section_External_ID = case_when(
-    Course_Section_External_ID == '2237_cubld:bldr:ebio_ebio_5760_10_lec' ~ '2237_cubld:bldr:ebio_ebio_5760_010_lec',
-    Course_Section_External_ID == '2237_cubld:bldr:eb_educ_6220_001_NA' ~ '2237_cubld:bldr:eb_educ_6220_001_sem',
-    Course_Section_External_ID == '2237_cubld:bldr:geol_geol_5862_901_NA' ~ '2237_cubld:bldr:geol_geol_5862_901_ind',
-    Course_Section_External_ID == '2237_cubld:bldr:eb_educ_5844_002_NA' ~ '2237_cubld:bldr:eb_educ_5844_002_lec',
-    TRUE ~ Course_Section_External_ID
-  ))
+# (if needed)
+##########################################################################
+# bd_comb0 <- bd_comb0 %>%
+#   mutate(Course_Section_External_ID = case_when(
+#     Course_Section_External_ID == '2237_cubld:bldr:ebio_ebio_5760_10_lec' ~ '2237_cubld:bldr:ebio_ebio_5760_010_lec',
+#     Course_Section_External_ID == '2237_cubld:bldr:eb_educ_6220_001_NA' ~ '2237_cubld:bldr:eb_educ_6220_001_sem',
+#     Course_Section_External_ID == '2237_cubld:bldr:geol_geol_5862_901_NA' ~ '2237_cubld:bldr:geol_geol_5862_901_ind',
+#     Course_Section_External_ID == '2237_cubld:bldr:eb_educ_5844_002_NA' ~ '2237_cubld:bldr:eb_educ_5844_002_lec',
+#     TRUE ~ Course_Section_External_ID
+#   )) %>%
+#   mutate(Course_Section_Label = case_when(
+#     Course_Section_Label == 'EBIO 5760(10): Mammalogy' ~ 'EBIO 5760(010): Mammalogy',
+#     TRUE ~ Course_Section_Label
+#   ))
+# 
+# bd_inst_table <- bd_inst_table %>%
+#   mutate(Course_Section_External_ID = case_when(
+#     CLASS_NUM == 26127 ~ '2241_cubld:bldr:cmdp_cmdp_4730_001_sem',
+#     CLASS_NUM == 24649 ~ '2241_cubld:bldr:cwcv_cwcv_4000_001_sem',
+#     CLASS_NUM == 22969 ~ '2241_cubld:bldr:mb_musc_3033_001_mls',
+#     CLASS_NUM == 26927 ~ '2241_cubld:bldr:eb_educ_5390_001_lec',
+#     CLASS_NUM == 23039 ~ '2241_cubld:bldr:mb_musc_6801_001_sem',
+#     CLASS_NUM == 35802 ~ '2241_cubld:bldr:phil_phil_5020_001_sem',
+#     CLASS_NUM == 23358 ~ '2241_cubld:bldr:mb_musc_5808_001_sem',
+#     CLASS_NUM == 39464 ~ '2241_cubld:bldr:geog_geog_4002_002_lec',
+#     CLASS_NUM == 27941 ~ '2241_cubld:bldr:iafs_iafs_4500_004_sem',
+#     CLASS_NUM == 33011 ~ '2241_cubld:bldr:ling_ling_5800_001_sem',
+#     CLASS_NUM == 32781 ~ '2241_cubld:bldr:info_info_4001_001_lec',
+#     CLASS_NUM == 22392 ~ '2241_cubld:bldr:aaah_arth_4939_001_int',
+#     CLASS_NUM == 37046 ~ '2241_cubld:bldr:csci_csci_7422_001_pra',
+#     CLASS_NUM == 26952 ~ '2241_cubld:bldr:eb_educ_5050_001_lec',
+#     TRUE ~ Course_Section_External_ID
+#   )) %>%
+#     mutate(Course_Section_External_ID = case_when(
+#     Course_Section_External_ID == '2237_cubld:bldr:ebio_ebio_5760_10_lec' ~ '2237_cubld:bldr:ebio_ebio_5760_010_lec',
+#     Course_Section_External_ID == '2237_cubld:bldr:eb_educ_6220_001_NA' ~ '2237_cubld:bldr:eb_educ_6220_001_sem',
+#     Course_Section_External_ID == '2237_cubld:bldr:geol_geol_5862_901_NA' ~ '2237_cubld:bldr:geol_geol_5862_901_ind',
+#     Course_Section_External_ID == '2237_cubld:bldr:eb_educ_5844_002_NA' ~ '2237_cubld:bldr:eb_educ_5844_002_lec',
+#     TRUE ~ Course_Section_External_ID
+#   ))
 
 # then rerun from bd_filled until all is fixed
-#########################################################################
 
-# account for instr changes after administration
-bd_comb_fixed <- bd_comb_instrNm0 %>%
-  select(-c(instrNm, instrPersonID, CLASS_NUM)) %>%
-  left_join(bd_inst_table, by = c('Course_Section_External_ID', 'Instructor_External_ID'))
+##########################################################################
+# account for instr changes after administration (if needed)
+##########################################################################
+# bd_comb_fixed <- bd_comb_instrNm0 %>%
+#   select(-c(instrNm, instrPersonID, CLASS_NUM)) %>%
+#   left_join(bd_inst_table, by = c('Course_Section_External_ID', 'Instructor_External_ID'))
+# 
+# bd_comb_fixed2 <- bd_comb_fixed %>%
+#   filter(!is.na(instrNm)) %>%
+#   select(-c(assoc_class_secID.x, spons_id.x)) %>%
+#   relocate(c(instrNm, instrPersonID, CLASS_NUM), .before = Q01)
+# 
+# bd_comb_fixed2b <- bd_comb_fixed %>%
+#   filter(is.na(instrNm)) %>%
+#   select(-c(assoc_class_secID.x, spons_id.x))
+# 
+# bd_comb_changed <- bd_comb_fixed %>%
+#   filter(is.na(instrNm)) %>%
+#   select(Course_Section_External_ID,Instructor,Instructor_External_ID) %>%
+#   distinct()
+# 
+# # isolate courses with changed instrs in bd_inst_table
+# bd_comb_swap <- bd_comb_changed %>%
+#   left_join(select(bd_inst_table, -c(instrNm, instrPersonID, Instructor_External_ID)), by = 'Course_Section_External_ID') %>%
+#   select(Instructor, assoc_class_secID, spons_id, CLASS_NUM, Course_Section_External_ID, Instructor_External_ID)
+# 
+# bd_comb_swap2 <- bd_comb_swap %>%
+#   left_join(select(bd_inst_table, c(instrNm, instrPersonID, Instructor_External_ID)), by = 'Instructor_External_ID')
+# 
+# bd_comb_swap3 <- bd_comb_swap2 %>%
+#   filter(!is.na(instrPersonID)) %>%
+#   select(-Instructor) %>%
+#   select(instrNm, instrPersonID, CLASS_NUM, Course_Section_External_ID, Instructor_External_ID) %>%
+#   distinct()
 
-bd_comb_fixed2 <- bd_comb_fixed %>%
-  filter(!is.na(instrNm)) %>%
-  select(-c(assoc_class_secID.x, spons_id.x)) %>%
-  relocate(c(instrNm, instrPersonID, CLASS_NUM), .before = Q01)
+##########################################################################
+# remove instructors after administration (if needed)
+##########################################################################
+bd_comb3 <- bd_comb3 %>%
+  filter(!(Instructor_External_ID == 'XXXXXXXXX-1F75-11ec-B172-005056941015@cu.edu' & Course_Section_External_ID == '2251_cubld:bldr:chen_chen_4440_001_lec'))
 
-bd_comb_fixed2b <- bd_comb_fixed %>%
-  filter(is.na(instrNm)) %>%
-  select(-c(assoc_class_secID.x, spons_id.x))
+bd_inst_table <- bd_inst_table %>%
+  filter(!(Course_Section_External_ID == '2251_cubld:bldr:chen_chen_4440_001_lec' & Instructor_External_ID == 'XXXXXXXX-1F75-11ec-B172-005056941015@cu.edu'))
 
-bd_comb_changed <- bd_comb_fixed %>%
-  filter(is.na(instrNm)) %>%
-  select(Course_Section_External_ID,Instructor,Instructor_External_ID) %>%
-  distinct()
-
-# isolate courses with changed instrs in bd_inst_table
-bd_comb_swap <- bd_comb_changed %>%
-  left_join(select(bd_inst_table, -c(instrNm, instrPersonID, Instructor_External_ID)), by = 'Course_Section_External_ID') %>%
-  select(Instructor, assoc_class_secID, spons_id, CLASS_NUM, Course_Section_External_ID, Instructor_External_ID)
-
-bd_comb_swap2 <- bd_comb_swap %>%
-  left_join(select(bd_inst_table, c(instrNm, instrPersonID, Instructor_External_ID)), by = 'Instructor_External_ID')
-
-bd_comb_swap3 <- bd_comb_swap2 %>%
-  filter(!is.na(instrPersonID)) %>%
-  select(-Instructor) %>%
-  select(instrNm, instrPersonID, CLASS_NUM, Course_Section_External_ID, Instructor_External_ID) %>%
-  distinct()
-
-#########################################################################
-# how to handle any missing instrs that remain
+##########################################################################
+# how to handle any missing instrs that remain (if needed)
+##########################################################################
 # need to look up these instrs in edb, then add to bd_inst_table
 bd_comb_manual <- bd_comb_swap2 %>%
   filter(is.na(instrPersonID)) %>%
@@ -313,19 +365,32 @@ bd_comb_fixed5 <- bd_comb_fixed3b %>%
 # combine all rows that have been fixed here
 bd_comb_fixed6 <- rbind(bd_comb_fixed2, bd_comb_fixed4, bd_comb_fixed5)
 
-#########################################################################
-# now, put them together in corrected instr table
-bd_final <- rbind(bd_comb2, bd_filled)
+##########################################################################
+# run this after fixes have been made
+##########################################################################
+# check if bd_comb3 exists and create bd_final
+if (exists('bd_comb3')){
+		bd_final <- bd_comb3
+		print('bd_comb3 exists, bd_final created')
+} else {
+		bd_final <- rbind(bd_comb2, bd_filled)
+		print('bd_comb3 did not exist, bd_final created')
+}
+
 bd_final <- bd_final %>%
   mutate(CourseID = str_sub(Course_Section_External_ID, 1, str_length(Course_Section_External_ID)-4))
-# bd_final <- rbind(bd_comb3, bd_filled, bd_comb_fixed6)
 
 qc <- filter(bd_final, is.na(Instructor))
 
-# if qc == 0, skip ahead to bd_final2 call
+if (nrow(qc) == 0) {
+    print('bd_final is complete, proceed to Step 2')
+  } else {
+    View(qc)
+  }
 
-#######################
+##########################################################################
 # fix if qc >= 1 and then rerun bd_final + qc
+##########################################################################
 bd_filled <- bd_filled %>%
   mutate(Instructor = case_when(
     Course_Section_External_ID == '2247_cubld:bld3:ecea_ecea_5707_200_lec' ~ 'Maksimovic, Dragan',
@@ -335,14 +400,35 @@ bd_filled <- bd_filled %>%
     TRUE ~ Instructor
   )) %>%
   mutate(Instructor_External_ID = case_when(
-    Course_Section_External_ID == '2247_cubld:bld3:ecea_ecea_5707_200_lec' ~ '0AE70B5F-XXXX-11e3-8F6C-005056941ADA@cu.edu',
-    Course_Section_External_ID == '2247_cubld:bldr:chem_chem_6901_902_oth' ~ '3F481EA5-XXXX-11e3-A954-005056941ADA@cu.edu',
-    Course_Section_External_ID == '2247_cubld:bldr:math_math_5510_001_lec' ~ '0B33A2F7-XXXX-400F-B426-F96726B3DD97@cu.edu',
-    Course_Section_External_ID == '2247_cubld:bldr:milr_milr_2031_020_lec' ~ '0E67AE90-XXXX-11e2-861A-00505691002B@cu.edu',
+    Course_Section_External_ID == '2247_cubld:bld3:ecea_ecea_5707_200_lec' ~ '0AE70B5F-D55F-11e3-8F6C-005056941ADA@cu.edu',
+    Course_Section_External_ID == '2247_cubld:bldr:chem_chem_6901_902_oth' ~ '3F481EA5-D259-11e3-A954-005056941ADA@cu.edu',
+    Course_Section_External_ID == '2247_cubld:bldr:math_math_5510_001_lec' ~ '0B33A2F7-93A2-400F-B426-F96726B3DD97@cu.edu',
+    Course_Section_External_ID == '2247_cubld:bldr:milr_milr_2031_020_lec' ~ '0E67AE90-7228-11e2-861A-00505691002B@cu.edu',
     TRUE ~ Instructor_External_ID
   ))
+# %>%
+  # mutate(instrPersonID = case_when(
+  #   Course_Section_External_ID == '2237_cubld:bldr:thdn_dnce_5048_001_fld' ~ '810329280',
+  #   TRUE ~ instrPersonID
+  # )) %>%
+  # mutate(assoc_class_secID = case_when(
+  #   Course_Section_External_ID == '2237_cubld:bldr:thdn_dnce_5048_001_fld' ~ 'THTR-4029-001',
+  #   TRUE ~ assoc_class_secID
+  # )) %>%
+  # mutate(spons_id = case_when(
+  #   Course_Section_External_ID == '2237_cubld:bldr:thdn_dnce_5048_001_fld' ~ 'THTR-4029-001',
+  #   TRUE ~ spons_id
+  # )) %>%
+  # mutate(CLASS_NUM = case_when(
+  #   Course_Section_External_ID == '2237_cubld:bldr:thdn_dnce_5048_001_fld' ~ as.integer(32189),
+  #   TRUE ~ CLASS_NUM
+  # ))
 
 # then rerun bd_final
+
+##########################################################################
+# removed bd_final2 and moved to bottom if we actually need
+##########################################################################
 
 ##########################################################################
 # Step 2: 
@@ -455,10 +541,10 @@ bd_crse_inst2 <- bd_crse_inst %>%
   )) %>%
   mutate(as.character(CLASS_SECTION_CD))
   
-##################################################################
+##########################################################################
+# Step 3: 
 # create summaries
-##################################################################
-
+##########################################################################
 # tableau summary
 bd_tab <- bd_crse_inst2 %>%
   select(c(Semester, Year, CE_Internal_ID, Course_Section_External_ID, Course_Section_Label, TERM_CD, campus, fcqdept, PBADeptCode, ACAD_GRP_CD, ACAD_GRP_LD, ASCluster, ACAD_ORG_CD, ACAD_ORG_LD, Department, SBJCT_CD, CATALOG_NBR, CLASS_SECTION_CD, crseSec_comp_cd, INSTRCTN_MODE_CD, instMode, CLASS_TYPE, CRSE_LD, Course_Display, Course_Level, Course_Code, Administration_Name, instrNm, instTitle, Instructor_External_ID, totEnrl_nowd_comb, Class_Size, Q01, Q02, Q03, Q04, Q05, Q06, Q07, Q08, Q09, Q10, Q11, Q12, Q13, Q14, Q15, Q16)) %>%

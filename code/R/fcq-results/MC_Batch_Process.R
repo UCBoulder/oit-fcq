@@ -16,10 +16,13 @@
 # 8. extract files to campus/term folder
 
 # UPDATE term VAR EACH SEMESTER:
-term <- 2247
+term <- 2251
+term_prefix <- '2251-'
 campus <- 'AMC'
 campterm <- paste0('MC', term)
 userid <- 'darcange'
+
+mc_folder <- paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\Batch_Reports\\MC')
 
 # check for term directory, and create if not
 tfolder <- paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\Batch_Reports\\', term)
@@ -168,7 +171,7 @@ setwd(cfolder)
 
 files2zip <- dir(cfolder)
 
-zlist <- as.list(dir(cfolder))
+# zlist <- as.list(dir(cfolder))
 
 zlist <- dir(cfolder, full.names = TRUE)
 
@@ -182,3 +185,40 @@ folder_update <- unique(mc_map$ACAD_ORG_CD)
 folder_update <- enframe(folder_update)
 folder_update <- folder_update %>% select(value) %>% arrange(value)
 write.csv(folder_update, 'mc_folders2update.csv')
+
+#########################################################################
+# sort files into appropriate folder
+#########################################################################
+
+setwd(mc_folder)
+
+# get list of updated batch files
+mc_batch <- list.files(mc_folder)
+
+# convert lists to tibbles and duplicate value column
+mc_batch0 <- enframe(mc_batch)
+mc_batch1 <- mc_batch0 %>%
+  select(value) %>%
+  mutate(filenm = value) %>%
+  mutate(is_zip = ifelse(grepl('\\.zip$', filenm), 1, 0))
+
+mc_batch2 <- mc_batch1 %>%
+  mutate(filenm2 = ifelse(is_zip, str_remove(filenm, term_prefix), NA)) %>%
+  mutate(filenm3 = ifelse(is_zip, str_remove(filenm2, "\\..*$"), NA))
+
+mc_batch_files <- mc_batch2 %>%
+  filter(is_zip == 1)
+
+# mc_batch_folders <- mc_batch2 %>%
+#  filter(is_zip == 0)
+
+# create mapping doc
+mc_batch_files2 <- mc_batch_files %>%
+  select(filenm, filenm3) %>%
+  mutate(srcnm = paste0(getwd(), '/', filenm)) %>%
+  mutate(dest = paste0(getwd(), '/', filenm3, '/', filenm))
+
+# move files
+file.copy(from = mc_batch_files2$srcnm, to = file.path(mc_batch_files2$dest), overwrite = TRUE)
+
+file.remove(mc_batch_files2$srcnm)

@@ -11,15 +11,14 @@ library('haven')
 library('stringr')
 
 # UPDATE THESE VARS EACH SEMESTER:
-semester <- 'Fall'
-Year <- 2024
-term <- 2247
+semester <- 'Spring'
+Year <- 2025
+term <- 2251
 userid <- 'darcange'
 filenm <- 'MC_response_export.csv'
-folder <- paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - Documents\\FCQ\\')
+folder <- paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\')
 edb <- read_sas('L:\\datalib\\Employees\\edb\\pers2023.sas7bdat')
 dmap <- read_sas('L:\\datalib\\MAP_SIS\\deptmap\\pbadepts.sas7bdat')
-#crse_vars dmap will change after transition to R is complete
 
 # set up directory
 folder_ex <- paste0(folder, 'CampusLabs\\Response_Exports\\', term)
@@ -31,9 +30,6 @@ if (file.exists(folder_ex)){
 		dir.create(folder_ex)
 		setwd(folder_ex)
 }
-
-# move from download to appropriate file
-file.rename(from = paste0('C:\\Users\\', userid, '\\OneDrive - UCB-O365\\UCB\\Downloads\\', filenm), to = paste0(folder_ex, '\\', filenm))
 
 ###################################################################
 
@@ -92,7 +88,6 @@ crse_vars2 <- crse_vars %>%
 mcdata3 <- mcdata2 %>%
   left_join(crse_vars2, by = c( 'CourseID', 'Instructor_External_ID'))
 
-###!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!###
 # CHECK # ROWS after join
 # if mcdata3 > mcdata2, it's likely due to an instr having 2 instr_Num
 comp1 <- mcdata2 %>% select(Course_Section_Label, Instructor) %>% group_by(Course_Section_Label, Instructor) %>% summarize(n())

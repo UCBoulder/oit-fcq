@@ -11,15 +11,14 @@ library('haven')
 library('stringr')
 
 # UPDATE THESE VARS EACH SEMESTER:
-semester <- 'Fall'
-Year <- 2024
-term <- 2247
+semester <- 'Spring'
+Year <- 2025
+term <- 2251
 userid <- 'darcange'
 filenm <- 'DN_response_export.csv'
-folder <- paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - Documents\\FCQ\\')
+folder <- paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\')
 edb <- read_sas('L:\\datalib\\Employees\\edb\\pers2023.sas7bdat')
 dmap <- read_sas('L:\\datalib\\MAP_SIS\\deptmap\\pbadepts.sas7bdat')
-#crse_vars dmap will change after transition to R is complete
 
 # set up directory
 folder_ex <- paste0(folder, 'CampusLabs\\Response_Exports\\', term)
@@ -31,9 +30,6 @@ if (file.exists(folder_ex)){
 		dir.create(folder_ex)
 		setwd(folder_ex)
 }
-
-# move from download to appropriate file
-file.rename(from = paste0('C:\\Users\\', userid, '\\OneDrive - UCB-O365\\UCB\\Downloads\\', filenm), to = paste0(folder_ex, '\\', filenm))
 
 #########################################################################
 
@@ -161,11 +157,11 @@ dn_crse_vars2_check <- dn_crse_errors_distinct %>%
 # QC1: IF DN_COMB4 > 0 and issue is in dn_comb2 (student didn't answer inst qs), then rerun from dn_comb2
 dn_comb2 <- dn_comb2 %>%
   mutate(Instructor_External_ID = case_when(
-    Course_Section_External_ID == '2247_cuden:clas:d-math_math_2421_001_lec' ~ 'AD667D45-7077-11e2-B656-00505691002B@cu.edu',
-    Course_Section_External_ID == '2247_cuden:clas:d-math_math_2421_003_lec' ~ 'AD667D45-7077-11e2-B656-00505691002B@cu.edu',
-    Course_Section_External_ID == '2247_cuden:clas:d-math_math_3195_001_lec' ~ 'AD667D45-7077-11e2-B656-00505691002B@cu.edu',
-    Course_Section_External_ID == '2247_cuden:crss:d-ugxp_univ_1110_018_sem' ~ '8F94DAC1-7EBF-11e7-B994-005056945406@cu.edu',
-    Course_Section_External_ID == '2247_cuden:paff:d-paff_crju_3530_e01_lec' ~ 'A5DFF6E6-7328-11e2-895A-00505691002B@cu.edu',
+    Course_Section_External_ID == '2247_cuden:clas:d-math_math_2421_001_lec' ~ 'XXXXX-7077-11e2-B656-00505691002B@cu.edu',
+    Course_Section_External_ID == '2247_cuden:clas:d-math_math_2421_003_lec' ~ 'XXXXX-7077-11e2-B656-00505691002B@cu.edu',
+    Course_Section_External_ID == '2247_cuden:clas:d-math_math_3195_001_lec' ~ 'XXXXX-7077-11e2-B656-00505691002B@cu.edu',
+    Course_Section_External_ID == '2247_cuden:crss:d-ugxp_univ_1110_018_sem' ~ 'XXXXX1-7EBF-11e7-B994-005056945406@cu.edu',
+    Course_Section_External_ID == '2247_cuden:paff:d-paff_crju_3530_e01_lec' ~ 'XXXXX-7328-11e2-895A-00505691002B@cu.edu',
     TRUE ~ Instructor_External_ID
   )) %>%
   mutate(Instructor = case_when(
@@ -194,11 +190,11 @@ crse_vars2 <- crse_vars2 %>%
 
 crse_vars2 <- crse_vars2 %>%
   mutate(Instructor_External_ID = case_when(
-    CourseID == '2247_cuden:clas:d-math_math_2421_001' ~ 'AD667D45-XXXX-11e2-B656-00505691002B@cu.edu',
-    CourseID == '2247_cuden:clas:d-math_math_2421_003' ~ 'AD667D45-XXXX-11e2-B656-00505691002B@cu.edu',
-    CourseID == '2247_cuden:clas:d-math_math_3195_001' ~ 'AD667D45-XXXX-11e2-B656-00505691002B@cu.edu',
-    CourseID == '2247_cuden:crss:d-ugxp_univ_1110_018' ~ '8F94DAC1-XXXX-11e7-B994-005056945406@cu.edu',
-    CourseID == '2247_cuden:paff:d-paff_crju_3530_e01' ~ 'A5DFF6E6-XXXX-11e2-895A-00505691002B@cu.edu',
+    CourseID == '2247_cuden:clas:d-math_math_2421_001' ~ 'XXXX-XXXX-11e2-B656-00505691002B@cu.edu',
+    CourseID == '2247_cuden:clas:d-math_math_2421_003' ~ 'XXXX-XXXX-11e2-B656-00505691002B@cu.edu',
+    CourseID == '2247_cuden:clas:d-math_math_3195_001' ~ 'XXXX-XXXX-11e2-B656-00505691002B@cu.edu',
+    CourseID == '2247_cuden:crss:d-ugxp_univ_1110_018' ~ 'XXXX-XXXX-11e7-B994-005056945406@cu.edu',
+    CourseID == '2247_cuden:paff:d-paff_crju_3530_e01' ~ 'XXXX-XXXX-11e2-895A-00505691002B@cu.edu',
     TRUE ~ Instructor_External_ID
   ))
 
@@ -292,7 +288,7 @@ dn_comb_ck2 <- dn_comb2 %>%
 # make changes in dn_comb and then rerun to dn_comb2 call above
 dn_comb <- dn_comb %>%
   mutate(Instructor_External_ID = case_when(
-    Instructor == 'Robert Hobbins' & Course_Section_External_ID %in% c('2231_cuden:busn:d-busn_mgmt_4825_e01_lec', '2231_cuden:busn:d-busn_mgmt_6825_e01_lec') ~ '19BD3D53-0798-4FE3-B73D-24D07C21060E@cu.edu',
+    Instructor == 'Robert Hobbins' & Course_Section_External_ID %in% c('2231_cuden:busn:d-busn_mgmt_4825_e01_lec', '2231_cuden:busn:d-busn_mgmt_6825_e01_lec') ~ 'XXXX-0798-4FE3-B73D-24D07C21060E@cu.edu',
     TRUE ~ Instructor_External_ID)) %>%
   mutate(Course_Section_External_ID = case_when(
     Course_Section_External_ID == '2231_cuden:clas:d-rlst_rlst_4850_e01_lec' ~ '2231_cuden:educ:d-rlst_rlst_4850_e01_lec',
@@ -320,11 +316,11 @@ fix4 <- dn_comb5 %>%
   filter(CLASS_NUM %in% c(15617, 15720, 15841, 18171, 39530)) %>%
   filter(!(instrEmplid %in% c(412514, 180802))) %>%
   mutate(instrConstituentID.x = case_when(
-    CLASS_NUM == 39530 ~ 'A5DFF6E6-7328-11e2-895A-00505691002B',
-    CLASS_NUM == 15617 ~ 'AD667D45-7077-11e2-B656-00505691002B',
-    CLASS_NUM == 15720 ~ 'AD667D45-7077-11e2-B656-00505691002B',
-    CLASS_NUM == 15841 ~ 'AD667D45-7077-11e2-B656-00505691002B',
-    CLASS_NUM == 18171 ~ '8F94DAC1-7EBF-11e7-B994-005056945406'
+    CLASS_NUM == 39530 ~ 'XXXX-7328-11e2-895A-00505691002B',
+    CLASS_NUM == 15617 ~ 'XXXX-7077-11e2-B656-00505691002B',
+    CLASS_NUM == 15720 ~ 'XXXX-7077-11e2-B656-00505691002B',
+    CLASS_NUM == 15841 ~ 'XXXX-7077-11e2-B656-00505691002B',
+    CLASS_NUM == 18171 ~ 'XXXX-7EBF-11e7-B994-005056945406'
   ))
 
 fix4 <- dn_comb5 %>%
@@ -366,7 +362,6 @@ dn_comb6d <- rbind(dn_comb6a, dn_comb6c)
 dn_comb6 <- dn_comb6d %>%
   select(-Instructor)
 ##################################################################
-
 
 dn_comb7 <- dn_comb6 %>%
   mutate(Semester = case_when(

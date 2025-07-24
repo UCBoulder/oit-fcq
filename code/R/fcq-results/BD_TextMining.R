@@ -71,7 +71,7 @@ bdtxt2$Comments <- gsub('\n', '', bdtxt2$Comments)
 # export raw file with all comments
 write.csv(bdtxt2, paste0('BD_Raw_', term, '.csv'), row.names = FALSE)
 
-##########################################################################
+#########################################################################
 
 # load word stems and keyword corpora
 words <- c('\\babus', 'accommodat', '\\bage', '\\bass ', 'assault', 'attack', 'belittl', '\\bberat', 'bitch', '\\bull', 'of color', 'creed', 'dead ', '\\bdie', 'degrade', 'demean', 'disable', 'disability', 'discriminat', 'flirt', 'fuck', 'gender expression', 'gender identity', 'harass', 'homicid', 'homophob', 'hostil', 'humiliat', '\\bkill', 'kms', 'murder', 'national origin', 'political affiliation', 'political philosophy', 'pregnan', 'prejudic', '\\brace', 'racial', 'racist', 'religion', 'retaliat', 'revenge', 'ridicule', '\\bsex', 'sexual orientation', 'shit', 'suicid', 'threat', 'trans ', 'transgender', 'veteran status')

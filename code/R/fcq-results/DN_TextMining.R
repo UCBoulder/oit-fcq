@@ -114,8 +114,3 @@ write.csv(dnFlagged, 'dnFlagged.csv', row.names = FALSE)
 
 # export raw file with all comments
 write.csv(dntxt3, paste0('dnAllText_', term, '.csv'), row.names = FALSE)
-
-dntxt4 <- rbind(dntxt3, mctxt3)
-
-# export raw file with all comments
-write.csv(dntxt4, paste0('dnAllText_', term, '.csv'), row.names = FALSE)

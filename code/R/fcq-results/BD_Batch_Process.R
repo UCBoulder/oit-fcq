@@ -16,10 +16,13 @@
 # 8. extract files to campus/term folder
 
 # UPDATE term VAR EACH SEMESTER:
-term <- 2247
+term <- 2251
+term_prefix <- '2251-'
 campus <- 'Boulder'
 campterm <- paste0('BD', term)
 userid <- 'darcange'
+
+bd_folder <- paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\Batch_Reports\\Boulder')
 
 # check for term directory, and create if not
 tfolder <- paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\Batch_Reports\\', term)
@@ -85,14 +88,20 @@ my_files <- my_files %>%
 # import batch matching file from results processing code
 bd_match <- read.csv(paste0('C:\\Users\\', userid, '\\UCB-o365\\AIM Measurement - FCQ\\CampusLabs\\Response_Exports\\', term, '\\BD_Inst_Batch.csv'))
 
+bd_match0 <- bd_match %>%
+  filter(is.na(fcqdept))
+
+# review and fix NAs
+
 # create unique rows for bd_match
 bd_match2 <- bd_match %>%
   select(Instructor_External_ID, Instructor, fcqdept) %>%
   unique()
 
-##############################################################################################################################################################
-# Review - should be bd_match2?????
-################################################################################
+##############################################################################
+# Review my_comb - should be bd_match2?????
+##############################################################################
+
 # combine pdf file data with inst/dept data for sorting
 my_comb <- left_join(x = my_files, y = bd_match, by = 'Instructor_External_ID')
 
@@ -100,25 +109,29 @@ my_comb <- left_join(x = my_files, y = bd_match, by = 'Instructor_External_ID')
 my_comb2 <- my_comb %>%
   filter(!(is.na(Instructor)))
 
-# tbd
-# bring in instrNm to rename folders
-
 # setwd() to target folder
 setwd(cfolder)
 
 #########################################################################
 # sep B3 and CEPS from main campus
+# my_comb3 <- my_comb2 %>%
+#   mutate(ACAD_ORG_CD = case_when(
+#     fcqdept == 'ECEA' ~ paste0('B3-', fcqdept),
+#     fcqdept == 'EDUA' ~ paste0('B3-', fcqdept),
+#     TRUE ~ ACAD_ORG_CD
+#   )) %>%
+#   mutate(ACAD_ORG_CD = case_when(
+#     fcqdept %in% c('BBAC', 'CC', 'CONT', 'IEC', 'ORGL', 'TRCT') ~ paste0('CE-', fcqdept),
+#     TRUE ~ ACAD_ORG_CD
+#   )) %>%
+#   mutate(ACAD_ORG_CD = gsub('B-', 'BD-', ACAD_ORG_CD))
+
 my_comb3 <- my_comb2 %>%
   mutate(ACAD_ORG_CD = case_when(
-    fcqdept == 'ECEA' ~ paste0('B3-', fcqdept),
-    fcqdept == 'EDUA' ~ paste0('B3-', fcqdept),
-    TRUE ~ ACAD_ORG_CD
-  )) %>%
-  mutate(ACAD_ORG_CD = case_when(
+    fcqdept %in% c('ECEA', 'EDUA') ~ paste0('B3-', fcqdept),
     fcqdept %in% c('BBAC', 'CC', 'CONT', 'IEC', 'ORGL', 'TRCT') ~ paste0('CE-', fcqdept),
-    TRUE ~ ACAD_ORG_CD
-  )) %>%
-  mutate(ACAD_ORG_CD = gsub('B-', 'BD-', ACAD_ORG_CD))
+    TRUE ~ paste0('BD-', fcqdept)
+  ))
 
 # create mapping doc
 bd_map <- my_comb3 %>%
@@ -176,16 +189,38 @@ bd_dups5 <- bd_dups5 %>%
 file.copy(bd_dups5$dfrom, bd_dups5$dfile, overwrite = TRUE)
 
 #########################################################################
-# create zip files
+# create zip files # break up on next run to see why it doubled for 2251
 #########################################################################
 setwd(cfolder)
 
 files2zip <- dir(cfolder)
 
-#zlist <- as.list(cfolder)
+# zlist <- as.list(dir(cfolder))
+
 zlist <- dir(cfolder, full.names = TRUE)
 
-zlist2 <- enframe(zlist)
+zlist2 <- paste0(zlist, '.zip')
+
+for (i in 1:length(zlist2)) {
+zip(zlist2[i], files = files2zip[i])
+}
+
+folder_update <- unique(bd_map$ACAD_ORG_CD)
+folder_update <- enframe(folder_update)
+folder_update <- folder_update %>% select(value) %>% arrange(value)
+write.csv(folder_update, 'bd_folders2update.csv')
+
+#########################################################################
+setwd(cfolder)
+
+files2zip <- dir(cfolder)
+
+# zlist <- as.list(dir(cfolder))
+
+zlist <- dir(cfolder, full.names = TRUE)
+
+zlist2 <- paste0(zlist, '.zip')
+
 zlist3 <- zlist2 %>%
   select(value) %>%
   mutate(match = substr(value, nchar(value)-6, nchar(value))) %>%
@@ -195,11 +230,13 @@ zlist3 <- zlist2 %>%
   mutate(match = gsub('^-', '', match)) %>%
   mutate(zip = value)
 
-#ylist <- as.list(dfolder)
+# ylist <- as.list(dfolder)
+
 ylist <- dir(dfolder, full.names = TRUE)
 
 # create ylist2 and zlist2, each with a column extracting the last 7 chars from the primary column
 ylist2 <- enframe(ylist)
+
 ylist3 <- ylist2 %>%
   select(value) %>%
   mutate(match = substr(value, nchar(value)-6, nchar(value))) %>%
@@ -232,7 +269,7 @@ zip(zipfile = zip_file_path, files = file.path(cfolder, file_name))
 
 target_folder <- file.path(folder_name)
   
-# Move the zip file to the target folder
+# Move the zip file
 file.copy(zip_file_path, file.path(target_folder, paste0(file_name, '.zip')))
 }
 
@@ -242,4 +279,39 @@ folder_update <- enframe(folder_update)
 folder_update <- folder_update %>% select(value) %>% arrange(value)
 write.csv(folder_update, 'bd_folders2update.csv')
 
-# end of functions
+#########################################################################
+# sort files into appropriate folder
+#########################################################################
+
+setwd(bd_folder)
+
+# get list of updated batch files
+bd_batch <- list.files(bd_folder)
+
+# convert lists to tibbles and duplicate value column
+bd_batch0 <- enframe(bd_batch)
+bd_batch1 <- bd_batch0 %>%
+  select(value) %>%
+  mutate(filenm = value) %>%
+  mutate(is_zip = ifelse(grepl('\\.zip$', filenm), 1, 0))
+
+bd_batch2 <- bd_batch1 %>%
+  mutate(filenm2 = ifelse(is_zip, str_remove(filenm, term_prefix), NA)) %>%
+  mutate(filenm3 = ifelse(is_zip, str_remove(filenm2, "\\..*$"), NA))
+
+bd_batch_files <- bd_batch2 %>%
+  filter(is_zip == 1)
+
+# bd_batch_folders <- bd_batch2 %>%
+#  filter(is_zip == 0)
+
+# create mapping doc
+bd_batch_files2 <- bd_batch_files %>%
+  select(filenm, filenm3) %>%
+  mutate(srcnm = paste0(getwd(), '/', filenm)) %>%
+  mutate(dest = paste0(getwd(), '/', filenm3, '/', filenm))
+
+# move files
+file.copy(from = bd_batch_files2$srcnm, to = file.path(bd_batch_files2$dest), overwrite = TRUE)
+
+file.remove(bd_batch_files2$srcnm)
