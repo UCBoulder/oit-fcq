@@ -10,7 +10,9 @@ stuAcct3 <- stuAcct %>%
   select(stuConstituentID, stuFirstNm, stuLastNm, PREF_EMAIL, BLD_EMAIL, CONT_ED_EMAIL, DEN_EMAIL)
 
 stuAcct_import <- stuAcct_import %>%
-  mutate(Email %in% c("", "-") ~ 'jack.spurlock@colorado.edu')
+  mutate(Email = case_when(
+    Email %in% c("", "-") ~ 'jack.spurlock@colorado.edu',
+    TRUE ~ Email))
 
 ### pull PREF_EMAIL if exists, else pull campus email
 stuAcct4 <- stuAcct3 %>%
