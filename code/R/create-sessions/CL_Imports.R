@@ -9,13 +9,13 @@
 # reformat deptOrgID
 clscu3$deptOrgID <- gsub("_",":",clscu3$deptOrgID)
 
-# update batch number: updated to batch 11 on 7/18 -vd
-sess_num <- '11'
+# update batch number: updated to batch 13 on 7/25 -vd
+sess_num <- '13'
 batch <- paste0('batch', sess_num)
 
 # filter for desired session
 session <- clscu3 %>%
- filter(adminDtTxt == 'Jul 21-Jul 25')
+ filter(adminDtTxt == 'Aug 04-Aug 08')
 # filter(adminInd == 1 & campus == 'MC' & SBJCT_CD == 'BMSC' & CATALOG_NBR == '7812')
 # filter(adminInd == 1 & CLASS_NUM %in% c(35857, 36011))
 # final session filters
@@ -114,7 +114,7 @@ if (nrow(emCheck1) == 0) {
     View(emCheck1)
     file.edit(paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\R_Code\\campus_labs\\emCheck1.R'))
     stop('Review the missing emails, update and run code in emCheck1.R, then rerun from emCheck1')
-  }
+}
 
 ###XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX####
 
