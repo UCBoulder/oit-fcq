@@ -1,7 +1,7 @@
 ##########################################################################
 # Setup folders/files for Campus Labs new semester
 # created: Vince Darcangelo 12/19/22
-# most recent update: Vince Darcangelo 5/9/25
+# most recent update: Vince Darcangelo 8/5/25
 # \AIM Measurement - FCQ\R_Code\campus_labs\CL_New_Sem_Setup.R
 ##########################################################################
 # set date and term
@@ -13,25 +13,25 @@ entrydt <- Sys.Date()
 entrydt <- format(entrydt, format = '%Y%m%d')
 
 # update vars
-term_cd <- 2254
+term_cd <- 2257
 userid <- 'darcange'
 
 yr <- 2025
 
 sem <- 
 # 'Spring'
- 'Summer'
-# 'Fall'
+# 'Summer'
+ 'Fall'
 
 bgdt <- 
 # '-01-01T17:00:00-07:00' # spring
- '-05-01T17:00:00-07:00' # summer
-# '-08-01T17:00:00-07:00' # fall
+# '-05-01T17:00:00-07:00' # summer
+ '-08-01T17:00:00-07:00' # fall
 
 endt <- 
 # '-05-31T17:00:00-07:00' # spring
- '-08-31T17:00:00-07:00' # summer
-# '-12-31T17:00:00-07:00' # fall
+# '-08-31T17:00:00-07:00' # summer
+ '-12-31T17:00:00-07:00' # fall
 
 ######################################################################### create folders for CL import files
 dir.create(paste0(import_folder,term_cd))
