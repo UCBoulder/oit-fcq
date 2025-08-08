@@ -14,14 +14,14 @@
 #########################################################################
 
 # update each semester
-term_cd <- '2254'
+term_cd <- '2257'
 minStuEnrl <- 3
 userid <- 'darcange'
 folder <- paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\')
 setwd(paste0(folder, 'CourseAudit_bak'))
 
 # semEndDt = spring: 05/31/YYYY, summer: 08/31/YYYY, fall: 12/31/YYYY
-semEndDt <- as.Date('08/31/2025', format = '%m/%d/%Y')
+semEndDt <- as.Date('12/31/2025', format = '%m/%d/%Y')
 semEndDt <- format(semEndDt, '%m/%d/%Y')
 
 # load libraries
@@ -434,8 +434,10 @@ cl1 <- cl0 %>%
     campus == 'B3' & ACAD_GRP_CD == 'ENGR' ~ 'EN',
     campus == 'BD' & ACAD_GRP_CD == 'ARSC' ~ 'AS',
     campus == 'BD' & ACAD_GRP_CD == 'BUSN' ~ 'BU',
-    campus == 'BD' & ACAD_GRP_CD == 'CRSS' ~ 'XY',
+    campus == 'BD' & ACAD_GRP_CD == 'CRSS' & SBJCT_CD != 'NRLN' ~ 'XY',
+    campus == 'BD' & ACAD_GRP_CD == 'CRSS' & SBJCT_CD == 'NRLN' ~ 'AS',
     campus == 'BD' & ACAD_GRP_CD == 'CMCI' ~ 'MC',
+    campus == 'BD' & ACAD_GRP_CD == 'CMDI' ~ 'MC',
     campus == 'BD' & ACAD_GRP_CD == 'ARPL' ~ 'EV',
     campus == 'BD' & ACAD_GRP_CD == 'ENGR' ~ 'EN',
     campus == 'BD' & ACAD_GRP_CD == 'LIBR' ~ 'LB',
@@ -466,6 +468,7 @@ cl2s <- cl2s %>%
   mutate(key = case_when(
     campus == 'B3' ~ paste(campus, college, SBJCT_CD, sep = '-'),
     ACAD_ORG_CD == 'B-MCEN' ~ paste(campus, 'EN', SBJCT_CD, sep = '-'),
+    SBJCT_CD == 'NRLN' ~ 'BD-AS-VCAA',
     campus == 'BD' ~ paste(campus, college, SBJCT_CD, sep = '-'),
     campus == 'CE' ~ paste(campus, SBJCT_CD, sep = '-'),
     ACAD_GRP_CD == 'MEDS' ~ paste('MC', 'MC', SBJCT_CD, sep = '-'),
@@ -484,6 +487,7 @@ cl2c2 <- cl2c %>%
     SBJCT_CD == 'ESLG' | SBJCT_CD == 'NCIE' ~ 'CE-IEC',
     SBJCT_CD == 'CCOM' ~ 'CE-CCOM',
     SBJCT_CD == 'OREC' ~ 'CE-OREC',
+    SBJCT_CD == 'EDUA' ~ 'CE-EDUA',
     SESSION_CD == 'BEF' | SESSION_CD == 'BET' | SESSION_CD == 'BWS' ~ 'CE-CONT',
     sec >= 73 & sec <= 75 ~ 'CE-BBAC',
     sec >= 56 & sec <= 57 ~ 'CE-TRCT',

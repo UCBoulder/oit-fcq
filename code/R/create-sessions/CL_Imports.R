@@ -9,14 +9,20 @@
 # reformat deptOrgID
 clscu3$deptOrgID <- gsub("_",":",clscu3$deptOrgID)
 
-# update batch number: updated to batch 13 on 7/25 -vd
-sess_num <- '13'
+# set term_cd
+term_cd <- 2257
+userid <- 'darcange'
+folder <- paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\')
+import_path <- paste0(folder, 'CampusLabs//Imports//', term_cd)
+
+# update batch number: updated to batch 01 on 8/8 -vd
+sess_num <- '01'
 batch <- paste0('batch', sess_num)
 
 # filter for desired session
 session <- clscu3 %>%
- filter(adminDtTxt == 'Aug 04-Aug 08')
-# filter(adminInd == 1 & campus == 'MC' & SBJCT_CD == 'BMSC' & CATALOG_NBR == '7812')
+ filter(adminDtTxt == 'Aug 11-Aug 15')
+# filter(adminInd == 1 & SBJCT_CD == 'CSPB')
 # filter(adminInd == 1 & CLASS_NUM %in% c(35857, 36011))
 # final session filters
 # filter(campus == 'B3' & adminDtTxt == 'Apr 21-Apr 29')
@@ -31,12 +37,6 @@ session <- clscu3 %>%
 # filter(campus == 'DN' & adminDtTxt == 'Apr 28-May 06')
 # filter(campus == 'MC' & adminDtTxt == 'Apr 28-May 06')
 view(session)
-
-# set term_cd
-term_cd <- 2254
-userid <- 'darcange'
-folder <- paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\')
-import_path <- paste0(folder, 'CampusLabs//Imports//', term_cd)
 
 #########################################################################
 # pull from PS_D_PERSON as studeth for stu acct info

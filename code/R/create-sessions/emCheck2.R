@@ -6,8 +6,8 @@
 #########################################################################
 
 ### FIX emCheck2
-stuAcct3 <- stuAcct %>%
-  select(stuConstituentID, stuFirstNm, stuLastNm, PREF_EMAIL, BLD_EMAIL, CONT_ED_EMAIL, DEN_EMAIL)
+# stuAcct3 <- stuAcct %>%
+#   select(stuConstituentID, stuFirstNm, stuLastNm, PREF_EMAIL, BLD_EMAIL, CONT_ED_EMAIL, DEN_EMAIL)
 
 stuAcct_import <- stuAcct_import %>%
   mutate(Email = case_when(
@@ -15,23 +15,23 @@ stuAcct_import <- stuAcct_import %>%
     TRUE ~ Email))
 
 ### pull PREF_EMAIL if exists, else pull campus email
-stuAcct4 <- stuAcct3 %>%
-  mutate(Email = case_when(
-    PREF_EMAIL %in% c("","-") & INSTITUTION_CD == "CUBLD" ~ BLD_EMAIL,
-    PREF_EMAIL %in% c("","-") & CAMPUS_CD == "CEPS" & CONT_ED_EMAIL != "-" ~ CONT_ED_EMAIL,
-    PREF_EMAIL %in% c("","-") & CAMPUS_CD == "CEPS" & BLD_EMAIL != "-" ~ BLD_EMAIL,
-    PREF_EMAIL %in% c("","-") & INSTITUTION_CD == "CUDEN" ~ DEN_EMAIL,
-    TRUE ~ PREF_EMAIL
-  ))
+# stuAcct4 <- stuAcct3 %>%
+#   mutate(Email = case_when(
+#     PREF_EMAIL %in% c("","-") & INSTITUTION_CD == "CUBLD" ~ BLD_EMAIL,
+#     PREF_EMAIL %in% c("","-") & CAMPUS_CD == "CEPS" & CONT_ED_EMAIL != "-" ~ CONT_ED_EMAIL,
+#     PREF_EMAIL %in% c("","-") & CAMPUS_CD == "CEPS" & BLD_EMAIL != "-" ~ BLD_EMAIL,
+#     PREF_EMAIL %in% c("","-") & INSTITUTION_CD == "CUDEN" ~ DEN_EMAIL,
+#     TRUE ~ PREF_EMAIL
+#   ))
 
 ### error check for missing emails
-stu_missing <- stuAcct4 %>%
-  filter(PREF_EMAIL %in% c("","-"))
+stu_missing <- stuAcct_import %>%
+  filter(Email %in% c("","-"))
 
 ### if stu_missing == 0, else manually look up and add student email
-stuAcct_import <- stuAcct4 %>%
-  select(stuConstituentID, stuFirstNm, stuLastNm, Email)
-colnames(stuAcct_import) <- c("PersonIdentifier", "FirstName", "LastName", "Email")
+# stuAcct_import <- stuAcct4 %>%
+#   select(stuConstituentID, stuFirstNm, stuLastNm, Email)
+# colnames(stuAcct_import) <- c("PersonIdentifier", "FirstName", "LastName", "Email")
 
 ### remove erroneous entry (e.g., stuConstituentID == 'DISCARDED@cu.edu')
 stuAcct_import <- stuAcct_import %>%

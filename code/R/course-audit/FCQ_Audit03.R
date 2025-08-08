@@ -42,7 +42,7 @@ n16 <- n15 %>%
 # preterm BD-LAWS
   # adminInd == 1 & campus == 'BD' & paste(SBJCT_CD, CATALOG_NBR, CLASS_SECTION_CD, sep = '-') %in% c('LAWS-5211-801', 'LAWS-5646-801', 'LAWS-6109-802', 'LAWS-6866-801', 'LAWS-9025-901') ~ 'Aug 23-Aug 26',
 # DN-ICB date changes
-  adminInd == 1 & INSTITUTION_CD == 'CUDEN' & LOC_ID == 'IC_BEIJING' ~ 'Jun 16-Jun 20',
+#  adminInd == 1 & INSTITUTION_CD == 'CUDEN' & LOC_ID == 'IC_BEIJING' ~ 'Jun 16-Jun 20',
 # preterm DN-BUSN
 #  adminInd == 1 & campus == 'DN' & paste(SBJCT_CD, CATALOG_NBR, CLASS_SECTION_CD, sep = '-') == 'BUSN-6530-E01' ~ 'Sep 30-Oct 04',
 # CE-SLHS sects
@@ -54,41 +54,43 @@ n16 <- n15 %>%
 # CE-BU mod a
 #  adminInd == 1 & campus == 'CE' & SBJCT_CD == 'MBAE' & SESSION_CD == 'BM1' ~ 'Feb 10-Feb 14',
 # CE-EDUA error fix
-  adminInd == 1 & campus == 'CE' & SBJCT_CD == 'EDUA' ~ 'Jul 07-Jul 11',
+#  adminInd == 1 & campus == 'CE' & SBJCT_CD == 'EDUA' ~ 'Jul 07-Jul 11',
 # DN-weekend
 #  adminInd == 1 & campus == 'DN' & paste(SBJCT_CD, CATALOG_NBR, CLASS_SECTION_CD, sep = '-') == 'PSCI-5008-ND1' ~ 'Mar 03-Mar 09',
 # BD summer abroad sessions
-  adminInd == 1 & campus == 'BD' & CLASS_NUM == 18845 ~ 'Jun 16-Jun 20',
-  adminInd == 1 & campus == 'BD' & CLASS_NUM == 18852 ~ 'Jul 14-Jul 18',
-  adminInd == 1 & campus == 'BD' & CLASS_NUM == 18855 ~ 'Jun 16-Jun 20',
-  adminInd == 1 & campus == 'BD' & CLASS_NUM == 18856 ~ 'Jun 16-Jun 20',
-  adminInd == 1 & campus == 'BD' & CLASS_NUM == 21493 ~ 'May 27-May 31',
-  adminInd == 1 & campus == 'BD' & CLASS_NUM == 18822 ~ 'Aug 04-Aug 08',
-  adminInd == 1 & campus == 'BD' & CLASS_NUM == 18886 ~ 'Aug 04-Aug 08',
-  adminInd == 1 & campus == 'BD' & CLASS_NUM == 19529 ~ 'Jun 09-Jun 13',
-  adminInd == 1 & campus == 'BD' & CLASS_NUM == 18889 ~ 'Jun 23-Jun 27',
-  adminInd == 1 & campus == 'BD' & CLASS_NUM == 18897 ~ 'Jun 16-Jun 21',
+#  adminInd == 1 & campus == 'BD' & CLASS_NUM == 18845 ~ 'Jun 16-Jun 20',
+#  adminInd == 1 & campus == 'BD' & CLASS_NUM == 18852 ~ 'Jul 14-Jul 18',
+#  adminInd == 1 & campus == 'BD' & CLASS_NUM == 18855 ~ 'Jun 16-Jun 20',
+#  adminInd == 1 & campus == 'BD' & CLASS_NUM == 18856 ~ 'Jun 16-Jun 20',
+#  adminInd == 1 & campus == 'BD' & CLASS_NUM == 21493 ~ 'May 27-May 31',
+#  adminInd == 1 & campus == 'BD' & CLASS_NUM == 18822 ~ 'Aug 04-Aug 08',
+#  adminInd == 1 & campus == 'BD' & CLASS_NUM == 18886 ~ 'Aug 04-Aug 08',
+#  adminInd == 1 & campus == 'BD' & CLASS_NUM == 19529 ~ 'Jun 09-Jun 13',
+#  adminInd == 1 & campus == 'BD' & CLASS_NUM == 18889 ~ 'Jun 23-Jun 27',
+#  adminInd == 1 & campus == 'BD' & CLASS_NUM == 18897 ~ 'Jun 16-Jun 21',
 # DN-MATH/CSCI summer
-  adminInd == 1 & campus == 'DN' & SBJCT_CD == 'MATH' & SESSION_CD == 'DMR' ~ 'Jul 21-Jul 25',
-  adminInd == 1 & campus == 'DN' & SBJCT_CD == 'CSCI' & CATALOG_NBR == '4650' ~ 'Jul 21-Jul 25',
+#  adminInd == 1 & campus == 'DN' & SBJCT_CD == 'MATH' & SESSION_CD == 'DMR' ~ 'Jul 21-Jul 25',
+#  adminInd == 1 & campus == 'DN' & SBJCT_CD == 'CSCI' & CATALOG_NBR == '4650' ~ 'Jul 21-Jul 25',
+# BD-CSPB summer
+#  adminInd == 1 & campus == 'BD' & SBJCT_CD == 'CSPB' ~ 'Aug 04-Aug 08',
 # midterm BD-LAWS
 #  adminInd == 1 & campus == 'BD' & paste(SBJCT_CD, CATALOG_NBR, sep = '-') == 'LAWS-6213' ~ 'Oct 23-Oct 27',
 # DN-EDUC changes
-  adminInd == 1 & campus == 'DN' & paste(SBJCT_CD, CATALOG_NBR, CLASS_SECTION_CD, sep = '-') == 'SPSY-6420-001' ~ 'Jun 30-Jul 05',
-  adminInd == 1 & campus == 'DN' & paste(SBJCT_CD, CATALOG_NBR, CLASS_SECTION_CD, sep = '-') %in% c('RSEM-6700-901', 'RSEM-7400-901', 'RSEM-7400-902') ~ 'Jul 28-Aug 01',
+#  adminInd == 1 & campus == 'DN' & paste(SBJCT_CD, CATALOG_NBR, CLASS_SECTION_CD, sep = '-') == 'SPSY-6420-001' ~ 'Jun 30-Jul 05',
+#  adminInd == 1 & campus == 'DN' & paste(SBJCT_CD, CATALOG_NBR, CLASS_SECTION_CD, sep = '-') %in% c('RSEM-6700-901', 'RSEM-7400-901', 'RSEM-7400-902') ~ 'Jul 28-Aug 01',
 # BD winter session
 #   adminInd == 1 & SESSION_CD == 'BWS' ~ 'Jan 02-Jan 06',
 # NCLL courses (spring/fall)
 #  adminInd == 1 & SBJCT_CD == 'NCLL' & SESSION_CD == 'DC1' ~ 'Mar 03-Mar 07',
 # NCLL courses (summer only)
-  adminInd == 1 & SBJCT_CD == 'NCLL' ~ 'Jul 21-Jul 25',
+#  adminInd == 1 & SBJCT_CD == 'NCLL' ~ 'Jul 21-Jul 25',
 # DN Cuba Libre courses (spring)
 #  adminInd == 1 & paste(SBJCT_CD, CATALOG_NBR, sep = '-') %in% c('MGMT-4028', 'MGMT-6028', 'ENTP-4028', 'ENTP-6028') & SESSION_CD == 'DCV' ~ 'Feb 17-Feb 21',
 # OREC wrong dates
 #  adminInd == 1 & SBJCT_CD == 'OREC' & SESSION_CD == 'B81' ~ 'Oct 09-Oct 13',
 
 # standard administration dates
-  adminInd == 1 & between(fcqEnDt,'05/01/2025','05/20/2025') ~ 'May 12-May 16',
+  adminInd == 1 & between(fcqEnDt,'08/01/2025','08/19/2025') ~ 'Aug 11-Aug 15',
   adminInd == 1 & between(fcqEnDt,'05/21/2025','05/27/2025') ~ 'May 19-May 23',
   adminInd == 1 & between(fcqEnDt,'05/28/2025','06/03/2025') ~ 'May 27-May 31',
   adminInd == 1 & between(fcqEnDt,'06/04/2025','06/10/2025') ~ 'Jun 02-Jun 06',
@@ -99,9 +101,9 @@ n16 <- n15 %>%
   adminInd == 1 & between(fcqEnDt,'07/09/2025','07/15/2025') ~ 'Jul 07-Jul 11',
   adminInd == 1 & between(fcqEnDt,'07/16/2025','07/22/2025') ~ 'Jul 14-Jul 18',
   adminInd == 1 & between(fcqEnDt,'07/23/2025','07/29/2025') ~ 'Jul 21-Jul 25',
-  adminInd == 1 & between(fcqEnDt,'07/30/2025','08/05/2025') ~ 'Jul 28-Aug 01',
-  adminInd == 1 & between(fcqEnDt,'08/06/2025','08/12/2025') ~ 'Aug 04-Aug 08',
-  adminInd == 1 & between(fcqEnDt,'08/13/2025','08/31/2025') ~ 'Aug 11-Aug 15'#,
+#  adminInd == 1 & between(fcqEnDt,'07/30/2025','08/05/2025') ~ 'Jul 28-Aug 01',
+#  adminInd == 1 & between(fcqEnDt,'08/06/2025','08/12/2025') ~ 'Aug 04-Aug 08',
+#  adminInd == 1 & between(fcqEnDt,'08/13/2025','08/31/2025') ~ 'Aug 11-Aug 15'#,
 #  adminInd == 1 & between(fcqEnDt,'04/16/2025','04/22/2025') ~ 'Apr 14-Apr 18',
 #  adminInd == 1 & between(fcqEnDt,'04/23/2025','04/29/2025') & campus %in% c('DN', 'MC') ~ 'Apr 21-Apr 25',
 # ENGR Extended Final
