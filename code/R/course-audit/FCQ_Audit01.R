@@ -15,14 +15,28 @@
 
 # update each semester
 term_cd <- '2257'
-minStuEnrl <- 3
+year_cal <- '2025'
 userid <- 'darcange'
+
+minStuEnrl <- 3
 folder <- paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\')
 setwd(paste0(folder, 'CourseAudit_bak'))
 
-# semEndDt = spring: 05/31/YYYY, summer: 08/31/YYYY, fall: 12/31/YYYY
-semEndDt <- as.Date('12/31/2025', format = '%m/%d/%Y')
+# set semester end date based on term_cd
+if (grepl('1$', term_cd)) {
+  semEndDt <- as.Date(paste0(year_cal, '-05-31'))
+} else if (grepl('4$', term_cd)) {
+  semEndDt <- as.Date(paste0(year_cal, '-08-31'))
+} else if (grepl('7$', term_cd)) {
+  semEndDt <- as.Date(paste0(year_cal, '-12-31'))
+}
+
+# format semester end date
 semEndDt <- format(semEndDt, '%m/%d/%Y')
+
+# this code has been replaced by if statement above
+# semEndDt = spring: 05/31/YYYY, summer: 08/31/YYYY, fall: 12/31/YYYY
+# semEndDt <- as.Date('12/31/2025', format = '%m/%d/%Y')
 
 # load libraries
 library('DBI')

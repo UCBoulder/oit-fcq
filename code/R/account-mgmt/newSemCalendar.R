@@ -2,8 +2,15 @@
 library(lubridate)
 
 # set the year
-year <- year(Sys.Date())
-yr <- year(Sys.Date())
+year <- 2025
+yr <- 2025
+
+# format for functions below
+year <- as.Date(paste0(year, '-01-01'))
+yr <- as.Date(paste0(yr, '-01-01'))
+
+year <- format(year, '%Y')
+yr <- format(yr, '%Y')
 
 # set the term based on 1 = spring, 4 = summer, 7 = fall
 sem147 <- 7
@@ -20,6 +27,9 @@ if (sem147 == 1) {
 }
 
 #############################################################################
+# get holidays to account for in weekly session setup
+#############################################################################
+
 # identify campus holidays by observed dates
 get_observed_date <- function(actual_date) {
   weekday <- wday(actual_date)
@@ -36,92 +46,47 @@ get_observed_date <- function(actual_date) {
 
 # get holidays with observed dates
 get_cu_holidays <- function(year) {
-  # store as named vector, not list (avoids coercion issues)
+  date_in_year <- function(month_day) as.Date(paste0(year, '-', month_day))
+  
+# store as named vector, not list (avoids coercion issues)
   holidays <- c(
 # MLK Day – 3rd Monday in January
-    mlk_day       = as.Date(paste0(year, '-01-01')) + weeks(2) + (1 - wday(as.Date(paste0(year, '-01-01')) + weeks(2))) %% 7,
+    mlk_day = date_in_year('01-01') + weeks(2) + (1 - wday(date_in_year('01-01') + weeks(2), week_start = 1)) %% 7,
+    
 # Memorial Day – Last Monday in May
-    memorial_day  = as.Date(paste0(year, '-05-31')) - (wday(as.Date(paste0(year, '-05-31'))) - 2) %% 7,
+    memorial_day = date_in_year('05-31') - (wday(date_in_year('05-31'), week_start = 1) - 1) %% 7,
+    
 # Juneteenth – June 19
-    juneteenth    = as.Date(paste0(year, '-06-19')),
+    juneteenth = date_in_year('06-19'),
+    
 # Independence Day – July 4
-    july_fourth   = as.Date(paste0(year, '-07-04')),
+    july_fourth = date_in_year('07-04'),
+    
 # Labor Day – First Monday in September
-    labor_day     = as.Date(paste0(year, '-09-01')) + (8 - wday(as.Date(paste0(year, '-09-01')))) %% 7,
+    labor_day = date_in_year('09-01') + (8 - wday(date_in_year('09-01'), week_start = 1)) %% 7,
+    
 # Thanksgiving – 4th Thursday in November
-    thanksgiving  = as.Date(paste0(year, '-11-01')) + weeks(3) + (5 - wday(as.Date(paste0(year, '-11-01')) + weeks(3))) %% 7
+    thanksgiving = date_in_year('11-01') + weeks(3) + (5 - wday(date_in_year('11-01') + weeks(3), week_start = 1)) %% 7
   )
   
 # get observed dates
   observed_dates <- sapply(holidays, get_observed_date)
-  
-# convert to data frame
+
+# convert to tibble
   tibble(
     holiday = names(holidays),
     actual_date = holidays,
     observed_date = as.Date(observed_dates, origin = '1970-01-01'),
-    actual_formatted = format(holidays, '%b %d, %Y'),
-    observed_formatted = format(observed_dates, '%b %d, %Y')
+    actual_formatted = format(holidays, format = '%b %d, %Y'),
+    observed_formatted = format(observed_dates, format = '%b %d, %Y')
   )
 }
 
 get_cu_holidays(yr)
 
-####################################
-library(lubridate)
-library(dplyr)
-
-get_observed_date <- function(date) {
-  wd <- wday(date)
-  if (wd == 7) {
-    date - days(1)  # Sat → Fri
-  } else if (wd == 1) {
-    date + days(1)  # Sun → Mon
-  } else {
-    date
-  }
-}
-
-get_us_holidays <- function(year) {
-  mlk_day      <- as.Date(paste0(year, "-01-01")) + weeks(2) + ((2 - wday(as.Date(paste0(year, "-01-01")) + weeks(2))) %% 7)
-  memorial_day <- as.Date(paste0(year, "-05-31")) - ((wday(as.Date(paste0(year, "-05-31"))) - 2) %% 7)
-  juneteenth   <- as.Date(paste0(year, "-06-19"))
-  july_fourth  <- as.Date(paste0(year, "-07-04"))
-  labor_day    <- as.Date(paste0(year, "-09-01")) + ((2 - wday(as.Date(paste0(year, "-09-01")))) %% 7)
-  thanksgiving <- as.Date(paste0(year, "-11-01")) + weeks(3) + ((5 - wday(as.Date(paste0(year, "-11-01")) + weeks(3))) %% 7)
-
-  actual_dates <- c(mlk_day, memorial_day, juneteenth, july_fourth, labor_day, thanksgiving)
-  holidays <- c("mlk_day", "memorial_day", "juneteenth", "july_fourth", "labor_day", "thanksgiving")
-
-  # Check classes before formatting
-  print(class(actual_dates))        # Should print "Date"
-  
-  observed_dates <- sapply(actual_dates, get_observed_date)
-  print(class(observed_dates))      # Should print "Date"
-  
-  # Defensive conversion (make sure it's Date)
-  observed_dates <- as.Date(observed_dates, origin = "1970-01-01")
-
-  tibble(
-    holiday = holidays,
-    actual_date = actual_dates,
-    observed_date = observed_dates,
-    actual_formatted = format(actual_dates, "%b %d, %Y"),
-    observed_formatted = format(observed_dates, "%b %d, %Y")
-  )
-}
-
-get_us_holidays(year)
-
-
-
-
-cu_holidays <- as.Date(c(
-  '2025-09-01',  # Labor Day
-  '2025-11-11',  # Veterans Day
-  '2025-11-27',  # Thanksgiving
-  '2025-12-25'   # Christmas
-))
+#############################################################################
+# get dates for upcoming semester to set up weekly administrations
+#############################################################################
 
 # generate sequence of all dates in the range
 all_dates <- seq.Date(start_date, end_date, by = 'day')
@@ -146,28 +111,47 @@ date_sessions <- data.frame(
   fcqsessions = paste(format(monday, '%b %d'), format(friday + days(7), '%b %d'), sep = '-')
 )
 
+date_diff <- ncol(date_ranges) - ncol(date_sessions)
 
-# get_wednesday_start <- function(date) {
-#   wday <- wday(date, week_start = 1)
-#   offset <- ifelse(wday >= 4, wday - 4, wday + 3)
-#   return(date - offset)
-# }
-# 
-# # Apply the function
-# dates_df <- data.frame(
-#   Date = all_dates,
-#   Week_Start_Wed = get_wednesday_start(all_dates)
-# )
-# 
-# week_groups <- dates_df %>%
-#   group_by(Week_Start_Wed) %>%
-#   summarise(Week = paste(min(Date), "to", max(Date)))
+if (date_diff == 0) {
+  date_cal <- cbind(date_ranges, date_sessions)
+} else if (date_diff > 0) {
+  date_sessions <- date_sessions[-nrow(date_sessions), ]
+  date_cal <- cbind(date_ranges, date_sessions)
+} else if (date_diff < 0) {
+  date_ranges <- date_ranges[-nrow(date_ranges), ]
+  date_cal <- cbind(date_ranges, date_sessions)
+}
 
-# Create a data frame with Tuesday and Wednesday for each week
+date_cal2 <- date_cal %>%
+  mutate(code = paste0("adminInd == 1 & between(fcqEnDt, '", Wednesday, "','", Tuesday, "') ~ '", date_sessions, "',"))
+
+cat(date_cal2$code, sep = '\n')
+
+# copy output in console and paste into FCQ_Audit03.R
+# cleanup formatting and dates (e.g., beg, end, finals)
+
+#############################################################################
+# needed?
+#############################################################################
+# create data frame with Tuesday and Wednesday for each week
 calendar_df <- data.frame(
-  Tuesday = tuesdays,
-  Wednesday = tuesdays + days(1)
+  Tuesday = format(tuesday, '%m/%d/%Y'),
+  Wednesday = format(tuesday + days(1), '%m/%d/%Y')
 )
 
-# View the result
-print(calendar_df)
+# convert first Tuesday and last Wednesday to NA and move to bottom
+calendar_df$Tuesday[1] <- NA
+calendar_df$Wednesday[nrow(calendar_df)] <- NA
+calendar_df$Tuesday <- c(na.omit(calendar_df$Tuesday), rep(NA, sum(is.na(calendar_df$Tuesday))))
+calendar_df$Wednesday <- c(na.omit(calendar_df$Wednesday), rep(NA, sum(is.na(calendar_df$Wednesday))))
+
+# remove NA
+calendar_fixed <- na.omit(calendar_df)
+
+# arrange for proper date ranges
+calendar_fixed2 <- calendar_fixed %>%
+  select(Wednesday, Tuesday)
+
+# view the result
+#print(calendar_fixed2)
