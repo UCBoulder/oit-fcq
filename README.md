@@ -54,6 +54,10 @@ Run when a change is made to an account (only as needed).
     - This is very important for results processing and billing
     - e.g., adding or removing an instructor or swapping instructors
   
+  - newSemCalendar.R
+    - This generates the code to update in FCQ_audit03.R
+    - Follow instructions for set up (has a manual component)
+
   - stuenrlWithdraws.R
     - Run at the end of each semester to pickup late drops/withdrawals
     - Generates a file that is imported to Campus Labs/Anthology
@@ -150,9 +154,23 @@ Processes FCQ results at the end of each semester.
     - Maps the contents of the Batch Reports folders for reference
     - Only run as needed
  
-## Output
+## Processes
 
-*Describe the output of this repo's final pipeline.*
+**Setting up a new semester**
+- Go to account-mgmt
+  - run CL_New_Sem_Setup.R
+    - import AcademicTerm files from CL_New_Sem_Setup.R to Anthology
+  - run newSemCalendar.R
+    - use output to set session dates in FCQ_Audit03.R
+    - use academic calendars from each campus Registrar to set final admins
+      - summer session does not get final admin, only spring/fall
+      - exceptions to look out for:
+        - DN-Beijing: decides each semester whether or not to use FCQs
+        - BD-ENGR: some classes get extended admin in fall/spring
+        - BD-LAWS: usually wants early final admin in fall/spring
+    - update calendar on FCQ website, www.colorado.edu/fcq
+  - run CL_Dept_Create.R to add new departments/subjects
+    - import OrgUnit files from CL_Dept_Create.R to Anthology
 
 ## Notes
 

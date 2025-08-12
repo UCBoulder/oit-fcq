@@ -2,7 +2,7 @@
 # Second stage of FCQ admin setup/course audit sequence
 # created: Vince Darcangelo 9/19/22
 # most recent update: Vince Darcangelo 1/24/25
-# \AIM Measurement - FCQ\R_Code\course_audit\FCQ_Audit02.R
+# \OneDrive - UCB-O365\Documents\oit-fcq\code\R\course-audit\FCQ_Audit02.R
 #########################################################################
 #'*Create columns for audit*
 #########################################################################

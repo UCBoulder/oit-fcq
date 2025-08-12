@@ -2,7 +2,7 @@
 # Third stage of FCQ admin setup/course audit sequence
 # created: Vince Darcangelo 9/19/22
 # most recent update: Vince Darcangelo 6/26/25
-# \AIM Measurement - FCQ\R_Code\course_audit\FCQ_Audit03.R
+# \OneDrive - UCB-O365\Documents\oit-fcq\code\R\course-audit\FCQ_Audit03.R
 #########################################################################
 #'*Set administration dates*
 #########################################################################
@@ -91,37 +91,36 @@ n16 <- n15 %>%
 
 # standard administration dates
   adminInd == 1 & between(fcqEnDt,'08/01/2025','08/19/2025') ~ 'Aug 11-Aug 15',
-  adminInd == 1 & between(fcqEnDt,'05/21/2025','05/27/2025') ~ 'May 19-May 23',
-  adminInd == 1 & between(fcqEnDt,'05/28/2025','06/03/2025') ~ 'May 27-May 31',
-  adminInd == 1 & between(fcqEnDt,'06/04/2025','06/10/2025') ~ 'Jun 02-Jun 06',
-  adminInd == 1 & between(fcqEnDt,'06/11/2025','06/17/2025') ~ 'Jun 09-Jun 13',
-  adminInd == 1 & between(fcqEnDt,'06/18/2025','06/24/2025') ~ 'Jun 16-Jun 21',
-  adminInd == 1 & between(fcqEnDt,'06/25/2025','07/01/2025') ~ 'Jun 23-Jun 27',
-  adminInd == 1 & between(fcqEnDt,'07/02/2025','07/08/2025') ~ 'Jun 30-Jul 05',
-  adminInd == 1 & between(fcqEnDt,'07/09/2025','07/15/2025') ~ 'Jul 07-Jul 11',
-  adminInd == 1 & between(fcqEnDt,'07/16/2025','07/22/2025') ~ 'Jul 14-Jul 18',
-  adminInd == 1 & between(fcqEnDt,'07/23/2025','07/29/2025') ~ 'Jul 21-Jul 25',
-
-#  adminInd == 1 & between(fcqEnDt,'07/30/2025','08/05/2025') ~ 'Jul 28-Aug 01',
-#  adminInd == 1 & between(fcqEnDt,'08/06/2025','08/12/2025') ~ 'Aug 04-Aug 08',
-#  adminInd == 1 & between(fcqEnDt,'08/13/2025','08/31/2025') ~ 'Aug 11-Aug 15'#,
-#  adminInd == 1 & between(fcqEnDt,'04/16/2025','04/22/2025') ~ 'Apr 14-Apr 18',
+  adminInd == 1 & between(fcqEnDt,'08/20/2025','08/26/2025') ~ 'Aug 18-Aug 22',
+  adminInd == 1 & between(fcqEnDt,'08/27/2025','09/02/2025') ~ 'Aug 25-Aug 29',
+  adminInd == 1 & between(fcqEnDt,'09/03/2025','09/09/2025') ~ 'Sep 02-Sep 06',
+  adminInd == 1 & between(fcqEnDt,'09/10/2025','09/16/2025') ~ 'Sep 08-Sep 12',
+  adminInd == 1 & between(fcqEnDt,'09/17/2025','09/23/2025') ~ 'Sep 15-Sep 19',
+  adminInd == 1 & between(fcqEnDt,'09/24/2025','09/30/2025') ~ 'Sep 22-Sep 26',
+  adminInd == 1 & between(fcqEnDt,'10/01/2025','10/07/2025') ~ 'Sep 29-Oct 03',
+  adminInd == 1 & between(fcqEnDt,'10/08/2025','10/14/2025') ~ 'Oct 06-Oct 10',
+  adminInd == 1 & between(fcqEnDt,'10/15/2025','10/21/2025') ~ 'Oct 13-Oct 17',
+  adminInd == 1 & between(fcqEnDt,'10/22/2025','10/28/2025') ~ 'Oct 20-Oct 24',
+  adminInd == 1 & between(fcqEnDt,'10/29/2025','11/04/2025') ~ 'Oct 27-Oct 31',
+  adminInd == 1 & between(fcqEnDt,'11/05/2025','11/11/2025') ~ 'Nov 03-Nov 07',
+  adminInd == 1 & between(fcqEnDt,'11/12/2025','11/18/2025') ~ 'Nov 10-Nov 14',
 #  adminInd == 1 & between(fcqEnDt,'04/23/2025','04/29/2025') & campus %in% c('DN', 'MC') ~ 'Apr 21-Apr 25',
 # ENGR Extended Final
 #  adminInd==1 & between(fcqEnDt,'04/23/2025','05/31/2025') & campus == 'BD' & SBJCT_CD %in% c('GEEN', 'ENED') ~ 'Apr 21-May 01',
 #  adminInd==1 & between(fcqEnDt,'04/23/2025','05/31/2025') & campus == 'BD' & paste(SBJCT_CD, CATALOG_NBR, sep = '-') == 'MCEN-4085' ~ 'Apr 21-May 01',
 # LAWS Early Final
 #  adminInd==1 & between(fcqEnDt,'04/23/2025','05/31/2025') & campus == 'BD' & SBJCT_CD == 'LAWS' ~ 'Apr 20-Apr 27',
+
 # Boulder/CEPS Final
-#  adminInd==1 & between(fcqEnDt,'04/23/2025','05/31/2025') & campus %in% c('BD', 'CE') ~ 'Apr 21-Apr 29',
+  adminInd==1 & between(fcqEnDt,'11/19/2025','12/31/2025') & campus %in% c('BD', 'CE') ~ 'Nov 17-Dec 02',
 # B3 Final
-#  adminInd==1 & between(fcqEnDt,'04/23/2025','05/31/2025') & campus == 'B3' ~ 'Apr 21-Apr 29',
+  adminInd==1 & between(fcqEnDt,'11/19/2025','12/31/2025') & campus == 'B3' ~ 'Nov 17-Dec 02',
 # Denver Beijing sections
 #  adminInd==1 & fcqEnDt >= '11/22/2025' & campus == 'DN' & LOC_ID == 'IC_BEIJING' ~ 'Nov 18-Dec 03',
 # Denver Final
-#  adminInd==1 & between(fcqEnDt,'04/30/2025','05/31/2025') & campus == 'DN' & CAMPUS_CD !='AMC' ~ 'Apr 28-May 06',
+  adminInd==1 & between(fcqEnDt,'11/19/2025','12/31/2025') & campus == 'DN' & CAMPUS_CD !='AMC' ~ 'Nov 17-Dec 02',
 # AMC Final
-#  adminInd==1 & between(fcqEnDt,'04/30/2025','05/31/2025') & campus == 'MC' & CAMPUS_CD =='AMC' ~ 'Apr 28-May 06'
+  adminInd==1 & between(fcqEnDt,'11/19/2025','12/31/2025') & campus == 'MC' & CAMPUS_CD =='AMC' ~ 'Nov 17-Dec 02'
   ))
 
 #############################################################################

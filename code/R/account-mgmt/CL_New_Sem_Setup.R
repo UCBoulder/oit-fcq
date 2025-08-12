@@ -1,8 +1,8 @@
 ##########################################################################
 # Setup folders/files for Campus Labs new semester
 # created: Vince Darcangelo 12/19/22
-# most recent update: Vince Darcangelo 8/5/25
-# \AIM Measurement - FCQ\R_Code\campus_labs\CL_New_Sem_Setup.R
+# most recent update: Vince Darcangelo 8/12/25
+# \OneDrive - UCB-O365\Documents\oit-fcq\code\R\account-mgmt\CL_New_Sem_Setup.R
 ##########################################################################
 # set date and term
 userid <- 'darcange'
@@ -14,24 +14,24 @@ entrydt <- format(entrydt, format = '%Y%m%d')
 
 # update vars
 term_cd <- 2257
-userid <- 'darcange'
-
 yr <- 2025
 
-sem <- 
-# 'Spring'
-# 'Summer'
- 'Fall'
+# set the term based on 1 = spring, 4 = summer, 7 = fall
+sem147 <- 7
 
-bgdt <- 
-# '-01-01T17:00:00-07:00' # spring
-# '-05-01T17:00:00-07:00' # summer
- '-08-01T17:00:00-07:00' # fall
-
-endt <- 
-# '-05-31T17:00:00-07:00' # spring
-# '-08-31T17:00:00-07:00' # summer
- '-12-31T17:00:00-07:00' # fall
+if (sem147 == 1) {
+  sem <- 'Spring'
+  bgdt <- '-01-01T17:00:00-07:00'
+  endt <- '-05-31T17:00:00-07:00'
+} else if (sem147 == 4) {
+  sem <- 'Summer'
+  bgdt <- '-05-01T17:00:00-07:00'
+  endt <- '-08-31T17:00:00-07:00'
+} else if (sem147 == 7) {
+  sem <- 'Fall'
+  bgdt <- '-08-01T17:00:00-07:00'
+  endt <- '-12-31T17:00:00-07:00'
+}
 
 ######################################################################### create folders for CL import files
 dir.create(paste0(import_folder,term_cd))

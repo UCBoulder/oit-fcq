@@ -112,7 +112,7 @@ if (nrow(emCheck1) == 0) {
 
   } else {
     View(emCheck1)
-    file.edit(paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\R_Code\\campus_labs\\emCheck1.R'))
+    file.edit(paste0('C:\\Users\\', userid, '\\OneDrive - UCB-O365\\Documents\\oit-fcq\\code\\R\\create-sessions\\emCheck1.R'))
     stop('Review the missing emails, update and run code in emCheck1.R, then rerun from emCheck1')
 }
 
@@ -184,7 +184,7 @@ if (nrow(emCheck2) == 0) {
 
   } else {
     View(emCheck2)
-    file.edit(paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\R_Code\\campus_labs\\emCheck2.R'))
+    file.edit(paste0('C:\\Users\\', userid, '\\OneDrive - UCB-O365\\Documents\\oit-fcq\\code\\R\\create-sessions\\emCheck2.R'))
     stop('Review the missing emails, update and run code in emCheck2.R, then rerun from emCheck2')
   }
 

@@ -1,19 +1,19 @@
+#########################################################################
+# Set up administration calendar for new semester
+# created: Vince Darcangelo 8/7/25
+# most recent update: Vince Darcangelo 8/12/25
+# \OneDrive - UCB-O365\Documents\oit-fcq\code\R\account-mgmt\newSemCalendar.R
+#########################################################################
+
 # build fcq calendar for new semester
 library(lubridate)
 
-# set the year
-year <- 2025
-yr <- 2025
-
-# format for functions below
-year <- as.Date(paste0(year, '-01-01'))
-yr <- as.Date(paste0(yr, '-01-01'))
-
-year <- format(year, '%Y')
-yr <- format(yr, '%Y')
-
 # set the term based on 1 = spring, 4 = summer, 7 = fall
 sem147 <- 7
+
+# set the year
+year <- '2025'
+yr <- '2025'
 
 if (sem147 == 1) {
   start_date <- as.Date(paste0(year, '-01-01'))
@@ -27,22 +27,8 @@ if (sem147 == 1) {
 }
 
 #############################################################################
-# get holidays to account for in weekly session setup
+# account for holidays in weekly sessions
 #############################################################################
-
-# identify campus holidays by observed dates
-get_observed_date <- function(actual_date) {
-  weekday <- wday(actual_date)
-  if (weekday == 7) {
-# observed on Friday
-    actual_date - days(1)
-  } else if (weekday == 1) {
-# observed on Monday
-    actual_date + days(1)
-  } else {
-    actual_date
-  }
-}
 
 # get holidays with observed dates
 get_cu_holidays <- function(year) {
@@ -68,21 +54,20 @@ get_cu_holidays <- function(year) {
 # Thanksgiving – 4th Thursday in November
     thanksgiving = date_in_year('11-01') + weeks(3) + (5 - wday(date_in_year('11-01') + weeks(3), week_start = 1)) %% 7
   )
-  
-# get observed dates
-  observed_dates <- sapply(holidays, get_observed_date)
 
 # convert to tibble
   tibble(
     holiday = names(holidays),
     actual_date = holidays,
-    observed_date = as.Date(observed_dates, origin = '1970-01-01'),
     actual_formatted = format(holidays, format = '%b %d, %Y'),
-    observed_formatted = format(observed_dates, format = '%b %d, %Y')
   )
 }
 
-get_cu_holidays(yr)
+# holiday calendar
+holiday_cal <- get_cu_holidays(yr)
+
+holiday_cal2 <- holiday_cal %>%
+  filter(actual_date >= start_date & actual_date <= end_date)
 
 #############################################################################
 # get dates for upcoming semester to set up weekly administrations
@@ -124,34 +109,21 @@ if (date_diff == 0) {
 }
 
 date_cal2 <- date_cal %>%
-  mutate(code = paste0("adminInd == 1 & between(fcqEnDt, '", Wednesday, "','", Tuesday, "') ~ '", date_sessions, "',"))
+  mutate(code = paste0("adminInd == 1 & between(fcqEnDt,'", Wednesday, "','", Tuesday, "') ~ '", date_sessions, "',"))
 
+# run the following calls and follow "instructions for FCQ_Audit03.R" below
 cat(date_cal2$code, sep = '\n')
+cat(holiday_cal2$actual_formatted, sep = '\n')
 
-# copy output in console and paste into FCQ_Audit03.R
+#############################################################################
+# instructions for FCQ_Audit03.R
+#############################################################################
+
+# copy date_cal2 output in console and paste into FCQ_Audit03.R
 # cleanup formatting and dates (e.g., beg, end, finals)
+# use holiday_cal2 output to adjust the session dates as needed
+#   if Monday holiday, run session Tuesday - Saturday
+#   if midweek holiday (Juneteenth, July 4), run session Monday - Saturday
+#   if weekend holiday, run session normally
+#   note that Thanksgiving coincides with fall break, so no change required
 
-#############################################################################
-# needed?
-#############################################################################
-# create data frame with Tuesday and Wednesday for each week
-calendar_df <- data.frame(
-  Tuesday = format(tuesday, '%m/%d/%Y'),
-  Wednesday = format(tuesday + days(1), '%m/%d/%Y')
-)
-
-# convert first Tuesday and last Wednesday to NA and move to bottom
-calendar_df$Tuesday[1] <- NA
-calendar_df$Wednesday[nrow(calendar_df)] <- NA
-calendar_df$Tuesday <- c(na.omit(calendar_df$Tuesday), rep(NA, sum(is.na(calendar_df$Tuesday))))
-calendar_df$Wednesday <- c(na.omit(calendar_df$Wednesday), rep(NA, sum(is.na(calendar_df$Wednesday))))
-
-# remove NA
-calendar_fixed <- na.omit(calendar_df)
-
-# arrange for proper date ranges
-calendar_fixed2 <- calendar_fixed %>%
-  select(Wednesday, Tuesday)
-
-# view the result
-#print(calendar_fixed2)
