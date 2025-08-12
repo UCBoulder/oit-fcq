@@ -30,6 +30,7 @@ Use these files to process FCQ results at the end of each semester.
 ## Files:
 
 **account-mgmt**
+
 Run when a change is made to an account (only as needed).
 
   - CL_Acct_Create.R
@@ -63,6 +64,7 @@ Run when a change is made to an account (only as needed).
     - Generates a file that is imported to Campus Labs/Anthology
 
 **course-audit**
+
 Run weekly throughout the semester (usually on Fridays), and run daily during the course audit period.
 
   - FCQ_Audit01.R
@@ -82,6 +84,7 @@ Run weekly throughout the semester (usually on Fridays), and run daily during th
     - Code is static - only change when needed
 
 **create-sessions**
+
 Schedule varies, so run as indicated below.
 
   - CL_Imports_stu_enrl.R
@@ -114,6 +117,7 @@ Schedule varies, so run as indicated below.
       - weekly administrations don't have enough students to require this
 
 **data-mgmt**
+
 Reference files. Only run as needed.
 
   - CL_Data_Dictionary.R
@@ -130,6 +134,7 @@ Reference files. Only run as needed.
     - Don't need to run very often - only as needed
 
 **fcq-results**
+
 Processes FCQ results at the end of each semester.
 
   - (BD/DN/MC)_Batch_Process.R
@@ -175,6 +180,4 @@ Processes FCQ results at the end of each semester.
 ## Notes
 
 *Any additional notes or background information that could be useful.*
-
-More info on virtual environments:
 
