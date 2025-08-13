@@ -127,3 +127,29 @@ cat(holiday_cal2$actual_formatted, sep = '\n')
 #   if weekend holiday, run session normally
 #   note that Thanksgiving coincides with fall break, so no change required
 
+
+#############################################################################
+# instructions for fcq calendar
+#############################################################################
+
+library(tibble)
+
+# create web calendar
+fcq_calendar <- date_cal2 %>%
+  mutate(Session = row_number()) %>%
+  mutate(FCQ_Dates = date_sessions) %>%
+  mutate(Wednesday = as.Date(Wednesday, format = '%m/%d/%Y')) %>%
+  mutate(Tuesday = as.Date(Tuesday, format = '%m/%d/%Y')) %>%
+  mutate(CIW_end_date = paste0('between ', format(Wednesday, '%b %d'), '-', format(Tuesday, '%b %d'))) %>%
+  mutate(weekday = 'Monday-Friday') %>%
+  select(Session, FCQ_Dates, weekday, CIW_end_date)
+
+# review output
+print(fcq_calendar)
+
+# generate html code for website
+knitr::kable(fcq_calendar, format = "html", table.attr = "style='width:100%'")
+
+# copy fcq_calendar output in console and paste into FCQ calendar website
+# fix dates (e.g., remove pre-, final, and post-sessions)
+# update semester timeline
