@@ -1,9 +1,9 @@
-#########################################################################
+#############################################################################
 # Create CL accounts for new admins/chairs not in system
 # created: Vince Darcangelo 9/7/22
 # most recent update: Vince Darcangelo 7/18/25
-# \AIM Measurement - Documents\FCQ\R_Code\campus_labs\CL_Acct_Create.R 
-#########################################################################
+# \OneDrive - UCB-O365\Documents\oit-fcq\code\R\account-mgmt\CL_Acct_Create.R
+#############################################################################
 
 ##################################################################
 # run ciwpass.R to load ciw credentials
@@ -12,7 +12,7 @@
 ##################################################################
 # input needed variables
 ##################################################################
-term_cd <- 2254
+term_cd <- 2257
 userid <- 'darcange'
 folder <- paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\')
 import_path <- paste0(folder, 'CampusLabs//Imports//', term_cd)
@@ -31,7 +31,7 @@ email <- '(angela.stansbury@colorado.edu|amelia.tubbs@ucdenver.edu|rachel.montgo
 #persid <- 'XXXXXXXXX'
 
 # OR search by full name
-# fullnm <- c('Tubbs, Amelia', 'Montgomery, Rachel', 'Shipman, Julia', 'Bliss, Lucinda')
+# fullnm <- c('Tubbs, Amelia', 'Montgomery, Rachel')
 
 #################################################################
 # search for accounts
