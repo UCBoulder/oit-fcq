@@ -106,15 +106,13 @@ n16 <- n15 %>%
   adminInd == 1 & between(fcqEnDt,'11/12/2025','11/18/2025') ~ 'Nov 10-Nov 14',
 #  adminInd == 1 & between(fcqEnDt,'04/23/2025','04/29/2025') & campus %in% c('DN', 'MC') ~ 'Apr 21-Apr 25',
 # ENGR Extended Final
-#  adminInd==1 & between(fcqEnDt,'04/23/2025','05/31/2025') & campus == 'BD' & SBJCT_CD %in% c('GEEN', 'ENED') ~ 'Apr 21-May 01',
-#  adminInd==1 & between(fcqEnDt,'04/23/2025','05/31/2025') & campus == 'BD' & paste(SBJCT_CD, CATALOG_NBR, sep = '-') == 'MCEN-4085' ~ 'Apr 21-May 01',
+#  adminInd==1 & between(fcqEnDt,'11/19/2025','12/31/2025') & campus == 'BD' & SBJCT_CD %in% c('GEEN', 'ENED') ~ 'Nov 17-Dec 04',
+#  adminInd==1 & between(fcqEnDt,'11/19/2025','12/31/2025') & campus == 'BD' & paste(SBJCT_CD, CATALOG_NBR, sep = '-') == 'MCEN-4085' ~ 'Nov 17-Dec 04',
 # LAWS Early Final
-#  adminInd==1 & between(fcqEnDt,'04/23/2025','05/31/2025') & campus == 'BD' & SBJCT_CD == 'LAWS' ~ 'Apr 20-Apr 27',
+#  adminInd==1 & between(fcqEnDt,'11/19/2025','12/31/2025') & campus == 'BD' & SBJCT_CD == 'LAWS' ~ 'Nov 16-Nov 23',
 
-# Boulder/CEPS Final
-  adminInd==1 & between(fcqEnDt,'11/19/2025','12/31/2025') & campus %in% c('BD', 'CE') ~ 'Nov 17-Dec 02',
-# B3 Final
-  adminInd==1 & between(fcqEnDt,'11/19/2025','12/31/2025') & campus == 'B3' ~ 'Nov 17-Dec 02',
+# Boulder/CEPS/B3 Final
+  adminInd==1 & between(fcqEnDt,'11/19/2025','12/31/2025') & campus %in% c('BD', 'B3', 'CE') ~ 'Nov 17-Dec 02',
 # Denver Beijing sections
 #  adminInd==1 & fcqEnDt >= '11/22/2025' & campus == 'DN' & LOC_ID == 'IC_BEIJING' ~ 'Nov 18-Dec 03',
 # Denver Final

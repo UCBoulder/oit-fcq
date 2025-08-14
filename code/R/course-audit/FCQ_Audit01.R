@@ -98,8 +98,8 @@ cx <- c %>%
 # exclude DN-MATH Gxx and 501 sections
     !(INSTITUTION_CD == 'CUDEN' & SBJCT_CD == 'MATH' & str_detect(CLASS_SECTION_CD, '^G')) &
     !(INSTITUTION_CD == 'CUDEN' & SBJCT_CD == 'MATH' & CLASS_SECTION_CD == '501') &
-# exclude MC-IWKS and MC-BIOE classes
-    !(CAMPUS_CD == 'AMC' & SBJCT_CD %in% c('IWKS', 'BIOE')))
+# exclude AMC subjects
+    !(CAMPUS_CD == 'AMC' & SBJCT_CD %in% c('IWKS', 'BIOE', 'BEHH', 'MIMS')))
 
 # pull from PS_F_CLASS_MTG_PAT as cmtg
 mtgtbl <- dbGetQuery(con,

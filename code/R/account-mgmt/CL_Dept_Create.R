@@ -2,14 +2,14 @@
 # creates a .csv file to import new departments to Campus Labs
 # created: Vince Darcangelo 12/19/22
 # most recent update: Vince Darcangelo 7/18/25
-# \AIM Measurement - FCQ\R_Code\campus_labs\CL_Dept_Create.R
+# \OneDrive - UCB-O365\Documents\oit-fcq\code\R\account-mgmt\CL_Dept_Create.R
 ##########################################################################
 
 # set date and term
 entrydt <- Sys.Date()
 entrydt <- format(entrydt, format = '%Y%m%d')
 
-term_cd <- 2254
+term_cd <- 2257
 userid <- 'darcange'
 folder <- paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\')
 
@@ -17,16 +17,16 @@ folder <- paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\')
 df <- data.frame(
 
 # format: CUBLD:BLDR:ENES, CUBLD:CEPS:BBAC, CUDEN:ENGR:D-IWKS, CUDEN:MEDS:D-BCMG
-OrgUnitIdentifier = c('CUBLD:CEPS:CCOM', 'CUBLD:CEPS:OREC'),
+OrgUnitIdentifier = c('CUBLD:BLDR:PBHL', 'CUDEN:CLAS:CCST'),
 
 # format: CU Boulder deptnm (ENES), CU Continuing Ed deptnm (BBAC), CU Denver deptnm (IWKS), CU Denver deptnm (MEDS:D-BCMG)
-Name = c('CU Continuing Ed Corporate Communication (CCOM)', 'CU Continuing Ed Outdoor Recreation (OREC)'),
+Name = c('CU Boulder Public Health (PBHL)', 'CU Denver Climate Change Studies (CCST)'),
 
 # format: ENES, CEPS:BBAC, D-IWKS, D-BCMG
-Acronym = c('CCOM', 'OREC'),
+Acronym = c('PBHL', 'D-CCST'),
 
 # format: CUBLD:BLDR, CEPS:CEPS, CUDEN:ENGR, CUDEN:CLAS, CUDEN:MEDS
-ParentIdentifier = c('CUBLD:BLDR', 'CUBLD:BLDR'),
+ParentIdentifier = c('CUBLD:BLDR', 'CUDEN:CLAS'),
 
 # options: Division (campus), School (college), Department
 Type = c('Department', 'Department')
