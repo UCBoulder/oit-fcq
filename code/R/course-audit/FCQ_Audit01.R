@@ -92,6 +92,7 @@ cx <- c %>%
     !(INSTITUTION_CD == 'CUBLD' & SBJCT_CD == 'CSVC') &
     !(INSTITUTION_CD == 'CUDEN' & SBJCT_CD == 'MILR') &
     !(INSTITUTION_CD == 'CUDEN' & SBJCT_CD == 'CLSC') &
+    !(INSTITUTION_CD == 'CUDEN' & SBJCT_CD == 'ESIL') &
     !(INSTITUTION_CD == 'CUDEN' & SBJCT_CD == 'MSTP') &
 # exclude classes that dept didn't cancel correctly
     CLASS_NUM != 0 &

@@ -109,7 +109,7 @@ n16 <- n15 %>%
 #  adminInd==1 & between(fcqEnDt,'11/19/2025','12/31/2025') & campus == 'BD' & SBJCT_CD %in% c('GEEN', 'ENED') ~ 'Nov 17-Dec 04',
 #  adminInd==1 & between(fcqEnDt,'11/19/2025','12/31/2025') & campus == 'BD' & paste(SBJCT_CD, CATALOG_NBR, sep = '-') == 'MCEN-4085' ~ 'Nov 17-Dec 04',
 # LAWS Early Final
-#  adminInd==1 & between(fcqEnDt,'11/19/2025','12/31/2025') & campus == 'BD' & SBJCT_CD == 'LAWS' ~ 'Nov 16-Nov 23',
+  adminInd==1 & between(fcqEnDt,'11/19/2025','12/31/2025') & campus == 'BD' & SBJCT_CD == 'LAWS' ~ 'Nov 30-Dec 07',
 
 # Boulder/CEPS/B3 Final
   adminInd==1 & between(fcqEnDt,'11/19/2025','12/31/2025') & campus %in% c('BD', 'B3', 'CE') ~ 'Nov 17-Dec 02',

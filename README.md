@@ -165,6 +165,8 @@ Processes FCQ results at the end of each semester.
 - Go to account-mgmt
   - run CL_New_Sem_Setup.R
     - import AcademicTerm files from CL_New_Sem_Setup.R to Anthology
+    - create folders and files for new term
+    - create communication schedule and docs
   - run newSemCalendar.R
     - use output to set session dates in FCQ_Audit03.R
     - use academic calendars from each campus Registrar to set final admins

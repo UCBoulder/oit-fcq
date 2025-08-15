@@ -17,10 +17,10 @@ folder <- paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\')
 df <- data.frame(
 
 # format: CUBLD:BLDR:ENES, CUBLD:CEPS:BBAC, CUDEN:ENGR:D-IWKS, CUDEN:MEDS:D-BCMG
-OrgUnitIdentifier = c('CUBLD:BLDR:PBHL', 'CUDEN:CLAS:CCST'),
+OrgUnitIdentifier = c('CUBLD:BLDR:PBHL', 'CUDEN:CLAS:D-CCST'),
 
-# format: CU Boulder deptnm (ENES), CU Continuing Ed deptnm (BBAC), CU Denver deptnm (IWKS), CU Denver deptnm (MEDS:D-BCMG)
-Name = c('CU Boulder Public Health (PBHL)', 'CU Denver Climate Change Studies (CCST)'),
+# format: CU Boulder deptnm (ENES), CU Continuing Ed deptnm (BBAC), CU Denver deptnm (CLAS:D-SOCY), CU Denver deptnm (MEDS:D-BCMG)
+Name = c('CU Boulder Public Health (PBHL)', 'CU Denver Climate Change Studies (CLAS:D-CCST)'),
 
 # format: ENES, CEPS:BBAC, D-IWKS, D-BCMG
 Acronym = c('PBHL', 'D-CCST'),

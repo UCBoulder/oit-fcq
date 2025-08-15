@@ -5,7 +5,7 @@
 # \AIM Measurement - FCQ\R_Code\campus_labs\instCL_change.R
 #############################################################################
 
-batchx <- 99
+batchx <- 98
 term_cd <- 2254
 userid <- 'darcange'
 
@@ -19,10 +19,10 @@ instAcct_All <- read.csv(paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurem
 #############################################################################
 
 # for instr add/rem (ex: '(jon.smith@colorado.edu|amy.gomez@colorado.edu))
-instNames <- 'anne.dougherty@colorado.edu'
+instNames <- 'manuel.serapio@ucdenver.edu'
 
 # if removing from specific course(s) only, include this
-xcrse <- '(2251_CUBLD:BLDR:SLHS_SLHS_5918_001_PRA|2251_CUBLD:BLDR:SLHS_SLHS_5918_002_PRA|2251_CUBLD:BLDR:SLHS_SLHS_5918_003_PRA)'
+xcrse <- '(2254_CUDEN:BLDR:SLHS_SLHS_5918_001_PRA|2251_CUBLD:BLDR:SLHS_SLHS_5918_002_PRA|2251_CUBLD:BLDR:SLHS_SLHS_5918_003_PRA)'
 
 # filter for emails + crse
 if (exists('xcrse')) {
