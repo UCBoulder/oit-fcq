@@ -11,23 +11,42 @@ library('haven')
 library('stringr')
 
 # UPDATE THESE VARS EACH SEMESTER:
-semester <- 'Spring'
 Year <- 2025
-term <- 2251
+term_scores <- 2254
 userid <- 'darcange'
 filenm <- 'DN_response_export.csv'
 folder <- paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\')
 edb <- read_sas('L:\\datalib\\Employees\\edb\\pers2023.sas7bdat')
 dmap <- read_sas('L:\\datalib\\MAP_SIS\\deptmap\\pbadepts.sas7bdat')
 
+# set sem147 var (term number) based on 1 = spring, 4 = summer, 7 = fall
+if (grepl('1$', term_scores)) {
+  sem147 <- 1
+} else if (grepl('4$', term_scores)) {
+  sem147 <- 4
+} else if (grepl('7$', term_scores)) {
+  sem147 <- 7
+}
+
+# set semester, begin and end date vars based on sem147
+if (sem147 == 1) {
+  sem <- 'Spring'
+} else if (sem147 == 4) {
+  sem <- 'Summer'
+} else if (sem147 == 7) {
+  sem <- 'Fall'
+}
+
 # set up directory
-folder_ex <- paste0(folder, 'CampusLabs\\Response_Exports\\', term)
+folder_ex <- paste0(folder, 'CampusLabs\\Response_Exports\\', term_scores)
 
 # check if sub directory exists 
 if (file.exists(folder_ex)){
+    print('folder already exists.')
 		setwd(folder_ex)
 } else {
 		dir.create(folder_ex)
+    print('folder created.')
 		setwd(folder_ex)
 }
 
@@ -39,7 +58,7 @@ connection_string <- '(DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)
 con <- dbConnect(drv, username = getOption('databaseuid'), 
   password = getOption('databasepword'), dbname = connection_string)
 
-crse_vars <- read.csv(paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - Documents\\FCQ\\CourseAudit_bak\\', term, '\\c20.csv'))
+crse_vars <- read.csv(paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\CourseAudit_bak\\', term_scores, '\\c20.csv'))
 
 # create CourseID in crsevars for matching
 crse_vars2 <- crse_vars %>%
@@ -118,40 +137,29 @@ dn_comb2_missing <- dn_comb2 %>%
 dn_comb3 <- dn_comb2 %>%
   left_join(crse_vars2, by = c('SBJCT_CD', 'CATALOG_NBR', 'CLASS_SECTION_CD', 'Instructor_External_ID', 'CourseID')) %>%
   distinct()
-# %>%
-#  mutate(Class_num = case_when(
-#    CourseID == '2227_cuden:crss:d-ugxp_univ_1110_001' ~ 36060,
-#    TRUE ~ Class_num
-#  ))
 
 #########################################################################
 # QC: look for missing instr IDs
 dn_comb4 <- dn_comb3 %>%
-#  filter(SBJCT_CD == 'UNIV' & CATALOG_NBR == '1110')
   filter(is.na(CLASS_NUM))
 
-# IF DN_COMB4 == 0
-dn_comb4_final <- dn_comb3
+# how to handle missing instr IDs
+if(nrow(dn_comb4) == 0){
+  dn_comb4_final <- dn_comb3
+  print('no missing IDs')
+} else {
+  dn_crse_errors <- dn_comb4 %>%
+    select(CourseID, SBJCT_CD, CATALOG_NBR, CLASS_SECTION_CD, Course_Section_External_ID)
 
-##########################################################################
-# IF DN_COMB4 > 0, id classes and compare dn_comb2 w crse_vars2
-dn_crse_errors <- dn_comb4 %>%
-  select(CourseID, SBJCT_CD, CATALOG_NBR, CLASS_SECTION_CD, Course_Section_External_ID)
+  dn_crse_errors_distinct <- dn_crse_errors %>%
+    distinct()
 
-dn_crse_errors_distinct <- dn_crse_errors %>%
-  distinct()
+  dn_comb2_check <- dn_crse_errors_distinct %>%
+    left_join(dn_comb2, c('SBJCT_CD', 'CATALOG_NBR', 'CLASS_SECTION_CD'))
 
-dn_comb2_check <- dn_crse_errors_distinct %>%
-  left_join(dn_comb2, c('SBJCT_CD', 'CATALOG_NBR', 'CLASS_SECTION_CD'))
-
-dn_crse_vars2_check <- dn_crse_errors_distinct %>%
-  left_join(crse_vars2, c('SBJCT_CD', 'CATALOG_NBR', 'CLASS_SECTION_CD'))
-
-# crse_vars <- crse_vars %>%
-#   mutate(Instructor_External_ID = case_when(
-#     Instructor_External_ID == '0EFA9C1A-6F2A-11e2-9F92-00505691002B@cu.edu' ~ '7A0DC86A-75AC-463C-85ED-A9BBC6404BE9@cu.edu',
-#     TRUE ~ Instructor_External_ID
-#   ))
+  dn_crse_vars2_check <- dn_crse_errors_distinct %>%
+    left_join(crse_vars2, c('SBJCT_CD', 'CATALOG_NBR', 'CLASS_SECTION_CD'))
+}
 
 ##########################################################################
 # QC1: IF DN_COMB4 > 0 and issue is in dn_comb2 (student didn't answer inst qs), then rerun from dn_comb2
@@ -365,9 +373,9 @@ dn_comb6 <- dn_comb6d %>%
 
 dn_comb7 <- dn_comb6 %>%
   mutate(Semester = case_when(
-    grepl('1$', term) ~ 'Spring',
-    grepl('4$', term) ~ 'Summer',
-    grepl('7$', term) ~ 'Fall')) %>%
+    grepl('1$', term_scores) ~ 'Spring',
+    grepl('4$', term_scores) ~ 'Summer',
+    grepl('7$', term_scores) ~ 'Fall')) %>%
   mutate(Year = Year) %>%
   mutate(Course_Level = case_when(
     grepl('^NCLL', Course_Section_Label) ~ 'Lower',
@@ -399,7 +407,7 @@ write.csv(dn_batch_match, 'DN_Inst_Batch.csv', row.names = FALSE)
 dn_tab <- dn_comb7 %>%
   mutate(across(Q01:Q22, ~replace(.x, is.nan(.x), ''))) %>%
   mutate(Year = as.character(Year)) %>%
-  select('Semester', 'Year', 'Course_Section_External_ID', 'Course_Section_Label', 'SBJCT_CD', 'CATALOG_NBR', 'CLASS_SECTION_CD', 'Course_Level', 'crseSec_comp_cd', 'CLASS_NUM', 'instrNm', 'ACAD_GRP_CD', 'ACAD_GRP_LD', 'Department', 'totEnrl_nowd', 'stuComp', 'Q01', 'Q02', 'Q03', 'Q04', 'Q05', 'Q06', 'Q07', 'Q08', 'Q09', 'Q10', 'Q11', 'Q12', 'Q13', 'Q14', 'Q15', 'Q16', 'Q17', 'Q18', 'Q19', 'Q20', 'Q21', 'Q22')
+  select('Semester', 'Year', 'Course_Section_External_ID', 'Course_Section_Label', 'SBJCT_CD', 'CATALOG_NBR', 'CLASS_SECTION_CD', 'Course_Level', 'crseSec_comp_cd', 'instrNm', 'ACAD_GRP_CD', 'ACAD_GRP_LD', 'Department', 'totEnrl_nowd', 'stuComp', 'Q01', 'Q02', 'Q03', 'Q04', 'Q05', 'Q06', 'Q07', 'Q08', 'Q09', 'Q10', 'Q11', 'Q12', 'Q13', 'Q14', 'Q15', 'Q16', 'Q17', 'Q18', 'Q19', 'Q20', 'Q21', 'Q22', 'CLASS_NUM')
 
 # export master update
 write.csv(dn_tab, 'DN_Tableau_master_update.csv', row.names = FALSE)
@@ -462,7 +470,7 @@ dn_xls_update <- dn_xls_update %>%
   mutate(Year = as.character(Year)) %>%
   mutate(CLASS_SECTION_CD = as.character(CLASS_SECTION_CD)) %>%
   mutate(across(Q01:Q22, ~replace(.x, is.nan(.x), ''))) %>%
-  mutate(Term_cd = term)
+  mutate(Term_cd = term_scores)
 
 # are there missing fcqdept from new subj?
 dn_xls_update0 <- dn_xls_update %>%
@@ -491,3 +499,58 @@ dn_means <- dn_comb7 %>%
   mutate(across(Q01:Q22, round, 1))
 
 write.csv(dn_means, 'DN_means_update.csv', row.names = FALSE)
+
+##########################################################################
+# DN business combined report
+##########################################################################
+
+folder_busn <- paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\Data_Requests\\DN\\Dept_Summaries\\')
+
+report_term <- as.character(term_scores)
+
+dn_solo <- dn_comb4_final %>%
+  filter(is.na(SCTN_CMBND_CD))
+
+dn_solo2 <- dn_solo %>%
+  select('Course_Section_External_ID', 'Course_Section_Label', 'ACAD_GRP_CD', 'ACAD_GRP_LD', 'fcqdept', 'Department', 'SBJCT_CD', 'CATALOG_NBR', 'CLASS_SECTION_CD', 'CRSE_LD', 'crseSec_comp_cd', 'CLASS_NUM', 'instrNm', 'totEnrl_nowd_comb', 'Q01', 'Q02', 'Q03', 'Q04', 'Q05', 'Q06', 'Q07', 'Q08', 'Q09', 'Q10', 'Q11', 'Q12', 'Q13', 'Q14', 'Q15', 'Q16', 'Q17', 'Q18', 'Q19', 'Q20', 'Q21', 'Q22', 'combStat', 'spons_AcadGrp', 'spons_AcadOrg', 'spons_fcqdept', 'spons_deptOrgID', 'spons_id', 'SCTN_CMBND_CD', 'SCTN_CMBND_LD')
+
+dn_solo3 <- dn_solo2 %>%
+  mutate(Semester = sem) %>%
+  mutate(Year = Year) %>%
+  group_by(Semester, Year, spons_id, instrNm, spons_fcqdept) %>%
+  summarise(across(Q01:Q22, mean, na.rm = TRUE)) %>%
+  mutate(across(Q01:Q22, round, 1)) %>%
+  filter(spons_fcqdept == 'BD')
+
+dn_spon <- dn_comb4_final %>%
+  filter(!is.na(SCTN_CMBND_CD))
+
+dn_spon2 <- dn_spon %>%
+  select('Course_Section_External_ID', 'Course_Section_Label', 'ACAD_GRP_CD', 'ACAD_GRP_LD', 'fcqdept', 'Department', 'SBJCT_CD', 'CATALOG_NBR', 'CLASS_SECTION_CD', 'CRSE_LD', 'crseSec_comp_cd', 'CLASS_NUM', 'instrNm', 'totEnrl_nowd_comb', 'Q01', 'Q02', 'Q03', 'Q04', 'Q05', 'Q06', 'Q07', 'Q08', 'Q09', 'Q10', 'Q11', 'Q12', 'Q13', 'Q14', 'Q15', 'Q16', 'Q17', 'Q18', 'Q19', 'Q20', 'Q21', 'Q22', 'combStat', 'spons_AcadGrp', 'spons_AcadOrg', 'spons_fcqdept', 'spons_deptOrgID', 'spons_id', 'SCTN_CMBND_CD', 'SCTN_CMBND_LD')
+
+dn_spon3 <- dn_spon2 %>%
+  mutate(Semester = sem) %>%
+  mutate(Year = Year) %>%
+  group_by(Semester, Year, spons_id, instrNm, spons_fcqdept) %>%
+  summarise(across(Q01:Q22, mean, na.rm = TRUE)) %>%
+  mutate(across(Q01:Q22, round, 1)) %>%
+  filter(spons_fcqdept == 'BD')
+
+dn_busn_comb <- rbind(dn_spon3, dn_solo3)
+
+# create style for top row
+Heading <- createStyle(textDecoration = 'bold', fgFill = '#FFFFCC', border = 'TopBottomLeftRight')
+
+# workbook call begins here
+dn_busn_rept <- createWorkbook()
+addWorksheet(dn_busn_rept, report_term, gridLines = TRUE)
+writeData(dn_busn_rept, report_term, dn_busn_comb, withFilter = TRUE)
+
+# freeze top row
+freezePane(dn_busn_rept, report_term, firstActiveRow = 2, firstActiveCol = 1)
+
+# add style to header
+addStyle(dn_busn_rept, report_term, cols = 1:ncol(dn_busn_comb), rows = 1, style = Heading)
+
+# daily (no date, goes to shared drive)
+saveWorkbook(dn_busn_rept, paste0(folder_busn, report_term, '_DN_BD_Combined.xlsx'), overwrite = TRUE)

@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 ################################################
 # packages to install
 ################################################
@@ -25,6 +24,8 @@ install.packages("SnowballC")
 install.packages("haven")
 install.packages("lubridate")
 install.packages("flexdashboard")
+install.packages("gt")
+install.packages("htmltools")
 install.packages("formattable")
 install.packages("xlsx")
 install.packages("usethis")

@@ -181,5 +181,3 @@ Processes FCQ results at the end of each semester.
 
 ## Notes
 
-*Any additional notes or background information that could be useful.*
-
