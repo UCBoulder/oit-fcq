@@ -23,7 +23,7 @@ Use these files to process FCQ results at the end of each semester.
 
   - run Install_Packages.R
   - run Load_Libraries.R
-  - run CIW credentials and clear console afterward
+  - add CIW credentials and clear console afterward
     - options(database_userid = "CIWID")
     - options(database_password = "CIWPASSWORD")
 

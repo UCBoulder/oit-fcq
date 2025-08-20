@@ -1,7 +1,7 @@
 ---
 output:
   word_document:
-    number_sections: TRUE
+    number_sections: FALSE
     df_print: paged
   code_folding: "hide"
 ---
@@ -22,301 +22,144 @@ if (grepl('1$', term_cd)) {
   sem <- 'Fall'
 }
 
-term <- 'Fall'
-yr <- 2025
-
-fiscalyr <- '2244-2251'
-billterm <- 'Summer 2024'
-userid <- 'darcange'
-bdcharge <- 11.88
-cecharge <- 8.57
-dncharge <- 9.52
-mccharge <- 10.53
-invbill <- read.csv(paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - Documents\\FCQ\\Billing\\', fiscalyr, '\\', sem, '\\invbill.csv'))
-invbill2 <- invbill %>%
-  mutate(Charge = case_when(
-    fcqdept %in% c('BBAC', 'CC', 'CONT', 'IEC', 'ORGL', 'TRCT') ~ currency(n * cecharge),
-    fcqdept == 'CU DENVER' ~ currency(n * dncharge),
-    fcqdept %in% c('MEDS', 'ORE') ~ currency(n * mccharge)))
+Year <- as.numeric(paste0(20, substr(term_cd, 2, 3)))
 ```
 
-# FCQ Invoice {-}
-`r format(Sys.Date(), '%m/%d/%Y')`
+**Semester welcome message to FCQ coordinators**
 
-***
-
-```{r echo = FALSE, results = 'asis'}
-library(knitr)
-
-invbill2 %>% 
-  filter(fcqdept %in% c('BBAC', 'CONT', 'TRCT')) %>%
-  bind_rows(summarise(., across(where(is.numeric), sum),
-      across(where(is.character), ~'**Total**'))) %>%
-  kable('pipe')
-```
-
-***
-
-**CEPS FCQ Invoice (BBAC, CONT, TRCT)**
-
-Please review your invoice for **`r billterm`**. We bill for the number of course-section-instructor units requested by the department via the FCQ course audit. This is based on the number of evaluations requested, independent of the number of responses.
-
-The amount is calculated based on the previous year's usage and expenses. This year's charge is **$`r cecharge`** per unit.
-
-We will bill online to speed types **12018467** (CONT) and **12000779** (BBAC, TRCT), account **527601**. The revenue account we use is **380133**.
-
-Let me know if you have any questions.
-
-Vince Darcangelo  
-FCQ program manager
-
-
-
-\newpage
-
-# FCQ Invoice {-}
-`r format(Sys.Date(), '%m/%d/%Y')`
-
-***
-
-```{r echo = FALSE, results = 'asis'}
-
-invbill2 %>% 
-  filter(fcqdept == 'CC') %>%
-  bind_rows(summarise(., across(where(is.numeric), sum),
-      across(where(is.character), ~'**Total**'))) %>%
-  kable('pipe')
-```
-
-***
-
-**CEPS FCQ Invoice (CC)**
-
-Please review your invoice for **`r billterm`**. We bill for the number of course-section-instructor units requested by the department via the FCQ course audit. This is based on the number of evaluations requested, independent of the number of responses.
-
-The amount is calculated based on the previous year's usage and expenses. This year's charge is **$`r cecharge`** per unit.
-
-We will bill online to speed type **12018466**, account **527601**. The revenue account we use is **380133**.
-
-Let me know if you have any questions.
-
-Vince Darcangelo  
-FCQ program manager
-
-
-\newpage
-
-# FCQ Invoice {-}
-`r format(Sys.Date(), '%m/%d/%Y')`
-
-***
-
-```{r echo = FALSE, results = 'asis'}
-
-invbill2 %>% 
-  filter(fcqdept == 'ORGL') %>%
-  bind_rows(summarise(., across(where(is.numeric), sum),
-      across(where(is.character), ~'**Total**'))) %>%
-  kable('pipe')
-```
-
-***
-
-**CEPS FCQ Invoice (ORGL)**
-
-Please review your invoice for **`r billterm`**. We bill for the number of course-section-instructor units requested by the department via the FCQ course audit. This is based on the number of evaluations requested, independent of the number of responses.
-
-The amount is calculated based on the previous year's usage and expenses. This year's charge is **$`r cecharge`** per unit.
-
-We will bill online to speed type **12001195**, account **527601**. The revenue account we use is **380133**.
-
-Let me know if you have any questions.
-
-Vince Darcangelo  
-FCQ program manager
-
-
-\newpage
-
-# FCQ Invoice {-}
-`r format(Sys.Date(), '%m/%d/%Y')`
-
-***
-
-```{r echo = FALSE, results = 'asis'}
-
-invbill2 %>% 
-  filter(fcqdept == 'IEC') %>%
-  bind_rows(summarise(., across(where(is.numeric), sum),
-      across(where(is.character), ~'**Total**'))) %>%
-  kable('pipe')
-```
-
-***
-
-**CEPS FCQ Invoice (IEC)**
-
-Please review your invoice for **`r billterm`**. We bill for the number of course-section-instructor units requested by the department via the FCQ course audit. This is based on the number of evaluations requested, independent of the number of responses.
-
-The amount is calculated based on the previous year's usage and expenses. This year's charge is **$`r cecharge`** per unit.
-
-We will bill online to speed type **12020394**, account **527601**. The revenue account we use is **380133**.
-
-Let me know if you have any questions.
-
-Vince Darcangelo  
-FCQ program manager
-
-
-\newpage
-
-# FCQ Invoice {-}
-`r format(Sys.Date(), '%m/%d/%Y')`
-
-***
-
-```{r echo = FALSE, results = 'asis'}
-
-invbill2 %>% 
-  filter(fcqdept == 'CU DENVER') %>%
-  bind_rows(summarise(., across(where(is.numeric), sum),
-      across(where(is.character), ~'**Total**'))) %>%
-  kable('pipe')
-```
-
-***
-
-**CU Denver FCQ Invoice**
-
-Please review your invoice for **`r billterm`**. We bill for the number of course-section-instructor units requested by the department via the FCQ course audit. This is based on the number of evaluations requested, independent of the number of responses.
-
-The amount is calculated based on the previous year's usage and expenses. This year's charge is **$`r dncharge`** per unit.
-
-We will bill online to speed type **61000670**, account **527601**. The revenue account we use is **380132**.
-
-Let me know if you have any questions.
-
-Vince Darcangelo  
-FCQ program manager
-
-
-\newpage
-
-# FCQ Invoice {-}
-`r format(Sys.Date(), '%m/%d/%Y')`
-
-***
-
-```{r echo = FALSE, results = 'asis'}
-
-invbill2 %>% 
-  filter(fcqdept %in% c('MEDS', 'ORE')) %>%
-  bind_rows(summarise(., across(where(is.numeric), sum),
-      across(where(is.character), ~'**Total**'))) %>%
-  kable('pipe')
-```
-
-***
-
-**CU Anschutz FCQ Invoice**
-
-Please review your invoice for **`r billterm`**. We bill for the number of course-section-instructor units requested by the department via the FCQ course audit. This is based on the number of evaluations requested, independent of the number of responses.
-
-The amount is calculated based on the previous year's usage and expenses. This year's charge is **$`r mccharge`** per unit.
-
-We will bill online to speed types **61022362** and **61002476**, account **527601**. The revenue account we use is **380132**.
-
-Let me know if you have any questions.
-
-Vince Darcangelo  
-FCQ program manager
-
-\newpage
-
-Semester welcome message to FCQ coordinators
 
 To:
+
 fcqcoord@lists.colorado.edu
+
 dnfcq@lists.colorado.edu
 
-Subject: FCQ Coordinator Fall 2024 Welcome
+Subject: FCQ Coordinator `r sem` `r Year` Welcome
 
 Dear FCQ coordinators,
 
-Hope you all had a great summer and you’re ready for the fall semester. The first FCQ sessions for fall began running in mid-August and the initial course audit is available for review. The fall calendar is also up on our website.
+Welcome to the `r sem` semester. Here is a quick timeline for the upcoming term. For full dates and information, please consult the FCQ calendar, https://www.colorado.edu/fcq/calendar.
 
-Here is a quick timeline for the upcoming semester. For full dates and information, please consult the FCQ calendar, https://www.colorado.edu/fcq/calendar.
+**Topics:**
 
-Topics:
-•	Summer 2024 FCQ reports
-•	Batch reports archive update
-•	Semester timeline
-•	Fall 2024 FCQs
-•	Course auditing
-•	Report administrator updates
-•	Report administrator responsibilities
+> •	Previous semester FCQ reports
 
-Summer 2024 FCQ reports
-•	Results for CU Denver have been released, and CU Anschutz (Aug. 26) and Boulder (Aug. 29) reports will become available next week
-•	Batch reports/Tableau dashboards will be available in early September
+> •	Batch reports archive update
 
-Batch reports archive update
-Last year, we started the process of moving the batch zip files from the LFT distribution to shared folders that could be accessed at anytime (LFT files expired after two weeks). It was a long process due to the amount and size of the files, as well as the need to keep the data secure, but we are excited to announce that the process has been completed.
+> •	Semester timeline
 
-Each semester, you’ll receive an email when the batch reports have been added to the shared folder. You can access this folder at any time to download your reports.
+> •	`r sem` `r Year` FCQs
+
+> •	Course auditing
+
+> •	Report administrator updates
+
+> •	Report administrator responsibilities
+
+
+**Previous semester FCQ reports**
+
+> •	For previous semester results, visit https://www.colorado.edu/fcq/fcq-results.
+
+> •	Due to term overlap, it is possible that the previous semester results are not available yet, but will be soon.
+
+
+**Batch reports archive update**
+
+Each semester, you’ll receive an email when the batch reports have been added to the shared folder. Designated report administrators can access this folder at any time to download your reports.
+
 
 We still strongly recommend that you download your files to a secure location within your department, whether that is a server, dedicated drive or folder.
 
-Semester timeline
-Aug. 12 – Nov. 22:	Weekly administrations
-Oct. 2 – Oct. 23: 	Course audit window
-October 25: 		Deadline to submit custom questions
-Final FCQ administration
-•	Boulder: 	Monday, Dec. 2 – Tuesday, Dec. 10
-•	Denver: 	Monday, Nov. 18 – Tuesday, Dec. 3
-•	Anschutz:	Monday, Nov. 18 – Tuesday, Dec. 3
 
-Dec. 23 – 27:		FCQ initial reports released
-•	Boulder:	Friday, Dec. 27, at 12 p.m.
-•	Denver:		Monday, Dec. 23, at 12 p.m.
-•	Anschutz:	Monday, Dec. 23, at 12 p.m.
+**Semester timeline**
+
+> Aug. 11 – Nov. 14:	Weekly administrations
+
+> Oct. 1 – Oct. 22: 	Course audit window
+
+> October 24: 		Deadline to submit custom questions
+
+Final FCQ administration
+
+> •	Boulder: 	Monday, Nov. 17 – Tuesday, Dec. 2
+
+> •	Denver: 	Monday, Nov. 17 – Tuesday, Dec. 2
+
+> •	Anschutz:	Monday, Nov. 17 – Tuesday, Dec. 2
+
+FCQ initial reports released
+
+> •	Boulder:	Tuesday, Dec. 23, at 12 p.m.
+
+> •	Denver:		Monday, Dec. 22, at 12 p.m.
+
+> •	Anschutz:	Monday, Dec. 22, at 12 p.m.
 
 Weekly administrations open on Mondays, and occasionally Tuesdays (for holidays), at 11 a.m., with end dates varying from Friday - Sunday.
 
 Windows for classes are based on the course end date that is listed in CU-SIS. Classes that are evaluated during a weekly administration may be moved to a different administration on request.
 
-Course auditing
-The course auditing window runs from Wednesday, October 2 through Wednesday, October 23. During this period the class roster will update each business day.
+
+**Course auditing**
+
+The course auditing window runs from the first Wednesday through the fourth Wednesday of the audit month (March/June/October). During this period the class roster will update each business day.
 
 If you need to update a course that ends prior to the audit window, contact the FCQ program for assistance. Otherwise, make your changes in CU-SIS and they will get picked up during the course audit.
 
 Remember, the FCQ class roster information is taken directly from CU-SIS. To update class or instructor information, you must make changes in CU-SIS.
 
-Report administrator updates
+
+**Report administrator updates**
+
 Attached is our current list of report administrators (folks who have access to Campus Labs reports). Please let me know if you need to update any of the information.
 
-Report administrator responsibilities
+
+**Report administrator responsibilities**
+
 Key roles
+
 Be the liaison between the FCQ program and your faculty
-•	We are a small department and aren’t able to work directly with faculty on a regular basis
-•	Your role is to be the go-between and communicate FCQ information to your faculty
-•	Ideally, your faculty will submit requests and questions to you
+
+> •	We are a small department and aren’t able to work directly with faculty on a regular basis
+
+> •	Your role is to be the go-between and communicate FCQ information to your faculty
+
+> •	Ideally, your faculty will submit requests and questions to you
 Be an informed FCQ manager
-•	Know which classes are getting FCQs and when
-•	If an instructor wants to know when they are getting FCQs, consult your course audit
+
+> •	Know which classes are getting FCQs and when
+
+> •	If an instructor wants to know when they are getting FCQs, consult your course audit
+
 Be a data steward
-•	You are responsible for maintaining your department archives
-•	The batch reports distributed at the end of each term are your archive copies
-•	Be sure to download batch reports in a timely manner and save them for use in portfolio building, tenure review, and as your department’s historical record
-•	Familiarize yourself with the various FCQ reports and where to find them, https://www.colorado.edu/fcq/fcq-results
 
-Key responsibilities
-•	FCQ early administrations
-•	FCQ course auditing
-•	FCQ administration
-•	FCQ reports release
+> •	You are responsible for maintaining your department archives
 
-FCQ knowledge base
+> •	The batch reports distributed at the end of each term are your archive copies
+
+> •	Be sure to download batch reports in a timely manner and save them for use in portfolio building, tenure review, and as your department’s historical record
+
+> •	Familiarize yourself with the various FCQ reports and where to find them, https://www.colorado.edu/fcq/fcq-results
+
+
+**Key responsibilities**
+
+> •	FCQ early administrations
+
+> •	FCQ course auditing
+
+> •	FCQ administration
+
+> •	FCQ reports release
+
+
+**FCQ knowledge base**
+
 Got a question and need an answer fast? Try the FCQ knowledge base. Access the knowledge base at www.colorado.edu/fcq/kb.
 
+
 Thank you,
+
+FCQ program
+
