@@ -41,7 +41,6 @@ install.packages("ggthemes", dependencies = TRUE)
 #install.packages("igraph")
 #install.packages("ggnetwork")
 #install.packages("intergraph")
-=======
 ################################################
 # packages to install
 ################################################

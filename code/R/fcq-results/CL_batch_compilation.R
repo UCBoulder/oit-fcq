@@ -84,4 +84,3 @@ cs_batch <- cs_files2 %>%
 batch_master <- rbind(bd_batch, ce_batch, dn_batch, mc_batch, cs_batch)
 
 write.xlsx(batch_master, paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\Batch_Reports\\Batch_Master.xlsx'))
->>>>>>> 1fb20350f24cadc3c58aae63fc23c7a88b6f3138

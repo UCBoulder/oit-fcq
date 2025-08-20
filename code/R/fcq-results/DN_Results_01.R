@@ -269,7 +269,7 @@ dn_comb4_fixed2a <- dn_comb4_fixed2 %>%
   ))
 
 dn_comb4_fixed2b <- dn_comb4_fixed2 %>%
-  !(filter(CLASS_NUM %in% c(10963, 10821, 10818))
+  !(filter(CLASS_NUM %in% c(10963, 10821, 10818)))
 
 # recombine fixed2a and 2b
 dn_comb4_fixed2c <- rbind(dn_comb4_fixed2a, dn_comb4_fixed2b)
