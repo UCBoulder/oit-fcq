@@ -57,17 +57,11 @@ n16 <- n15 %>%
 #  adminInd == 1 & campus == 'CE' & SBJCT_CD == 'EDUA' ~ 'Jul 07-Jul 11',
 # DN-weekend
 #  adminInd == 1 & campus == 'DN' & paste(SBJCT_CD, CATALOG_NBR, CLASS_SECTION_CD, sep = '-') == 'PSCI-5008-ND1' ~ 'Mar 03-Mar 09',
+# DN-PUAD adjustments
+  adminInd == 1 & campus == 'DN' & CLASS_NUM %in% c(39403, 39396, 39397, 39479) ~ 'Nov 17-Dec 02',
 # BD summer abroad sessions
 #  adminInd == 1 & campus == 'BD' & CLASS_NUM == 18845 ~ 'Jun 16-Jun 20',
 #  adminInd == 1 & campus == 'BD' & CLASS_NUM == 18852 ~ 'Jul 14-Jul 18',
-#  adminInd == 1 & campus == 'BD' & CLASS_NUM == 18855 ~ 'Jun 16-Jun 20',
-#  adminInd == 1 & campus == 'BD' & CLASS_NUM == 18856 ~ 'Jun 16-Jun 20',
-#  adminInd == 1 & campus == 'BD' & CLASS_NUM == 21493 ~ 'May 27-May 31',
-#  adminInd == 1 & campus == 'BD' & CLASS_NUM == 18822 ~ 'Aug 04-Aug 08',
-#  adminInd == 1 & campus == 'BD' & CLASS_NUM == 18886 ~ 'Aug 04-Aug 08',
-#  adminInd == 1 & campus == 'BD' & CLASS_NUM == 19529 ~ 'Jun 09-Jun 13',
-#  adminInd == 1 & campus == 'BD' & CLASS_NUM == 18889 ~ 'Jun 23-Jun 27',
-#  adminInd == 1 & campus == 'BD' & CLASS_NUM == 18897 ~ 'Jun 16-Jun 21',
 # DN-MATH/CSCI summer
 #  adminInd == 1 & campus == 'DN' & SBJCT_CD == 'MATH' & SESSION_CD == 'DMR' ~ 'Jul 21-Jul 25',
 #  adminInd == 1 & campus == 'DN' & SBJCT_CD == 'CSCI' & CATALOG_NBR == '4650' ~ 'Jul 21-Jul 25',
@@ -81,7 +75,7 @@ n16 <- n15 %>%
 # BD winter session
 #   adminInd == 1 & SESSION_CD == 'BWS' ~ 'Jan 02-Jan 06',
 # NCLL courses (spring/fall)
-#  adminInd == 1 & SBJCT_CD == 'NCLL' & SESSION_CD == 'DC1' ~ 'Mar 03-Mar 07',
+  adminInd == 1 & SBJCT_CD == 'NCLL' & SESSION_CD == 'DC1' ~ 'Sep 29-Oct 03',
 # NCLL courses (summer only)
 #  adminInd == 1 & SBJCT_CD == 'NCLL' ~ 'Jul 21-Jul 25',
 # DN Cuba Libre courses (spring)

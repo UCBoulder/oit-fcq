@@ -22,7 +22,7 @@ tday <- format(entrydt, format = '%m%d%y')
 
 # search by email
 # format example: '(jocelyn.gray@colorado.edu|dawn.savage@ucdenver.edu)'
-email <- '(angela.stansbury@colorado.edu|amelia.tubbs@ucdenver.edu|rachel.montgomery@colorado.edu|lucinda.bliss@ucdenver.edu)'
+email <- '(angela.stansbury@colorado.edu|amelia.tubbs@ucdenver.edu|rachel.montgomery@colorado.edu|lucinda.bliss@ucdenver.edu|maile.spenser@colorado.edu|sue.hammondwest@colorado.edu|angela.carrington@ucdenver.edu|sharon.thomas@colorado.edu|owen.sanchez@colorado.edu)'
 # if there are duplicate emails, go to CU-SIS > Course and Class > Instructor/Advisor > Add/Update a Person and enter PERSON_ID into ID field to search -- this may occur if someone went from student to staff
 
 # OR search by last name (be sure to update em2 call below)
