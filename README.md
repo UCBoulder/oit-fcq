@@ -109,6 +109,17 @@ Schedule varies, so run as indicated below.
     - This alerts us when a student doesn't have an email/account
       - update code anytime this file is opened by CL_Imports.R
 
+  - fcq_Comm_Docs.Rmd
+    - This updates the memos we send to FCQ coordinators each semester
+      - update the term_cd variable and then save
+      - don't need to run, but can if you want to
+
+  - fcq_Comm_Render.R
+    - Generates the Word file with all the memos
+      - only run after fcq_Comm_Docs.Rmd has been updated and saved
+      - update the term_cd variable and then run
+      - Word doc is generated in the oit-fcq/outputs folder
+
   - splitEnrlCL.R
     - The Campus Labs/Anthology interface has a size restriction
     - Only use this file twice per year - when processing final BD and final DN administrations for the Fall/Spring semesters

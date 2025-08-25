@@ -163,3 +163,174 @@ Thank you,
 
 FCQ program
 
+\newpage
+
+**Course audit memo to send the week that the audit window opens**
+
+To:
+
+fcqcoord@lists.colorado.edu
+
+dnfcq@lists.colorado.edu
+
+Subject: FCQ `r sem` `r Year` Course Audit Memo
+
+Dear FCQ coordinators,
+
+The course audit window for `r sem` `r Year` will be open from Wednesday, October 1 through Wednesday, October 22. We’re hosting FCQ office hours from 2-3 p.m. each Wednesday during the course audit window and will be sending out invites shortly.
+
+Please RSVP if you would like to attend.
+
+Some topics to discuss in office hours:
+•	Review changes to the course audit layout
+•	Introduce new FCQ coordinators to the process
+•	Provide a refresher for veteran FCQ coordinators
+•	Answer any questions you might have about the process
+
+Course audit files will be updated by noon each business day. Changes made in CU-SIS by 5 p.m. will show up on the course audit the following business day.
+
+At the end of the course audit window, the course and instructor assignments will be considered correct and will be the basis for end-of-term FCQs.
+
+To access your course audit, and course audit training materials, go to: https://www.colorado.edu/fcq/course-audit
+
+Remember, the FCQ class roster information is taken directly from CIW. To update class or instructor information, you must make changes in CIW.
+
+If you are reviewing your course audit before noon, and a change you made isn’t showing up, it’s possible that the update hasn’t yet occurred. Please check the date in the tab at the bottom of the file to confirm.
+
+We have set up weekly administrations that, generally, will open on Mondays, and occasionally Tuesdays (for holidays), at 11 a.m.
+
+Windows for classes are based on the course end date that is listed in CU-SIS. Early ending classes may be moved to different administrations on request.
+
+Thank you,
+
+FCQ program
+
+\newpage
+
+**Description for office hours invite**
+
+To:
+
+fcqcoord@lists.colorado.edu
+
+dnfcq@lists.colorado.edu
+
+Dear FCQ coordinators,
+
+The course audit window for `r sem` `r Year` will be open from Wednesday, October 1 through Wednesday, October 22. We’re hosting FCQ office hours from 2-3 p.m. each Wednesday during this time.
+
+Please RSVP if you would like to attend.
+
+Some topics to discuss in office hours:
+• Review changes to the course audit layout
+• Introduce new FCQ coordinators to the process
+• Provide a refresher for veteran FCQ coordinators
+• Answer any questions you might have about the process
+
+Thank you,
+
+FCQ program
+
+\newpage
+
+**Course Audit OPEN memo**
+
+To:
+
+fcqcoord@lists.colorado.edu
+
+dnfcq@lists.colorado.edu
+
+Subject: FCQ `r sem` `r Year` course audit now open!
+
+Dear FCQ coordinators,
+
+The course audit window is now open and will run from Wednesday, October 1 through Wednesday, October 22. During this period, the course audit files will be updated by noon each business day and will reflect the current information in CIW.
+
+Changes made to CIW by 5 p.m. will show up on the course audit the following business day.
+
+At the end of the course audit window, the course and instructor assignments will be considered correct and will be the basis for all remaining FCQs.
+
+To access your course audit, and course audit training materials, go to: https://www.colorado.edu/fcq/course-audit
+
+Remember, the FCQ class roster information is taken directly from CIW. To update class or instructor information, you must make changes in CIW.
+
+If you are reviewing your course audit before noon, and a change you made isn’t showing up, please check the date in the upper-left corner of the file to confirm that the daily update has occurred.
+
+We have set up weekly administrations that open on Mondays (Tuesdays for holidays), at 11 a.m., with end dates varying from Friday - Saturday.
+
+Windows for classes are based on the course end date that is listed in CU-SIS. Early ending classes may be moved to different administrations on request.
+
+Thank you,
+
+FCQ program
+
+\newpage
+
+**Course Audit CLOSE memo**
+
+To:
+
+fcqcoord@lists.colorado.edu
+
+dnfcq@lists.colorado.edu
+
+Subject: FCQ Course Audit closing!
+
+Dear FCQ coordinators,
+
+Just a reminder that the course audit closes today. Changes need to be submitted to CIW by 5 p.m. in order to be reflected accurately in the final FCQ administration. The course and instructor assignments on tomorrow’s report will be considered correct and will be the basis for end-of-term FCQs.
+
+To access your course audit, and course audit training materials, go to: https://www.colorado.edu/fcq/course-audit
+
+Thank you for all your hard work,
+
+FCQ program
+
+\newpage
+
+**Final administration pre-release memo (fall/spring only)**
+
+To:
+
+fcqcoord@lists.colorado.edu
+
+dnfcq@lists.colorado.edu
+
+Subject: FCQ final administrations open on Monday!
+
+Dear FCQ coordinators,
+
+Thank you for all your hard work this semester. A lot goes into setting up, administering and reporting the FCQ data, and the exhaustive auditing you do to make updates and catch errors before they go into production is greatly appreciated.
+
+Over the next few weeks, we will be running final administrations for all campuses. Alerts will also be going out to your faculty and students later today, in addition to the traditional messaging we send while administrations are open.
+
+Here are the administration dates for each campus:
+•	Boulder: 	Monday, November 17 – Tuesday, December 2
+•	Denver: 	Monday, November 17 – Tuesday, December 2
+•	Anschutz:	Monday, November 17 – Tuesday, December 2
+
+Here are the release dates for the FCQ results:
+•	Boulder: 	Tuesday, December 23, 12 p.m.
+•	Denver: 	Monday, December 22, 12 p.m.
+•	Anschutz:	Monday, December 22, 12 p.m.
+
+Thank you,
+
+FCQ program
+
+\newpage
+
+**Batch reports release memo**
+
+Dear report administrators,
+
+Your `r sem` `r Year` FCQ batch reports are ready to view and download. Please let us know if you have any questions or encounter any problems with the reports.
+
+Important: These files are your department archival copies – the equivalent of the paper distribution copies we used to send at the end of every semester. You are responsible for your archive copies. The FCQ program does not have the staffing to provide archival services. Thus, it is vital that you download and save these batch reports.
+
+These are being sent to FCQ report administrators (FCQ coordinators and chairs/directors), but not to instructors. Instructors can view their own reports directly through Campus Labs.
+
+Thank you,
+
+FCQ program
