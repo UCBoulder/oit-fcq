@@ -1,7 +1,7 @@
 #########################################################################
 # Process Anschutz FCQs
 # created: Vince Darcangelo 6/1/22
-# most recent update: Vince Darcangelo 8/29/24
+# most recent update: Vince Darcangelo 8/26/25
 # \AIM Measurement - Documents\FCQ\R_Code\mc_results\MC_Results_01.R
 #########################################################################
 
@@ -11,23 +11,42 @@ library('haven')
 library('stringr')
 
 # UPDATE THESE VARS EACH SEMESTER:
-semester <- 'Spring'
 Year <- 2025
-term <- 2251
+term_scores <- 2254
 userid <- 'darcange'
 filenm <- 'MC_response_export.csv'
 folder <- paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\')
 edb <- read_sas('L:\\datalib\\Employees\\edb\\pers2023.sas7bdat')
 dmap <- read_sas('L:\\datalib\\MAP_SIS\\deptmap\\pbadepts.sas7bdat')
 
+# set sem147 var (term number) based on 1 = spring, 4 = summer, 7 = fall
+if (grepl('1$', term_scores)) {
+  sem147 <- 1
+} else if (grepl('4$', term_scores)) {
+  sem147 <- 4
+} else if (grepl('7$', term_scores)) {
+  sem147 <- 7
+}
+
+# set semester, begin and end date vars based on sem147
+if (sem147 == 1) {
+  sem <- 'Spring'
+} else if (sem147 == 4) {
+  sem <- 'Summer'
+} else if (sem147 == 7) {
+  sem <- 'Fall'
+}
+
 # set up directory
-folder_ex <- paste0(folder, 'CampusLabs\\Response_Exports\\', term)
+folder_ex <- paste0(folder, 'CampusLabs\\Response_Exports\\', term_scores)
 
 # check if sub directory exists 
 if (file.exists(folder_ex)){
+    print('folder already exists.')
 		setwd(folder_ex)
 } else {
 		dir.create(folder_ex)
+    print('folder created.')
 		setwd(folder_ex)
 }
 
@@ -39,7 +58,7 @@ connection_string <- '(DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)
 con <- dbConnect(drv, username = getOption('databaseuid'), 
   password = getOption('databasepword'), dbname = connection_string)
 
-crse_vars <- read.csv(paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - Documents\\FCQ\\CourseAudit_bak\\', term, '\\c20.csv'))
+crse_vars <- read.csv(paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\CourseAudit_bak\\', term_scores, '\\c20.csv'))
 
 ##########################################################################
 # prepare FCQ result data
@@ -63,7 +82,7 @@ colnames(mctxt) <- c('CE_Internal_ID', 'Student_Identifier', 'Course_Section_Ext
 
 # add columns to mcdata
 mcdata2 <- mcdata %>%
-  mutate(Term = semester) %>%
+  mutate(Term = sem) %>%
   mutate(Year = Year) %>%
   mutate(CourseID = str_sub(Course_Section_External_ID,1,-5)) %>%
   mutate(ACAD_ORG_CD = str_sub(Department,-7,-2)) %>%

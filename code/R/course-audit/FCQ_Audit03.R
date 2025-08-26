@@ -108,7 +108,7 @@ n16 <- n15 %>%
 # Boulder/CEPS/B3 Final
   adminInd==1 & between(fcqEnDt,'11/19/2025','12/31/2025') & campus %in% c('BD', 'B3', 'CE') ~ 'Nov 17-Dec 02',
 # Denver Beijing sections
-#  adminInd==1 & fcqEnDt >= '11/22/2025' & campus == 'DN' & LOC_ID == 'IC_BEIJING' ~ 'Nov 18-Dec 03',
+  adminInd==1 & fcqEnDt >= '11/19/2025' & campus == 'DN' & LOC_ID == 'IC_BEIJING' ~ 'Nov 17-Dec 02',
 # Denver Final
   adminInd==1 & between(fcqEnDt,'11/19/2025','12/31/2025') & campus == 'DN' & CAMPUS_CD !='AMC' ~ 'Nov 17-Dec 02',
 # AMC Final
