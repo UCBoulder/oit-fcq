@@ -1,8 +1,8 @@
 #########################################################################
 # Process Anschutz FCQs
 # created: Vince Darcangelo 6/1/22
-# most recent update: Vince Darcangelo 8/26/25
-# \AIM Measurement - Documents\FCQ\R_Code\mc_results\MC_Results_01.R
+# most recent update: Vince Darcangelo 8/28/25
+# \OneDrive - UCB-O365\Documents\oit-fcq\code\R\fcq-results\MC_Results_01.R
 #########################################################################
 
 library('lubridate')
@@ -58,6 +58,9 @@ connection_string <- '(DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)
 con <- dbConnect(drv, username = getOption('databaseuid'), 
   password = getOption('databasepword'), dbname = connection_string)
 
+#########################################################################
+# prepare crse_vars
+#########################################################################
 crse_vars <- read.csv(paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\CourseAudit_bak\\', term_scores, '\\c20.csv'))
 
 ##########################################################################
@@ -68,12 +71,12 @@ mcraw <- read.csv('MC_response_export.csv')
 write.xlsx(mcraw, 'MC_response_export_bak.xlsx', showNA = FALSE)
 
 # filter out late drops
-mcraw <- mcraw %>%
+mcraw2 <- mcraw %>%
   filter(Student.Identifier != 'No Identifier Found')
 
-mcdata <- mcraw[,c(1:2, 4:7, 10:11, 13:35)]
+mcdata <- mcraw2[,c(1:2, 4:7, 10:11, 13:35)]
 
-mctxt <- mcraw[,c(1:2, 4:7, 10:11, 36:37)]
+mctxt <- mcraw2[,c(1:2, 4:7, 10:11, 36:37)]
 
 # rename columns
 colnames(mcdata) <- c('CE_Internal_ID', 'Student_Identifier', 'Course_Section_External_ID', 'Course_Section_Label', 'Department', 'Administration_Name', 'Instructor', 'Instructor_External_ID', 'Q01', 'Q02', 'Q03', 'Q04', 'Q05', 'Q06', 'Q07', 'Q08', 'Q09', 'Q10', 'Q11', 'Q12', 'Q13', 'Q14', 'Q15', 'Q16', 'Q17', 'Q18', 'Q19', 'Q20', 'Q21', 'Q22', 'Q23')

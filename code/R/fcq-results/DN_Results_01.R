@@ -1,8 +1,8 @@
 #########################################################################
 # Process Denver FCQs
 # created: Vince Darcangelo 5/24/22
-# most recent update: Vince Darcangelo 8/29/24
-# \AIM Measurement - Documents\FCQ\R_Code\dn_results\DN_Results_01.R
+# most recent update: Vince Darcangelo 8/28/25
+# \OneDrive - UCB-O365\Documents\oit-fcq\code\R\fcq-results\DN_Results_01.R
 #########################################################################
 
 library('lubridate')
@@ -58,6 +58,9 @@ connection_string <- '(DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)
 con <- dbConnect(drv, username = getOption('databaseuid'), 
   password = getOption('databasepword'), dbname = connection_string)
 
+#########################################################################
+# prepare crse_vars
+#########################################################################
 crse_vars <- read.csv(paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\CourseAudit_bak\\', term_scores, '\\c20.csv'))
 
 # create CourseID in crsevars for matching
