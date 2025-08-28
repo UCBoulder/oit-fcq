@@ -1,16 +1,27 @@
 #########################################################################
 # Search for student withdrawals/late drops, import to CL enrl to remove
 # created: Vince Darcangelo 8/8/23
-# most recent update: Vince Darcangelo 7/18/25
-# \AIM Measurement - FCQ\R_Code\campus_labs\stuenrlWithdraws.R
+# most recent update: Vince Darcangelo 8/28/25
+# \OneDrive - UCB-O365\Documents\oit-fcq\code\R\account-mgmt\stuenrlWithdraws.R
 #########################################################################
 
-term_cd <- '2251'
+term_cd <- '2254'
+year_cal <- '2025'
 userid <- 'darcange'
-dt_beg <- '202501'
-dt_end <- '202505'
 rundt <- Sys.Date()
 rundt2 <- format(rundt, format = '%m%d%y')
+
+# set semester end date based on term_cd
+if (grepl('1$', term_cd)) {
+  dt_beg <- paste0(year_cal, '01')
+  dt_end <- paste0(year_cal, '05')
+} else if (grepl('4$', term_cd)) {
+  dt_beg <- paste0(year_cal, '05')
+  dt_end <- paste0(year_cal, '08')
+} else if (grepl('7$', term_cd)) {
+  dt_beg <- paste0(year_cal, '08')
+  dt_end <- paste0(year_cal, '12')
+}
 
 # pull from PS_F_CLASS_ENRLMT as studrp
 studrp <- dbGetQuery(con,
