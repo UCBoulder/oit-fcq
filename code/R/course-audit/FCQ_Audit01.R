@@ -95,7 +95,7 @@ cx <- c %>%
     !(INSTITUTION_CD == 'CUDEN' & SBJCT_CD == 'ESIL') &
     !(INSTITUTION_CD == 'CUDEN' & SBJCT_CD == 'MSTP') &
 # exclude B3-APPA classes
-    SBJCT_CD == 'APPA' &
+    SBJCT_CD != 'APPA' &
 # exclude classes that dept didn't cancel correctly
     CLASS_NUM != 0 &
 # exclude DN-MATH Gxx and 501 sections

@@ -15,13 +15,13 @@ userid <- 'darcange'
 folder <- paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\')
 import_path <- paste0(folder, 'CampusLabs//Imports//', term_cd)
 
-# update batch number: updated to batch 02 on 8/15 -vd
-sess_num <- '02'
+# update batch number: updated to batch 04 on 9/5 -vd
+sess_num <- '04'
 batch <- paste0('batch', sess_num)
 
 # filter for desired session
 session <- clscu3 %>%
- filter(adminDtTxt == 'Aug 18-Aug 22')
+ filter(adminDtTxt == 'Sep 08-Sep 12')
 # filter(adminInd == 1 & SBJCT_CD == 'CSPB')
 # filter(adminInd == 1 & CLASS_NUM %in% c(35857, 36011))
 # final session filters

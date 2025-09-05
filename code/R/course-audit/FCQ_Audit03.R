@@ -70,7 +70,7 @@ n16 <- n15 %>%
 # midterm BD-LAWS
 #  adminInd == 1 & campus == 'BD' & paste(SBJCT_CD, CATALOG_NBR, sep = '-') == 'LAWS-6213' ~ 'Oct 23-Oct 27',
 # DN-EDUC changes
-  adminInd == 1 & campus == 'DN' & paste(SBJCT_CD, CATALOG_NBR, CLASS_SECTION_CD, sep = '-') %in% c('LCRT-4001-001', 'LCRT-5001-001', 'SPSY-6917-901') ~ 'Nov 17-Dec 02',
+  adminInd == 1 & campus == 'DN' & paste(SBJCT_CD, CATALOG_NBR, CLASS_SECTION_CD, sep = '-') %in% c('LCRT-4001-001', 'LCRT-5001-001', 'LCRT-4200-001', 'LCRT-5200-001', 'RSEM-5120-001', 'RSEM-5120-E02', 'RSEM-7000-001', 'SPSY-6917-901') ~ 'Nov 17-Dec 02',
 # BD winter session
 #   adminInd == 1 & SESSION_CD == 'BWS' ~ 'Jan 02-Jan 06',
 # NCLL courses (spring/fall)
