@@ -16,16 +16,16 @@
 # 8. extract files to campus/term folder
 
 # UPDATE term VAR EACH SEMESTER:
-term <- 2251
-term_prefix <- '2251-'
+term_batch <- 2254
+term_prefix <- paste0(term_batch, '-')
 campus <- 'Boulder'
-campterm <- paste0('BD', term)
+campterm <- paste0('BD', term_batch)
 userid <- 'darcange'
 
 bd_folder <- paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\Batch_Reports\\Boulder')
 
 # check for term directory, and create if not
-tfolder <- paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\Batch_Reports\\', term)
+tfolder <- paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\Batch_Reports\\', term_batch)
 
 if (!dir.exists(tfolder)) {
   dir.create(tfolder)
@@ -37,7 +37,7 @@ if (!dir.exists(tfolder)) {
 setwd(tfolder)
 
 # check for campus directory, and create if not
-cfolder <- paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\Batch_Reports\\', term, '\\Boulder')
+cfolder <- paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\Batch_Reports\\', term_batch, '\\Boulder')
 
 if (!dir.exists(cfolder)) {
   dir.create(cfolder)
@@ -86,12 +86,48 @@ my_files <- my_files %>%
   mutate(Instructor_External_ID = paste0(extract, '@cu.edu'))
 
 # import batch matching file from results processing code
-bd_match <- read.csv(paste0('C:\\Users\\', userid, '\\UCB-o365\\AIM Measurement - FCQ\\CampusLabs\\Response_Exports\\', term, '\\BD_Inst_Batch.csv'))
+bd_match <- read.csv(paste0('C:\\Users\\', userid, '\\UCB-o365\\AIM Measurement - FCQ\\CampusLabs\\Response_Exports\\', term_batch, '\\BD_Inst_Batch.csv'))
 
+###########################################################################
+# QC: look for NA values in bd_match
+###########################################################################
 bd_match0 <- bd_match %>%
   filter(is.na(fcqdept))
 
-# review and fix NAs
+bd_match1 <- bd_match %>%
+  filter(!(is.na(fcqdept)))
+
+if(nrow(bd_match0) == 0) {
+    print('no missing IDs')
+  } else {
+    View(bd_match0)
+    stop('Review and fix NAs (bd_match0) before continuing')
+}
+
+# review and fix NAs using dept_key2, CIW, and pdf files in BD(term_batch)
+bd_match0_fixed <- bd_match0 %>%
+  mutate(fcqdept = case_when(
+    Instructor %in% c('Paula Battistelli', 'Emily Gleason', 'William Penuel', 'Ashley Potvin', 'Karla Scornavacco') ~ 'EDUA',
+    Instructor %in% c('Amanda Lee', 'Melissa Felderman', 'Nettie Skievaski', 'Mark Rukamathu', 'Marianne Holbert') ~ 'EV',
+    Instructor == 'Jamie Skerski' ~ 'COMM'
+  )) %>%
+  mutate(SBJCT_CD = case_when(
+    Instructor %in% c('Paula Battistelli', 'Emily Gleason', 'William Penuel', 'Ashley Potvin', 'Karla Scornavacco') ~ 'EDUA',
+    Instructor %in% c('Amanda Lee', 'Melissa Felderman', 'Nettie Skievaski', 'Mark Rukamathu', 'Marianne Holbert') ~ 'ENVD',
+    Instructor == 'Jamie Skerski' ~ 'COMM'
+  )) %>%
+  mutate(ACAD_ORG_CD = case_when(
+    Instructor %in% c('Paula Battistelli', 'Emily Gleason', 'William Penuel', 'Ashley Potvin', 'Karla Scornavacco') ~ 'B-EDUC',
+    Instructor %in% c('Amanda Lee', 'Melissa Felderman', 'Nettie Skievaski', 'Mark Rukamathu', 'Marianne Holbert') ~ 'B-ENVD',
+    Instructor == 'Jamie Skerski' ~ 'B-COMN'
+  ))
+
+# recombine fixed files with bd_match1
+bd_match <- rbind(bd_match1, bd_match0_fixed)
+
+# rerun QC to confirm (should return 0 rows)
+bd_match0 <- bd_match %>%
+  filter(is.na(fcqdept))
 
 # create unique rows for bd_match
 bd_match2 <- bd_match %>%
@@ -128,18 +164,18 @@ setwd(cfolder)
 
 my_comb3 <- my_comb2 %>%
   mutate(ACAD_ORG_CD = case_when(
-    fcqdept %in% c('ECEA', 'EDUA') ~ paste0('B3-', fcqdept),
-    fcqdept %in% c('BBAC', 'CC', 'CONT', 'IEC', 'ORGL', 'TRCT') ~ paste0('CE-', fcqdept),
+    fcqdept %in% c('ECEA') ~ paste0('B3-', fcqdept),
+    fcqdept %in% c('BBAC', 'CC', 'CCOM', 'CONT', 'EDUA', 'IEC', 'OREC', 'ORGL', 'TRCT') ~ paste0('CE-', fcqdept),
     TRUE ~ paste0('BD-', fcqdept)
   ))
 
 # create mapping doc
 bd_map <- my_comb3 %>%
-  mutate(dest = paste0(getwd(), '/', term, '-', ACAD_ORG_CD, '/', match))
+  mutate(dest = paste0(getwd(), '/', term_batch, '-', ACAD_ORG_CD, '/', match))
 
 # create dept folders
 for (i in 1:length(bd_map$dest)){
-  dir.create(paste0(getwd(), '/', term, '-', bd_map$ACAD_ORG_CD[i]))
+  dir.create(paste0(getwd(), '/', term_batch, '-', bd_map$ACAD_ORG_CD[i]))
 }
 
 # create inst folders
@@ -189,7 +225,7 @@ bd_dups5 <- bd_dups5 %>%
 file.copy(bd_dups5$dfrom, bd_dups5$dfile, overwrite = TRUE)
 
 #########################################################################
-# create zip files # break up on next run to see why it doubled for 2251
+# create zip files
 #########################################################################
 setwd(cfolder)
 
@@ -211,19 +247,11 @@ folder_update <- folder_update %>% select(value) %>% arrange(value)
 write.csv(folder_update, 'bd_folders2update.csv')
 
 #########################################################################
-setwd(cfolder)
+zlist3 <- enframe(zlist2)
 
-files2zip <- dir(cfolder)
-
-# zlist <- as.list(dir(cfolder))
-
-zlist <- dir(cfolder, full.names = TRUE)
-
-zlist2 <- paste0(zlist, '.zip')
-
-zlist3 <- zlist2 %>%
+zlist4 <- zlist3 %>%
   select(value) %>%
-  mutate(match = substr(value, nchar(value)-6, nchar(value))) %>%
+  mutate(match = substr(value, nchar(value)-10, nchar(value)-4)) %>%
   mutate(match = gsub('1-', '', match)) %>%
   mutate(match = gsub('4-', '', match)) %>%
   mutate(match = gsub('7-', '', match)) %>%
@@ -243,14 +271,17 @@ ylist3 <- ylist2 %>%
   mutate(match = gsub('r/', '', match)) %>%
   mutate(match = gsub('/', '', match))
 
-yz_comb <- zlist3 %>%
+yz_comb <- zlist4 %>%
   select(match, zip) %>%
   left_join(ylist3) %>%
   mutate(value = case_when(
     match == 'CE-BBAC' ~ paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\Batch_Reports\\CEPS\\CE-BBAC'),
     match == 'CE-CC' ~ paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\Batch_Reports\\CEPS\\CE-CC'),
+    match == 'CE-CCOM' ~ paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\Batch_Reports\\CEPS\\CE-CCOM'),
     match == 'CE-CONT' ~ paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\Batch_Reports\\CEPS\\CE-CONT'),
+    match == 'CE-EDUA' ~ paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\Batch_Reports\\CEPS\\CE-EDUA'),
     match == 'CE-IEC' ~ paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\Batch_Reports\\CEPS\\CE-IEC'),
+    match == 'CE-OREC' ~ paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\Batch_Reports\\CEPS\\CE-OREC'),
     match == 'CE-ORGL' ~ paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\Batch_Reports\\CEPS\\CE-ORGL'),
     match == 'CE-TRCT' ~ paste0('C:\\Users\\', userid, '\\UCB-O365\\AIM Measurement - FCQ\\Batch_Reports\\CEPS\\CE-TRCT'),
     TRUE ~ value
